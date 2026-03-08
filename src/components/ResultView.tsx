@@ -244,15 +244,15 @@ export default function ResultView() {
         margin: "0 auto",
       }}
     >
-      {/* ===== 1. タイプヒーロー ===== */}
+      {/* ===== 1. タイプヒーロー: border控えめ、background少し明るく ===== */}
       <div
         style={{
           textAlign: "center",
-          background: "rgba(255,255,255,.04)",
-          border: "1px solid rgba(255,107,232,.2)",
+          background: "rgba(255,255,255,.06)",
+          border: "1px solid rgba(255,255,255,.1)",
           borderRadius: 20,
           padding: "32px 24px",
-          marginBottom: 24,
+          marginBottom: 16,
         }}
       >
         {/* タイプemoji */}
@@ -293,18 +293,18 @@ export default function ResultView() {
         </p>
       </div>
 
-      {/* ===== 2. 8次元バーグラフ ===== */}
+      {/* ===== 2. 8次元バーグラフ: gap拡大、バー背景調整 ===== */}
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: 9,
-          marginBottom: 24,
+          gap: 12,
+          marginBottom: 16,
         }}
       >
         {norm.map((val, i) => (
           <div key={i}>
-            {/* ラベル + 数値 */}
+            {/* ラベル + 数値: コントラスト改善 */}
             <div
               style={{
                 display: "flex",
@@ -317,16 +317,16 @@ export default function ResultView() {
                 {DIM_LABELS[i]}
               </span>
               <span
-                style={{ fontSize: 9.5, color: "rgba(255,255,255,.5)" }}
+                style={{ fontSize: 9.5, color: "rgba(255,255,255,.55)" }}
               >
                 {val}
               </span>
             </div>
-            {/* バー */}
+            {/* バー: 背景を少し暗く */}
             <div
               style={{
                 height: 5,
-                background: "rgba(255,255,255,.08)",
+                background: "rgba(255,255,255,.06)",
                 borderRadius: 3,
                 overflow: "hidden",
               }}
@@ -357,14 +357,14 @@ export default function ResultView() {
         ))}
       </div>
 
-      {/* ===== 3. 相性TOP5 ===== */}
+      {/* ===== 3. 相性TOP5: border控えめに ===== */}
       <div
         style={{
           background: "rgba(255,255,255,.04)",
-          border: "1px solid rgba(255,107,232,.15)",
+          border: "1px solid rgba(255,255,255,.1)",
           borderRadius: 16,
           padding: "20px 18px",
-          marginBottom: 24,
+          marginBottom: 16,
         }}
       >
         <h3
@@ -418,7 +418,7 @@ export default function ResultView() {
               {entry.type.name}
             </span>
 
-            {/* バー */}
+            {/* バー: 色はそのまま（各タイプの色で機能的） */}
             <div
               style={{
                 flex: 1,
@@ -454,14 +454,14 @@ export default function ResultView() {
         ))}
       </div>
 
-      {/* ===== 4. 恋愛アドバイスカード ===== */}
+      {/* ===== 4. 恋愛アドバイスカード: borderなし、テキスト色調整 ===== */}
       <div
         style={{
           background: "rgba(255,255,255,.04)",
-          border: "1px solid rgba(160,192,255,.15)",
+          border: "none",
           borderRadius: 16,
           padding: "20px 18px",
-          marginBottom: 24,
+          marginBottom: 16,
         }}
       >
         <p
@@ -478,7 +478,7 @@ export default function ResultView() {
         <p
           style={{
             fontSize: 13,
-            color: "#D4E8FF",
+            color: "rgba(255,255,255,.8)",
             lineHeight: 1.8,
           }}
         >
@@ -486,16 +486,16 @@ export default function ResultView() {
         </p>
       </div>
 
-      {/* ===== 5. 応援メッセージ ===== */}
+      {/* ===== 5. 応援メッセージ: border控えめ、グラデーションbgはそのまま ===== */}
       <div
         style={{
           background:
             "linear-gradient(135deg, rgba(255,107,232,.08), rgba(196,90,255,.08))",
-          border: "1px solid rgba(255,107,232,.2)",
+          border: "1px solid rgba(255,255,255,.1)",
           borderRadius: 16,
           padding: "24px 20px",
           textAlign: "center",
-          marginBottom: 28,
+          marginBottom: 16,
         }}
       >
         <div style={{ fontSize: 30, marginBottom: 10 }}>{bestType.cheer}</div>
@@ -521,8 +521,8 @@ export default function ResultView() {
         </p>
       </div>
 
-      {/* ===== 6. シェア画像（Canvas） ===== */}
-      <div style={{ marginBottom: 24 }}>
+      {/* ===== 6. シェア画像（Canvas）: そのまま ===== */}
+      <div style={{ marginBottom: 16 }}>
         <canvas
           ref={canvasRef}
           style={{
@@ -558,13 +558,13 @@ export default function ResultView() {
           textAlign: "center",
           fontSize: 11,
           color: "rgba(255,255,255,.35)",
-          marginBottom: 20,
+          marginBottom: 16,
         }}
       >
         診断結果は参考としてご活用ください。
       </p>
 
-      {/* ===== 8. シェアボタン行 ===== */}
+      {/* ===== 8. シェアボタン行: border-radius統一、やり直すはghost style ===== */}
       <div
         style={{
           display: "flex",
@@ -584,7 +584,7 @@ export default function ResultView() {
             gap: 6,
             padding: "10px 16px",
             background: "linear-gradient(135deg, #010101, #69C9D0)",
-            borderRadius: 10,
+            borderRadius: 12,
             color: "#fff",
             fontSize: 13,
             fontWeight: 700,
@@ -605,7 +605,7 @@ export default function ResultView() {
             gap: 6,
             padding: "10px 16px",
             background: "#06C755",
-            borderRadius: 10,
+            borderRadius: 12,
             color: "#fff",
             fontSize: 13,
             fontWeight: 700,
@@ -626,7 +626,7 @@ export default function ResultView() {
             gap: 6,
             padding: "10px 16px",
             background: "#1A1A1A",
-            borderRadius: 10,
+            borderRadius: 12,
             color: "#fff",
             fontSize: 13,
             fontWeight: 700,
@@ -636,7 +636,7 @@ export default function ResultView() {
           X
         </a>
 
-        {/* やり直すボタン */}
+        {/* やり直すボタン: ghost style */}
         <button
           onClick={() => {
             reset();
@@ -647,9 +647,9 @@ export default function ResultView() {
             alignItems: "center",
             gap: 6,
             padding: "10px 16px",
-            background: "rgba(255,255,255,.06)",
+            background: "transparent",
             border: "1px solid rgba(255,255,255,.15)",
-            borderRadius: 10,
+            borderRadius: 12,
             color: "rgba(255,255,255,.7)",
             fontSize: 13,
             fontWeight: 700,

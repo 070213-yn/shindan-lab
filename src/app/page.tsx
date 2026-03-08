@@ -6,7 +6,7 @@ import { TYPES } from "@/lib/types";
 
 // ============================================================
 // ときめきラボ ランディングページ
-// テーマ: Y2Kグリッター x 宇宙 x TikTok映え
+// テーマ: Y2Kグリッター x 宇宙
 // 背景色: #0D0118（ディープスペース）
 // ============================================================
 
@@ -156,37 +156,6 @@ export default function LandingPage() {
         </Link>
       </nav>
 
-      {/* ========== ティッカーバー ========== */}
-      <div
-        style={{
-          position: "fixed",
-          top: 56,
-          left: 0,
-          right: 0,
-          zIndex: 99,
-          overflow: "hidden",
-          whiteSpace: "nowrap",
-          padding: "6px 0",
-          background:
-            "linear-gradient(90deg, #FF6BE8, #C45AFF, #7B5CFF, #4DE8FF, #80FFB0, #FFE080, #FF6BE8)",
-          backgroundSize: "300%",
-          animation: "tickerBg 8s linear infinite",
-          fontSize: "0.75rem",
-          fontWeight: 700,
-          color: "#0D0118",
-          letterSpacing: "0.05em",
-        }}
-      >
-        <span
-          style={{
-            display: "inline-block",
-            animation: "tickerScroll 20s linear infinite",
-          }}
-        >
-          {tickerText}
-        </span>
-      </div>
-
       {/* ========== ヒーローセクション ========== */}
       <section
         style={{
@@ -196,108 +165,77 @@ export default function LandingPage() {
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
-          padding: "120px 20px 60px",
+          padding: "80px 20px 60px",
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* バッジ */}
+        {/* ティッカーバー（ヒーロー内に配置、relative） */}
         <div
           style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 8,
-            border: "1px solid rgba(255,107,232,.4)",
-            borderRadius: 50,
-            padding: "6px 18px",
+            position: "relative",
+            width: "100vw",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            padding: "6px 0",
+            background: "rgba(255,107,232,.08)",
             fontSize: "0.75rem",
+            fontWeight: 700,
             color: "#FF6BE8",
-            marginBottom: 24,
-            letterSpacing: "0.08em",
+            letterSpacing: "0.05em",
+            marginBottom: 40,
           }}
         >
-          {/* ドットインジケーター */}
           <span
             style={{
-              width: 6,
-              height: 6,
-              borderRadius: "50%",
-              background: "#FF6BE8",
-              animation: "dotPulse 2s ease-in-out infinite",
               display: "inline-block",
+              animation: "tickerScroll 20s linear infinite",
             }}
-          />
-          LOVE PERSONALITY ANALYSIS
+          >
+            {tickerText}
+          </span>
         </div>
 
-        {/* メインタイトル */}
-        <h1 style={{ lineHeight: 1.1, marginBottom: 16 }}>
+        {/* メインタイトル（1行にまとめ、控えめなグロー） */}
+        <h1 style={{ lineHeight: 1.1, marginBottom: 20 }}>
           <span
             className="font-stick"
             style={{
               display: "block",
-              fontSize: "clamp(58px, 17vw, 110px)",
+              fontSize: "clamp(40px, 12vw, 80px)",
               color: "#FF6BE8",
-              textShadow: "0 0 60px rgba(255,107,232,.5)",
+              textShadow: "0 0 20px rgba(255,107,232,.15)",
             }}
           >
-            ときめき
-          </span>
-          <span
-            className="font-stick"
-            style={{
-              display: "block",
-              fontSize: "clamp(58px, 17vw, 110px)",
-              color: "#C45AFF",
-              textShadow: "0 0 60px rgba(196,90,255,.4)",
-            }}
-          >
-            ラボ
+            ときめきラボ
           </span>
         </h1>
 
-        {/* 説明テキスト */}
+        {/* キャッチコピー */}
+        <p
+          className="font-zen"
+          style={{
+            fontSize: "1.125rem",
+            fontWeight: 700,
+            color: "rgba(255,255,255,.9)",
+            marginBottom: 16,
+          }}
+        >
+          恋は、勇気が9割。
+        </p>
+
+        {/* 説明テキスト（brタグなし、自然な折り返し） */}
         <p
           style={{
             maxWidth: 520,
             fontSize: "0.95rem",
             lineHeight: 1.8,
             color: "rgba(255,255,255,.75)",
-            marginBottom: 20,
-          }}
-        >
-          心理学研究をベースにした本格恋愛性格診断。
-          <br />
-          43問の質問に答えるだけで、あなたの恋愛タイプを
-          <br />
-          8次元で分析し、12タイプから判定します。
-        </p>
-
-        {/* 参考文献バッジ */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 8,
-            justifyContent: "center",
             marginBottom: 32,
           }}
         >
-          {["愛着理論", "進化心理学", "自己拡張モデル"].map((label) => (
-            <span
-              key={label}
-              style={{
-                fontSize: "0.7rem",
-                padding: "4px 12px",
-                borderRadius: 50,
-                border: "1px solid rgba(255,255,255,.2)",
-                color: "rgba(255,255,255,.6)",
-              }}
-            >
-              {label}
-            </span>
-          ))}
-        </div>
+          心理学研究をベースにした本格恋愛性格診断。43問の質問に答えるだけで、あなたの恋愛タイプを8次元で分析し、12タイプから判定します。
+        </p>
 
         {/* CTAボタン群 */}
         <div
@@ -308,7 +246,7 @@ export default function LandingPage() {
             gap: 14,
           }}
         >
-          {/* メインCTA */}
+          {/* メインCTA（アニメーション削除） */}
           <Link
             href="/quiz"
             className="btn-gradient"
@@ -317,24 +255,23 @@ export default function LandingPage() {
               fontSize: "1.1rem",
               textDecoration: "none",
               display: "inline-block",
-              animation: "ctaPulse 3s ease-in-out infinite",
             }}
           >
             43問・無料診断スタート
           </Link>
 
-          {/* サブCTA */}
+          {/* サブCTA（テキストリンクスタイル） */}
           <button
             onClick={scrollToTypes}
             style={{
               background: "transparent",
-              border: "1px solid rgba(255,255,255,.25)",
-              borderRadius: 50,
-              padding: "10px 28px",
-              color: "rgba(255,255,255,.7)",
+              border: "none",
+              padding: "8px 0",
+              color: "rgba(255,255,255,.6)",
               fontSize: "0.85rem",
               cursor: "pointer",
-              transition: "all 0.3s",
+              textDecoration: "underline",
+              transition: "color 0.3s",
             }}
           >
             12タイプを見る
@@ -353,8 +290,8 @@ export default function LandingPage() {
           zIndex: 1,
         }}
       >
-        {/* セクションタイトル */}
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
+        {/* セクションタイトル（左揃え） */}
+        <div style={{ textAlign: "left", marginBottom: 48 }}>
           <span
             style={{
               fontSize: "0.75rem",
@@ -374,7 +311,7 @@ export default function LandingPage() {
           </h2>
         </div>
 
-        {/* タイプカードグリッド（レスポンシブ対応用のCSS Grid） */}
+        {/* タイプカードグリッド */}
         <div
           style={{
             display: "grid",
@@ -390,7 +327,7 @@ export default function LandingPage() {
                 background: "rgba(10,1,22,.88)",
                 borderRadius: 16,
                 padding: "22px 18px",
-                border: "1px solid rgba(255,255,255,.08)",
+                border: "1px solid transparent",
                 transition: "transform 0.3s, border-color 0.3s",
               }}
               onMouseEnter={(e) => {
@@ -402,7 +339,7 @@ export default function LandingPage() {
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLDivElement).style.transform = "none";
                 (e.currentTarget as HTMLDivElement).style.borderColor =
-                  "rgba(255,255,255,.08)";
+                  "transparent";
               }}
             >
               {/* 絵文字 */}
@@ -423,11 +360,11 @@ export default function LandingPage() {
                 {type.name}
               </h3>
 
-              {/* タグ */}
+              {/* タグ（コントラスト向上） */}
               <p
                 style={{
                   fontSize: "0.65rem",
-                  color: "rgba(255,255,255,.45)",
+                  color: "rgba(255,255,255,.55)",
                   marginBottom: 10,
                   letterSpacing: "0.03em",
                 }}
@@ -435,12 +372,12 @@ export default function LandingPage() {
                 {type.tag}
               </p>
 
-              {/* 説明 */}
+              {/* 説明（コントラスト向上） */}
               <p
                 style={{
                   fontSize: "0.78rem",
                   lineHeight: 1.6,
-                  color: "rgba(255,255,255,.65)",
+                  color: "rgba(255,255,255,.75)",
                 }}
               >
                 {type.desc.length > 60
@@ -459,12 +396,12 @@ export default function LandingPage() {
           padding: "80px 20px",
           maxWidth: 700,
           margin: "0 auto",
-          textAlign: "center",
+          textAlign: "left",
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* セクションタイトル */}
+        {/* セクションタイトル（左揃え） */}
         <span
           style={{
             fontSize: "0.75rem",
@@ -547,26 +484,27 @@ export default function LandingPage() {
           </p>
         </div>
 
-        {/* CTA */}
-        <Link
-          href="/quiz"
-          className="btn-gradient"
-          style={{
-            padding: "18px 52px",
-            fontSize: "1.1rem",
-            textDecoration: "none",
-            display: "inline-block",
-            animation: "ctaPulse 3s ease-in-out infinite",
-          }}
-        >
-          診断スタート
-        </Link>
+        {/* CTA（アニメーション削除、左揃えセクション内で中央寄せ） */}
+        <div style={{ textAlign: "center" }}>
+          <Link
+            href="/quiz"
+            className="btn-gradient"
+            style={{
+              padding: "18px 52px",
+              fontSize: "1.1rem",
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+          >
+            診断スタート
+          </Link>
+        </div>
       </section>
 
       {/* ========== フッター ========== */}
       <footer
         style={{
-          padding: "60px 20px 40px",
+          padding: "80px 20px 60px",
           textAlign: "center",
           borderTop: "1px solid rgba(255,255,255,.08)",
           position: "relative",
@@ -590,58 +528,32 @@ export default function LandingPage() {
           style={{
             fontSize: "0.85rem",
             color: "rgba(255,255,255,.6)",
-            marginBottom: 32,
+            marginBottom: 40,
           }}
         >
           恋する全ての人に、勇気と自信を。
         </p>
 
-        {/* 参考文献 */}
-        <div
+        {/* 参考文献（1行カンマ区切り） */}
+        <p
           style={{
-            maxWidth: 600,
+            maxWidth: 700,
             margin: "0 auto",
-            textAlign: "left",
+            fontSize: "0.6rem",
+            color: "rgba(255,255,255,.3)",
+            lineHeight: 1.8,
           }}
         >
-          <p
-            style={{
-              fontSize: "0.7rem",
-              color: "rgba(255,255,255,.35)",
-              marginBottom: 8,
-              fontWeight: 700,
-            }}
-          >
-            参考文献
-          </p>
-          <ul
-            style={{
-              listStyle: "none",
-              padding: 0,
-              margin: 0,
-            }}
-          >
-            {references.map((ref) => (
-              <li
-                key={ref}
-                style={{
-                  fontSize: "0.65rem",
-                  color: "rgba(255,255,255,.3)",
-                  lineHeight: 1.8,
-                }}
-              >
-                {ref}
-              </li>
-            ))}
-          </ul>
-        </div>
+          <span style={{ fontWeight: 700, marginRight: 6 }}>参考文献:</span>
+          {references.join("; ")}
+        </p>
 
         {/* コピーライト */}
         <p
           style={{
             fontSize: "0.65rem",
             color: "rgba(255,255,255,.25)",
-            marginTop: 32,
+            marginTop: 40,
           }}
         >
           &copy; 2026 ときめきラボ

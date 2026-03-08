@@ -189,7 +189,7 @@ export default function LoadingOrb() {
             }}
           />
 
-          {/* 中央コア */}
+          {/* 中央コア: box-shadowを控えめに調整 */}
           <div
             style={{
               position: "absolute",
@@ -197,8 +197,7 @@ export default function LoadingOrb() {
               borderRadius: "50%",
               background:
                 "radial-gradient(circle, #FF6BE8 0%, #C45AFF 50%, #7B5CFF 100%)",
-              boxShadow:
-                "0 0 20px rgba(255,107,232,.6), 0 0 40px rgba(196,90,255,.3)",
+              boxShadow: "0 0 20px rgba(255,107,232,.6)",
               animation: "coreBeat 1.5s ease-in-out infinite",
             }}
           />
@@ -244,7 +243,7 @@ export default function LoadingOrb() {
                       background:
                         state === "active"
                           ? "#FF6BE8"
-                          : "rgba(208,184,245,.3)",
+                          : "rgba(255,255,255,.25)",
                       boxShadow:
                         state === "active"
                           ? "0 0 8px rgba(255,107,232,.6)"
@@ -258,11 +257,11 @@ export default function LoadingOrb() {
                   />
                 )}
 
-                {/* テキスト */}
+                {/* テキスト: 非アクティブ時のコントラスト改善 */}
                 <span
                   style={{
                     fontSize: 13,
-                    color: state === "active" ? "#fff" : "#D0B8F5",
+                    color: state === "active" ? "#fff" : "rgba(255,255,255,.55)",
                     fontWeight: state === "active" ? 700 : 400,
                     transition: "all 0.3s",
                   }}
@@ -274,7 +273,7 @@ export default function LoadingOrb() {
           })}
         </div>
 
-        {/* ===== パーセント表示 ===== */}
+        {/* ===== パーセント表示: font-stickのまま、グロー控えめ ===== */}
         <p
           className="font-stick"
           style={{ fontSize: 50, color: "#FF6BE8", marginBottom: 12 }}

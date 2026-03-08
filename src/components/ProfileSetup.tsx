@@ -8,6 +8,7 @@
  * profileStep 2: 恋愛経験（4択）→ 診断スタートへ
  */
 
+import { useState } from "react";
 import { useQuizStore } from "@/store/quizStore";
 
 // ---------- 定数 ----------
@@ -33,6 +34,7 @@ const TOTAL_STEPS = 3;
 
 // ---------- 共通スタイル ----------
 
+// カード選択のアニメーション: smooth cubic-bezierに変更
 const cardBase: React.CSSProperties = {
   background: "rgba(255,255,255,.04)",
   border: "2px solid rgba(255,107,232,.2)",
@@ -40,12 +42,14 @@ const cardBase: React.CSSProperties = {
   padding: "20px 16px",
   cursor: "pointer",
   textAlign: "center",
-  transition: "all .25s ease",
+  transition: "all .2s cubic-bezier(.25,.1,.25,1)",
 };
 
+// 選択時のbox-shadow追加で視覚フィードバック改善
 const cardSelected: React.CSSProperties = {
   borderColor: "#FF6BE8",
   background: "linear-gradient(135deg,rgba(255,107,232,.2),rgba(196,90,255,.12))",
+  boxShadow: "0 0 20px rgba(255,107,232,.15)",
 };
 
 const btnBase: React.CSSProperties = {
@@ -71,6 +75,7 @@ const btnBack: React.CSSProperties = {
   fontSize: 14,
   cursor: "pointer",
   fontFamily: "'Zen Maru Gothic', sans-serif",
+  transition: "color .2s, border-color .2s",
 };
 
 // ---------- コンポーネント本体 ----------
@@ -85,6 +90,9 @@ export default function ProfileSetup() {
     setProfileStep,
     setCurrentStep,
   } = useQuizStore();
+
+  // 戻るボタンのホバー状態管理
+  const [backHovered, setBackHovered] = useState(false);
 
   // --- ステップドット ---
   const renderDots = () => (
@@ -105,24 +113,36 @@ export default function ProfileSetup() {
     </div>
   );
 
-  // --- ステップ共通ヘッダー ---
+  // --- ステップ共通ヘッダー（\nを<br />に変換して表示） ---
   const renderHeader = (stepNum: number, title: string, desc?: string) => (
     <div style={{ marginBottom: 28 }}>
       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: 3, color: "rgba(255,107,232,.5)", marginBottom: 6 }}>
         STEP {stepNum} / {TOTAL_STEPS}
       </p>
       <h2 style={{ fontFamily: "'Stick', sans-serif", fontSize: 26, color: "#FF6BE8", lineHeight: 1.3, marginBottom: 6 }}>
-        {title}
+        {/* タイトル内の\nを<br />に変換 */}
+        {title.split("\n").map((line, i, arr) => (
+          <span key={i}>
+            {line}
+            {i < arr.length - 1 && <br />}
+          </span>
+        ))}
       </h2>
       {desc && (
         <p style={{ fontSize: 13, color: "#C8AEED", lineHeight: 1.8 }}>
-          {desc}
+          {/* 説明文内の\nも<br />に変換 */}
+          {desc.split("\n").map((line, i, arr) => (
+            <span key={i}>
+              {line}
+              {i < arr.length - 1 && <br />}
+            </span>
+          ))}
         </p>
       )}
     </div>
   );
 
-  // --- ナビゲーションボタン ---
+  // --- ナビゲーションボタン（戻るボタンにhoverスタイル追加） ---
   const renderNav = (opts: {
     showBack?: boolean;
     nextLabel?: string;
@@ -131,7 +151,17 @@ export default function ProfileSetup() {
   }) => (
     <div style={{ display: "flex", gap: 10, marginTop: 28 }}>
       {opts.showBack && (
-        <button style={btnBack} onClick={() => setProfileStep(profileStep - 1)}>
+        <button
+          style={{
+            ...btnBack,
+            // ホバー時: テキストとボーダーを明るくする
+            color: backHovered ? "#FF6BE8" : "#C8AEED",
+            borderColor: backHovered ? "rgba(255,107,232,.5)" : "rgba(255,107,232,.25)",
+          }}
+          onMouseEnter={() => setBackHovered(true)}
+          onMouseLeave={() => setBackHovered(false)}
+          onClick={() => setProfileStep(profileStep - 1)}
+        >
           &larr; 戻る
         </button>
       )}
@@ -141,7 +171,8 @@ export default function ProfileSetup() {
           flex: 1,
           opacity: opts.disabled ? 0.4 : 1,
           pointerEvents: opts.disabled ? "none" : "auto",
-          boxShadow: opts.disabled ? "none" : "0 0 30px rgba(255,107,232,.35)",
+          // 「次へ」ボタンのbox-shadow: 控えめに調整
+          boxShadow: opts.disabled ? "none" : "0 4px 20px rgba(255,107,232,.25)",
         }}
         onClick={opts.onNext}
       >
@@ -254,7 +285,7 @@ export default function ProfileSetup() {
   );
 }
 
-// ---------- スライダーのカスタムCSS ----------
+// ---------- スライダーのカスタムCSS（サムのbox-shadow控えめに調整） ----------
 
 const sliderCSS = `
   .profile-slider {
@@ -282,7 +313,7 @@ const sliderCSS = `
     background: linear-gradient(135deg, #FF6BE8, #C45AFF);
     border: none;
     margin-top: -10px;
-    box-shadow: 0 0 12px rgba(255,107,232,.5);
+    box-shadow: 0 2px 10px rgba(255,107,232,.3);
   }
   .profile-slider::-moz-range-thumb {
     width: 26px;
@@ -290,6 +321,6 @@ const sliderCSS = `
     border-radius: 50%;
     background: linear-gradient(135deg, #FF6BE8, #C45AFF);
     border: none;
-    box-shadow: 0 0 12px rgba(255,107,232,.5);
+    box-shadow: 0 2px 10px rgba(255,107,232,.3);
   }
 `;

@@ -1,23 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Stick&family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
 @import "tailwindcss";
 
-/* CSS変数 */
+/* ===========================
+   CSS変数
+   =========================== */
 :root {
   --pk: #FF6BE8;
   --pu: #C45AFF;
   --vi: #7B5CFF;
   --bg: #0D0118;
+  /* カスタムイージング（smooth deceleration、ease-out-quart相当） */
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
+/* ===========================
+   リセット・ベーススタイル
+   =========================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #0D0118 !important; color: #fff !important; scroll-behavior: smooth; }
-body { font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-/* 見出し用フォント */
+/* フォーカスインジケーター（キーボード操作時のみ表示） */
+:focus-visible {
+  outline: 2px solid #FF6BE8;
+  outline-offset: 2px;
+}
+
+/* テキスト選択時の配色 */
+::selection {
+  background: rgba(255, 107, 232, .3);
+  color: #fff;
+}
+
+/* スクロールバー（webkit系ブラウザ向け） */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 107, 232, .2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 107, 232, .4); }
+
+/* ===========================
+   見出し用フォント
+   =========================== */
 .font-stick { font-family: 'Stick', sans-serif; }
 .font-zen { font-family: 'Zen Maru Gothic', sans-serif; }
 
-/* グラデーションボタン */
+/* ===========================
+   グラデーションボタン
+   =========================== */
 .btn-gradient {
   background: linear-gradient(135deg, #FF6BE8, #C45AFF);
   color: #fff;
@@ -26,26 +60,31 @@ body { font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; }
   font-weight: 700;
   font-family: 'Zen Maru Gothic', sans-serif;
   cursor: pointer;
-  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(255, 107, 232, .2);
+  transition: all 0.3s var(--ease-smooth);
 }
 .btn-gradient:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 60px rgba(255, 107, 232, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(255, 107, 232, .3);
 }
 
-/* 星の瞬きアニメーション */
+/* ===========================
+   アニメーション定義
+   =========================== */
+
+/* 星の瞬き */
 @keyframes twinkle {
   0%, 100% { opacity: 0.1; }
   50% { opacity: 0.9; transform: scale(1.8); }
 }
 
-/* ブロブアニメーション */
+/* ブロブ浮遊 */
 @keyframes blobFloat {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(20px, -25px); }
 }
 
-/* スピン */
+/* 360度回転 */
 @keyframes spin360 { to { transform: rotate(360deg); } }
 
 /* コア脈動 */
@@ -65,7 +104,7 @@ body { font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; }
   from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-fadeUp { animation: fadeUp 0.4s ease; }
+.animate-fadeUp { animation: fadeUp 0.4s var(--ease-smooth); }
 
 /* ティッカー背景 */
 @keyframes tickerBg {
@@ -79,28 +118,21 @@ body { font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; }
   100% { transform: translateX(-50%); }
 }
 
-/* ぷよんアニメ（選択時） */
+/* スムーズなポップアニメ（選択時） */
 @keyframes popBounce {
   0% { transform: scale(1); }
-  40% { transform: scale(1.2); }
-  70% { transform: scale(0.95); }
+  50% { transform: scale(1.08); }
   100% { transform: scale(1); }
 }
 
-/* スパークル飛散 */
+/* スパークル飛散（結果ページ等で使用） */
 @keyframes sparkleUp {
   0% { opacity: 1; transform: translate(0, 0) scale(1); }
   100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.3); }
 }
 
-/* ハート浮き上がり */
+/* ハート浮き上がり（結果ページで使用） */
 @keyframes heartFloat {
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-120px) rotate(15deg); }
-}
-
-/* CTAパルス */
-@keyframes ctaPulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(255, 107, 232, 0.4); }
-  50% { box-shadow: 0 0 60px rgba(255, 107, 232, 0.7); }
 }

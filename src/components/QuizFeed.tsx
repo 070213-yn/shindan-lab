@@ -75,7 +75,7 @@ export default function QuizFeed() {
           padding: "12px 20px 10px",
         }}
       >
-        {/* 上段: タイトル & 閉じるボタン */}
+        {/* 上段: タイトル & 閉じるボタン（スコア表示は削除しシンプルに） */}
         <div
           style={{
             display: "flex",
@@ -107,7 +107,7 @@ export default function QuizFeed() {
           </button>
         </div>
 
-        {/* プログレスバー */}
+        {/* プログレスバー（色はそのまま維持） */}
         <div
           style={{
             display: "flex",
@@ -157,7 +157,7 @@ export default function QuizFeed() {
       >
         {QUESTIONS.map((q, idx) => (
           <div key={idx}>
-            {/* --- セクション区切り --- */}
+            {/* --- セクション区切り（控えめな色に変更） --- */}
             {shouldShowSection(idx) && (
               <div
                 style={{
@@ -171,7 +171,7 @@ export default function QuizFeed() {
                   style={{
                     flex: 1,
                     height: 1,
-                    background: "rgba(255,107,232,.12)",
+                    background: "rgba(255,255,255,.15)",
                   }}
                 />
                 <span
@@ -189,13 +189,13 @@ export default function QuizFeed() {
                   style={{
                     flex: 1,
                     height: 1,
-                    background: "rgba(255,107,232,.12)",
+                    background: "rgba(255,255,255,.15)",
                   }}
                 />
               </div>
             )}
 
-            {/* --- 質問カード --- */}
+            {/* --- 質問カード（padding左右に余裕を持たせる） --- */}
             <div
               ref={(el) => {
                 cardRefs.current[idx] = el;
@@ -211,18 +211,18 @@ export default function QuizFeed() {
                     : "rgba(255,107,232,.15)"
                 }`,
                 borderRadius: 18,
-                padding: 18,
+                padding: "20px 22px",
                 marginBottom: 14,
                 transition: "border-color .3s, background .3s",
               }}
             >
-              {/* 質問番号 */}
+              {/* 質問番号（コントラスト改善: .45 → .6） */}
               <div
                 style={{
                   fontSize: 10,
                   fontWeight: 700,
                   letterSpacing: 2.5,
-                  color: "rgba(255,107,232,.45)",
+                  color: "rgba(255,107,232,.6)",
                   marginBottom: 6,
                 }}
               >
@@ -242,11 +242,11 @@ export default function QuizFeed() {
                 {q.text}
               </p>
 
-              {/* 出典 */}
+              {/* 出典（コントラスト改善: .45 → .55） */}
               <p
                 style={{
                   fontSize: 9.5,
-                  color: "rgba(196,90,255,.45)",
+                  color: "rgba(196,90,255,.55)",
                   margin: "0 0 14px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -256,7 +256,7 @@ export default function QuizFeed() {
                 {q.source}
               </p>
 
-              {/* 5段階選択ボタン */}
+              {/* 5段階選択ボタン（タッチターゲット拡大 + smooth scaleアニメーション） */}
               <div style={{ display: "flex", gap: 6 }}>
                 {[1, 2, 3, 4, 5].map((val) => {
                   const isSelected = answers[idx] === val;
@@ -266,7 +266,7 @@ export default function QuizFeed() {
                       onClick={() => handleSelect(idx, val)}
                       style={{
                         flex: 1,
-                        height: 52,
+                        minHeight: 56,
                         borderRadius: 12,
                         border: isSelected
                           ? "1.5px solid #FF6BE8"
@@ -286,15 +286,22 @@ export default function QuizFeed() {
                         gap: 2,
                         padding: 0,
                         transition:
-                          "border-color .2s, background .2s, box-shadow .2s",
+                          "border-color .2s, background .2s, box-shadow .2s, transform .4s cubic-bezier(.25,.1,.25,1)",
+                        transform: isSelected ? "scale(1.04)" : "scale(1)",
                       }}
                     >
                       {/* 数字（font-stick） */}
                       <span className="font-stick" style={{ fontSize: 18 }}>
                         {val}
                       </span>
-                      {/* ラベル */}
-                      <span style={{ fontSize: 8, lineHeight: 1.1 }}>
+                      {/* ラベル（コントラスト改善: .4 → .55） */}
+                      <span
+                        style={{
+                          fontSize: 8,
+                          lineHeight: 1.1,
+                          color: isSelected ? "#fff" : "rgba(255,107,232,.55)",
+                        }}
+                      >
                         {SCALE_LABELS[val - 1]}
                       </span>
                     </button>
@@ -306,7 +313,7 @@ export default function QuizFeed() {
         ))}
       </div>
 
-      {/* ===== 固定CTA ===== */}
+      {/* ===== 固定CTA（ctaPulseアニメーション削除、静的box-shadowに変更） ===== */}
       <div
         style={{
           position: "fixed",
@@ -334,10 +341,10 @@ export default function QuizFeed() {
               color: "#fff",
               cursor: allAnswered ? "pointer" : "default",
               opacity: allAnswered ? 1 : 0.4,
-              background: allAnswered
-                ? "linear-gradient(135deg,#FF6BE8,#C45AFF)"
-                : "linear-gradient(135deg,#FF6BE8,#C45AFF)",
-              animation: allAnswered ? "ctaPulse 2s ease-in-out infinite" : "none",
+              background: "linear-gradient(135deg,#FF6BE8,#C45AFF)",
+              boxShadow: allAnswered
+                ? "0 0 30px rgba(255,107,232,.3)"
+                : "none",
               transition: "opacity .3s",
             }}
           >
@@ -347,14 +354,6 @@ export default function QuizFeed() {
           </button>
         </div>
       </div>
-
-      {/* CTAパルスアニメーション */}
-      <style>{`
-        @keyframes ctaPulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,232,.45); }
-          50%      { box-shadow: 0 0 24px 6px rgba(255,107,232,.35); }
-        }
-      `}</style>
     </div>
   );
 }

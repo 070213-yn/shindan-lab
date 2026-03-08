@@ -19,9 +19,7 @@ const Q_COUNT = QUESTIONS.length; // 43
 const INITIAL_PROFILE: Profile = {
   gender: null,
   realAge: 18,
-  mentalAge: 18,
   exp: null,
-  status: null,
 };
 
 // ---------- 型定義 ----------
@@ -31,9 +29,7 @@ export interface QuizState {
   profile: Profile;
   setGender: (gender: Profile['gender']) => void;
   setRealAge: (age: number) => void;
-  setMentalAge: (age: number) => void;
   setExp: (exp: Profile['exp']) => void;
-  setStatus: (status: Profile['status']) => void;
 
   // 診断の回答とスコア
   answers: (number | null)[]; // 43問の回答 (1-5 or null)
@@ -46,7 +42,7 @@ export interface QuizState {
 
   // 画面状態
   currentStep: 'landing' | 'profile' | 'quiz' | 'name' | 'loading' | 'result';
-  profileStep: number; // 0-4
+  profileStep: number; // 0-3
   setCurrentStep: (step: QuizState['currentStep']) => void;
   setProfileStep: (step: number) => void;
 
@@ -66,14 +62,8 @@ export const useQuizStore = create<QuizState>((set) => ({
   setRealAge: (age) =>
     set((state) => ({ profile: { ...state.profile, realAge: age } })),
 
-  setMentalAge: (age) =>
-    set((state) => ({ profile: { ...state.profile, mentalAge: age } })),
-
   setExp: (exp) =>
     set((state) => ({ profile: { ...state.profile, exp } })),
-
-  setStatus: (status) =>
-    set((state) => ({ profile: { ...state.profile, status } })),
 
   // --- 診断 ---
   answers: Array<number | null>(Q_COUNT).fill(null),

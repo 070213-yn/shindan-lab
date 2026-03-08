@@ -1,16 +1,13 @@
 export interface Profile {
   gender: 'female' | 'male' | 'other' | null;
   realAge: number;
-  mentalAge: number;
   exp: 'none' | 'little' | 'some' | 'rich' | null;
-  status: 'crush' | 'single' | 'dating' | 'healing' | 'notready' | null;
 }
 
 // 8次元: [D0:Passion, D1:Anx, D2:Avo, D3:Pragma, D4:Agape, D5:Storge, D6:Growth, D7:Ludus]
 export function applyProfileModifiers(norm: number[], profile: Profile): number[] {
   const n = [...norm];
-  const { gender, realAge, mentalAge, exp, status } = profile;
-  const mentalDiff = mentalAge - realAge;
+  const { gender, realAge, exp } = profile;
 
   // 性別補正 (Buss 1989/1994 進化心理学)
   if (gender === 'female') {
@@ -40,17 +37,6 @@ export function applyProfileModifiers(norm: number[], profile: Profile): number[
     n[1] = Math.max(0, n[1] - 5);
   }
 
-  // 精神年齢差補正
-  if (mentalDiff >= 8) {
-    n[3] = Math.min(100, n[3] + 6);
-    n[5] = Math.min(100, n[5] + 4);
-    n[1] = Math.max(0, n[1] - 5);
-  } else if (mentalDiff <= -8) {
-    n[0] = Math.min(100, n[0] + 6);
-    n[7] = Math.min(100, n[7] + 5);
-    n[3] = Math.max(0, n[3] - 4);
-  }
-
   // 恋愛経験補正
   if (exp === 'none') {
     n[1] = Math.min(100, n[1] + 6);
@@ -64,21 +50,6 @@ export function applyProfileModifiers(norm: number[], profile: Profile): number[
     n[7] = Math.min(100, n[7] + 5);
     n[2] = Math.min(100, n[2] + 4);
     n[1] = Math.max(0, n[1] - 6);
-  }
-
-  // 現在の状況補正
-  if (status === 'crush') {
-    n[0] = Math.min(100, n[0] + 5);
-    n[1] = Math.min(100, n[1] + 4);
-  } else if (status === 'healing') {
-    n[1] = Math.min(100, n[1] + 5);
-    n[2] = Math.min(100, n[2] + 4);
-  } else if (status === 'dating') {
-    n[5] = Math.min(100, n[5] + 5);
-    n[4] = Math.min(100, n[4] + 4);
-  } else if (status === 'notready') {
-    n[2] = Math.min(100, n[2] + 6);
-    n[7] = Math.min(100, n[7] + 5);
   }
 
   return n;

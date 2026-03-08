@@ -11,6 +11,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_LIST } from "@/lib/diagnoses";
+import { usePersonaStore } from "@/store/personaStore";
 
 // 恋愛診断は別ページなので手動定義
 const LOVE_DIAGNOSIS = {
@@ -123,16 +124,20 @@ export default function PortalPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // ペルソナストア
+  const personaResults = usePersonaStore((s) => s.results);
+  const completedCount = Object.keys(personaResults).length;
+
   // ティッカー
   const tickerItems = [
-    "11種類の本格診断",
+    "21種類の本格診断",
     "心理学ベース",
     "完全無料・登録不要",
+    "ペルソナカード生成",
     "SNSでシェアして比較",
-    "あなたの隠れた才能は？",
-    "異世界転生クラスを判定",
+    "適職を超精密マッチング",
+    "脳タイプ完全解析",
     "裏キャラを暴く",
-    "前世を占う",
   ];
   const tickerText = [...tickerItems, ...tickerItems].map((t) => `★ ${t} `).join("");
 
@@ -187,9 +192,21 @@ export default function PortalPage() {
         <span className="font-stick" style={{ color: "#FF6BE8", fontSize: "1.2rem" }}>
           ときめきラボ
         </span>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,.4)", letterSpacing: "0.08em" }}>
-          11 DIAGNOSES
-        </span>
+        <Link
+          href="/persona"
+          style={{
+            padding: "6px 14px",
+            background: completedCount > 0 ? "linear-gradient(135deg, #FF6BE8, #C45AFF)" : "rgba(255,255,255,.06)",
+            borderRadius: 20,
+            color: completedCount > 0 ? "#fff" : "rgba(255,255,255,.5)",
+            fontSize: 11,
+            fontWeight: 700,
+            textDecoration: "none",
+            letterSpacing: "0.03em",
+          }}
+        >
+          {completedCount > 0 ? `PERSONA (${completedCount})` : "PERSONA CARD"}
+        </Link>
       </nav>
 
       {/* ヒーローセクション */}
@@ -240,7 +257,7 @@ export default function PortalPage() {
             transition: "opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s",
           }}
         >
-          自分を知る、11の旅。
+          自分を知る、21の旅。
         </p>
 
         {/* 説明文 */}
@@ -253,7 +270,7 @@ export default function PortalPage() {
             transition: "opacity 0.6s ease-out 0.5s, transform 0.6s ease-out 0.5s",
           }}
         >
-          心理学の研究をベースにした本格診断シリーズ。恋愛、才能、メンタル、前世まで -- あなたの知らない自分に出会おう。
+          心理学の研究をベースにした本格診断シリーズ。恋愛、才能、メンタル、適職、脳タイプ、前世まで -- 21種の診断であなたの知らない自分に出会おう。全診断を受けてペルソナカードを完成させよう！
         </p>
 
         {/* 統計バッジ */}
@@ -266,8 +283,9 @@ export default function PortalPage() {
           }}
         >
           {[
-            { label: "11種類の診断", icon: "✦" },
-            { label: "280+問の質問", icon: "✦" },
+            { label: "21種類の診断", icon: "✦" },
+            { label: "560+問の質問", icon: "✦" },
+            { label: "ペルソナカード", icon: "🔮" },
             { label: "完全無料", icon: "✦" },
           ].map((badge) => (
             <span
@@ -430,6 +448,58 @@ export default function PortalPage() {
         </div>
       </section>
 
+      {/* ペルソナカード誘導セクション */}
+      <section
+        style={{
+          padding: "60px 20px",
+          maxWidth: 600,
+          margin: "0 auto",
+          textAlign: "center",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            background: "linear-gradient(135deg, rgba(255,107,232,.08), rgba(196,90,255,.08), rgba(123,92,255,.08))",
+            border: "1px solid rgba(255,107,232,.15)",
+            borderRadius: 24,
+            padding: "40px 24px",
+          }}
+        >
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🔮</div>
+          <h2
+            className="font-stick"
+            style={{ fontSize: "clamp(1.3rem, 4vw, 1.8rem)", color: "#FF6BE8", marginBottom: 12 }}
+          >
+            ペルソナカード
+          </h2>
+          <p
+            style={{
+              fontSize: 14, color: "rgba(255,255,255,.7)", lineHeight: 1.8,
+              marginBottom: 24, maxWidth: 400, margin: "0 auto 24px",
+            }}
+          >
+            全ての診断結果を統合して、あなただけの一枚のカードを生成。
+            レアリティ付きのペルソナカードをTikTokやLINEでシェアしよう！
+          </p>
+          <Link
+            href="/persona"
+            className="btn-gradient"
+            style={{
+              padding: "16px 40px",
+              fontSize: 15,
+              textDecoration: "none",
+              display: "inline-block",
+            }}
+          >
+            {completedCount > 0
+              ? `ペルソナカードを見る (${completedCount}診断完了)`
+              : "ペルソナカードとは？"}
+          </Link>
+        </div>
+      </section>
+
       {/* フッター */}
       <footer
         style={{
@@ -442,7 +512,7 @@ export default function PortalPage() {
           ときめきラボ
         </div>
         <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,.5)", marginBottom: 12 }}>
-          自分を知る、11の旅。
+          自分を知る、21の旅。
         </p>
         <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,.25)" }}>
           &copy; 2026 ときめきラボ

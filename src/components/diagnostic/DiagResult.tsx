@@ -11,6 +11,7 @@ import { useMemo, useEffect, useRef } from "react";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import { normalizeScoresGeneric, findBestTypeGeneric, applyProfileModifiersGeneric } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
+import { usePersonaStore } from "@/store/personaStore";
 import AdPlacement from "@/components/AdPlacement";
 
 interface Props {
@@ -35,6 +36,7 @@ function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: num
 
 export default function DiagResult({ config, store }: Props) {
   const { scores, profileData, reset, setCurrentStep } = store;
+  const { saveResult } = usePersonaStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // スコア正規化 → タイプ判定
@@ -46,6 +48,25 @@ export default function DiagResult({ config, store }: Props) {
   }, [scores, profileData, config]);
 
   const { norm, bestType } = result;
+
+  // ペルソナストアに結果を保存
+  useEffect(() => {
+    saveResult({
+      diagnosisId: config.id,
+      diagnosisTitle: config.title,
+      typeId: bestType.id,
+      typeName: bestType.name,
+      typeEmoji: bestType.emoji,
+      typeColor: bestType.color,
+      typeTag: bestType.tag,
+      typeDescription: bestType.description,
+      typeTraits: bestType.traits,
+      scores: norm,
+      dimensionLabels: config.dimensions.map((d) => d.label),
+      dimensionColors: config.dimensions.map((d) => d.color),
+      completedAt: Date.now(),
+    });
+  }, [bestType.id]);
 
   // Canvas描画（シェア画像）
   useEffect(() => {

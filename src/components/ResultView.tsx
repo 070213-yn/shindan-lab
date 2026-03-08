@@ -13,6 +13,7 @@ import { useQuizStore } from "@/store/quizStore";
 import { normalizeScores, findBestType } from "@/lib/scoring";
 import { applyProfileModifiers } from "@/lib/profileModifiers";
 import { DIM_LABELS, DIM_COLORS, TYPES } from "@/lib/types";
+import { usePersonaStore } from "@/store/personaStore";
 
 /** Canvas画像上に角丸四角形を描画するヘルパー */
 function roundedRect(
@@ -38,6 +39,7 @@ function roundedRect(
 
 export default function ResultView() {
   const { scores, profile, crushName, setCurrentStep, reset } = useQuizStore();
+  const { saveResult } = usePersonaStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // --- スコア計算・タイプ判定 ---
@@ -50,6 +52,25 @@ export default function ResultView() {
 
   const { norm, bestType } = result;
   const displayName = crushName || "あの人";
+
+  // --- ペルソナストアに恋愛診断結果を保存 ---
+  useEffect(() => {
+    saveResult({
+      diagnosisId: 'love',
+      diagnosisTitle: '恋愛性格診断',
+      typeId: bestType.id,
+      typeName: bestType.name,
+      typeEmoji: bestType.emoji,
+      typeColor: bestType.color || '#FF6BE8',
+      typeTag: bestType.tag,
+      typeDescription: bestType.desc,
+      typeTraits: [bestType.cheerm],
+      scores: norm,
+      dimensionLabels: DIM_LABELS,
+      dimensionColors: DIM_COLORS,
+      completedAt: Date.now(),
+    });
+  }, [bestType.id]);
 
   // --- 相性TOP5を算出 ---
   const compatTop5 = useMemo(() => {

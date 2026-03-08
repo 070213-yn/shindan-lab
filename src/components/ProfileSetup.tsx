@@ -6,9 +6,11 @@
  * profileStep 0: 性別選択
  * profileStep 1: 実年齢（スライダー）
  * profileStep 2: 恋愛経験（4択）→ 診断スタートへ
+ *
+ * 演出: glowBreath, popBounce, staggered fadeUp, スライダーglow等
  */
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useQuizStore } from "@/store/quizStore";
 
 // ---------- 定数 ----------
@@ -34,15 +36,17 @@ const TOTAL_STEPS = 3;
 
 // ---------- 共通スタイル ----------
 
-// カード選択のアニメーション: smooth cubic-bezierに変更
+// カード選択のアニメーション: ホバー時のtranslateYとshadowを追加
 const cardBase: React.CSSProperties = {
   background: "rgba(255,255,255,.04)",
-  border: "2px solid rgba(255,107,232,.2)",
+  borderWidth: 2,
+  borderStyle: "solid",
+  borderColor: "rgba(255,107,232,.2)",
   borderRadius: 20,
   padding: "20px 16px",
   cursor: "pointer",
   textAlign: "center",
-  transition: "all .2s cubic-bezier(.25,.1,.25,1)",
+  transition: "all .25s cubic-bezier(.25,1,.5,1)",
 };
 
 // 選択時のbox-shadow追加で視覚フィードバック改善
@@ -62,7 +66,7 @@ const btnBase: React.CSSProperties = {
   color: "#fff",
   fontFamily: "'Zen Maru Gothic', sans-serif",
   background: "linear-gradient(135deg,#FF6BE8,#C45AFF)",
-  transition: "opacity .2s",
+  transition: "opacity .2s, transform .1s ease",
 };
 
 const btnBack: React.CSSProperties = {
@@ -75,7 +79,7 @@ const btnBack: React.CSSProperties = {
   fontSize: 14,
   cursor: "pointer",
   fontFamily: "'Zen Maru Gothic', sans-serif",
-  transition: "color .2s, border-color .2s",
+  transition: "color .2s, border-color .2s, transform .1s ease",
 };
 
 // ---------- コンポーネント本体 ----------
@@ -94,22 +98,59 @@ export default function ProfileSetup() {
   // 戻るボタンのホバー状態管理
   const [backHovered, setBackHovered] = useState(false);
 
-  // --- ステップドット ---
+  // カードホバー状態管理（どのカードがホバーされているか）
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  // 選択時のpopBounceアニメーション用（選択されたカードのキー）
+  const [bouncingCard, setBouncingCard] = useState<string | null>(null);
+
+  // 年齢変更時のスケールアニメーション用
+  const [ageAnimating, setAgeAnimating] = useState(false);
+  const ageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // staggeredアニメーション用のステップ到達フラグ
+  const [step2Entered, setStep2Entered] = useState(false);
+  useEffect(() => {
+    if (profileStep === 2) {
+      setStep2Entered(true);
+    }
+  }, [profileStep]);
+
+  // カード選択時にpopBounceを発火する共通関数
+  const triggerBounce = useCallback((key: string) => {
+    setBouncingCard(key);
+    setTimeout(() => setBouncingCard(null), 350);
+  }, []);
+
+  // 年齢変更時のスケールトランジション
+  const handleAgeChange = useCallback((val: number) => {
+    setRealAge(val);
+    setAgeAnimating(true);
+    if (ageTimeoutRef.current) clearTimeout(ageTimeoutRef.current);
+    ageTimeoutRef.current = setTimeout(() => setAgeAnimating(false), 120);
+  }, [setRealAge]);
+
+  // --- ステップドット（アクティブドットにglowBreathアニメーション追加） ---
   const renderDots = () => (
     <div style={{ display: "flex", gap: 6, marginBottom: 28 }}>
-      {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-        <div
-          key={i}
-          style={{
-            height: 4,
-            borderRadius: 2,
-            width: i === profileStep ? 40 : 28,
-            background:
-              i === profileStep ? DOT_ACTIVE : i < profileStep ? DOT_DONE : DOT_TODO,
-            transition: "all .3s ease",
-          }}
-        />
-      ))}
+      {Array.from({ length: TOTAL_STEPS }).map((_, i) => {
+        const isActive = i === profileStep;
+        return (
+          <div
+            key={i}
+            className={isActive ? "animate-glowBreath" : ""}
+            style={{
+              height: 4,
+              borderRadius: 2,
+              width: isActive ? 40 : 28,
+              background:
+                isActive ? DOT_ACTIVE : i < profileStep ? DOT_DONE : DOT_TODO,
+              // 幅変更がスムーズにアニメーション
+              transition: "width .35s cubic-bezier(.25,1,.5,1), background .3s ease",
+            }}
+          />
+        );
+      })}
     </div>
   );
 
@@ -142,127 +183,273 @@ export default function ProfileSetup() {
     </div>
   );
 
-  // --- ナビゲーションボタン（戻るボタンにhoverスタイル追加） ---
+  // --- ナビゲーションボタン（有効時にglowBreath、押下時にscaleダウン） ---
   const renderNav = (opts: {
     showBack?: boolean;
     nextLabel?: string;
     disabled?: boolean;
     onNext: () => void;
-  }) => (
-    <div style={{ display: "flex", gap: 10, marginTop: 28 }}>
-      {opts.showBack && (
+  }) => {
+    const isEnabled = !opts.disabled;
+    return (
+      <div style={{ display: "flex", gap: 10, marginTop: 28 }}>
+        {opts.showBack && (
+          <button
+            style={{
+              ...btnBack,
+              // ホバー時: テキストとボーダーを明るくする
+              color: backHovered ? "#FF6BE8" : "#C8AEED",
+              borderColor: backHovered ? "rgba(255,107,232,.5)" : "rgba(255,107,232,.25)",
+            }}
+            onMouseEnter={() => setBackHovered(true)}
+            onMouseLeave={() => setBackHovered(false)}
+            onClick={() => setProfileStep(profileStep - 1)}
+          >
+            &larr; 戻る
+          </button>
+        )}
         <button
+          // 有効時にglowBreathアニメーション + active時のscaleダウン
+          className={isEnabled ? "btn-glow-active" : ""}
           style={{
-            ...btnBack,
-            // ホバー時: テキストとボーダーを明るくする
-            color: backHovered ? "#FF6BE8" : "#C8AEED",
-            borderColor: backHovered ? "rgba(255,107,232,.5)" : "rgba(255,107,232,.25)",
+            ...btnBase,
+            flex: 1,
+            opacity: opts.disabled ? 0.4 : 1,
+            pointerEvents: opts.disabled ? "none" : "auto",
+            boxShadow: opts.disabled ? "none" : "0 4px 20px rgba(255,107,232,.25)",
           }}
-          onMouseEnter={() => setBackHovered(true)}
-          onMouseLeave={() => setBackHovered(false)}
-          onClick={() => setProfileStep(profileStep - 1)}
+          onClick={opts.onNext}
         >
-          &larr; 戻る
+          {opts.nextLabel ?? "次へ →"}
         </button>
-      )}
-      <button
-        style={{
-          ...btnBase,
-          flex: 1,
-          opacity: opts.disabled ? 0.4 : 1,
-          pointerEvents: opts.disabled ? "none" : "auto",
-          // 「次へ」ボタンのbox-shadow: 控えめに調整
-          boxShadow: opts.disabled ? "none" : "0 4px 20px rgba(255,107,232,.25)",
-        }}
-        onClick={opts.onNext}
-      >
-        {opts.nextLabel ?? "次へ →"}
-      </button>
-    </div>
-  );
+      </div>
+    );
+  };
 
   // ==================== Step 0: 性別選択 ====================
+  // ホバー時にtranslateY(-3px) + subtle shadow、選択時にpopBounce、絵文字浮き上がり
+  const renderGenderCard = (g: typeof GENDERS[number]) => {
+    const isSelected = profile.gender === g.value;
+    const isHovered = hoveredCard === `gender-${g.value}`;
+    const isBouncing = bouncingCard === `gender-${g.value}`;
+
+    return (
+      <div
+        key={g.value}
+        className={isBouncing ? "animate-popBounceRich" : ""}
+        style={{
+          ...cardBase,
+          ...(isSelected ? cardSelected : {}),
+          // ホバー時に少し浮き上がり + 影を追加
+          transform: isHovered && !isBouncing ? "translateY(-3px)" : "translateY(0)",
+          boxShadow: isSelected
+            ? "0 0 20px rgba(255,107,232,.15)"
+            : isHovered
+              ? "0 6px 20px rgba(255,107,232,.12)"
+              : "none",
+        }}
+        onMouseEnter={() => setHoveredCard(`gender-${g.value}`)}
+        onMouseLeave={() => setHoveredCard(null)}
+        onClick={() => {
+          setGender(g.value);
+          triggerBounce(`gender-${g.value}`);
+        }}
+      >
+        {/* 絵文字: 選択時にfloatアニメーション */}
+        <span
+          className={isSelected ? "animate-emojiFloat" : ""}
+          style={{
+            fontSize: 42,
+            display: "block",
+            marginBottom: 8,
+            transition: "transform .3s ease",
+          }}
+        >
+          {g.emoji}
+        </span>
+        <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 3 }}>{g.label}</div>
+      </div>
+    );
+  };
+
   const renderStep0 = () => (
     <div className="animate-fadeUp">
       {renderHeader(1, "あなたの性別を\n教えてください", "性別によって、恋愛心理の分析アルゴリズムが変わります。\n（Buss進化心理学・ホルモン研究参考）")}
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
-        {GENDERS.slice(0, 2).map((g) => (
-          <div
-            key={g.value}
-            style={{ ...cardBase, ...(profile.gender === g.value ? cardSelected : {}) }}
-            onClick={() => setGender(g.value)}
-          >
-            <span style={{ fontSize: 42, display: "block", marginBottom: 8 }}>{g.emoji}</span>
-            <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 3 }}>{g.label}</div>
-          </div>
-        ))}
+        {GENDERS.slice(0, 2).map((g) => renderGenderCard(g))}
       </div>
 
-      <div
-        style={{ ...cardBase, ...(profile.gender === "other" ? cardSelected : {}) }}
-        onClick={() => setGender("other")}
-      >
-        <span style={{ fontSize: 42, display: "block", marginBottom: 8 }}>{GENDERS[2].emoji}</span>
-        <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>{GENDERS[2].label}</div>
-      </div>
+      {/* その他カード */}
+      {(() => {
+        const g = GENDERS[2];
+        const isSelected = profile.gender === "other";
+        const isHovered = hoveredCard === `gender-other`;
+        const isBouncing = bouncingCard === `gender-other`;
+        return (
+          <div
+            className={isBouncing ? "animate-popBounceRich" : ""}
+            style={{
+              ...cardBase,
+              ...(isSelected ? cardSelected : {}),
+              transform: isHovered && !isBouncing ? "translateY(-3px)" : "translateY(0)",
+              boxShadow: isSelected
+                ? "0 0 20px rgba(255,107,232,.15)"
+                : isHovered
+                  ? "0 6px 20px rgba(255,107,232,.12)"
+                  : "none",
+            }}
+            onMouseEnter={() => setHoveredCard("gender-other")}
+            onMouseLeave={() => setHoveredCard(null)}
+            onClick={() => {
+              setGender("other");
+              triggerBounce("gender-other");
+            }}
+          >
+            <span
+              className={isSelected ? "animate-emojiFloat" : ""}
+              style={{
+                fontSize: 42,
+                display: "block",
+                marginBottom: 8,
+                transition: "transform .3s ease",
+              }}
+            >
+              {g.emoji}
+            </span>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>{g.label}</div>
+          </div>
+        );
+      })()}
 
       {renderNav({ disabled: profile.gender === null, onNext: () => setProfileStep(1) })}
     </div>
   );
 
-  // ==================== Step 1: 実年齢 ====================
-  const renderStep1 = () => (
-    <div className="animate-fadeUp">
-      {renderHeader(2, "実年齢を\n教えてください", "年齢によって、重視する恋愛スタイルや\n相性の重みが変わります。（Erikson発達段階理論参考）")}
+  // ==================== Step 1: 実年齢（8歳〜100歳） ====================
+  // 年齢数字のスムーズトランジション + スライダーのglowエフェクト
+  const renderStep1 = () => {
+    // スライダーの進捗割合を計算（アクセントライン用）
+    const sliderPercent = ((profile.realAge - 8) / (100 - 8)) * 100;
 
-      <div style={{ textAlign: "center", margin: "16px 0" }}>
-        <span style={{ fontFamily: "'Stick', sans-serif", fontSize: 64, color: "#FF6BE8", lineHeight: 1 }}>
-          {profile.realAge}
-        </span>
-        <span style={{ fontSize: 16, color: "rgba(255,107,232,.6)", fontWeight: 700 }}>歳</span>
+    return (
+      <div className="animate-fadeUp">
+        {renderHeader(2, "実年齢を\n教えてください", "年齢によって、重視する恋愛スタイルや\n相性の重みが変わります。（Erikson発達段階理論参考）")}
+
+        {/* 年齢の大きい数字表示（変化時にスケールトランジション） */}
+        <div style={{ textAlign: "center", margin: "16px 0" }}>
+          <span
+            className="age-display"
+            style={{
+              fontFamily: "'Stick', sans-serif",
+              fontSize: 64,
+              color: "#FF6BE8",
+              lineHeight: 1,
+              // 値変化時に微妙なスケールでフィードバック
+              transform: ageAnimating ? "scale(1.08)" : "scale(1)",
+            }}
+          >
+            {profile.realAge}
+          </span>
+          <span style={{ fontSize: 16, color: "rgba(255,107,232,.6)", fontWeight: 700 }}>歳</span>
+        </div>
+
+        {/* スライダー（カスタムトラック + アクセントライン） */}
+        <div style={{ position: "relative", padding: "0 0 4px" }}>
+          <input
+            type="range"
+            min={8}
+            max={100}
+            value={profile.realAge}
+            onChange={(e) => handleAgeChange(Number(e.target.value))}
+            className="profile-slider"
+            style={{ width: "100%", margin: "8px 0", position: "relative", zIndex: 2 }}
+          />
+          {/* トラック上のアクセントライン（値の位置まで色付き） */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+              height: 6,
+              borderRadius: 4,
+              marginTop: -3,
+              width: `${sliderPercent}%`,
+              background: "linear-gradient(90deg, #FF6BE8, #C45AFF)",
+              pointerEvents: "none",
+              zIndex: 1,
+              transition: "width .05s linear",
+              opacity: 0.7,
+            }}
+          />
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,107,232,.4)", marginTop: 4 }}>
+          <span>8歳</span><span>100歳</span>
+        </div>
+
+        {renderNav({ showBack: true, onNext: () => setProfileStep(2) })}
+        <style>{sliderCSS}</style>
       </div>
-
-      <input
-        type="range"
-        min={13}
-        max={60}
-        value={profile.realAge}
-        onChange={(e) => setRealAge(Number(e.target.value))}
-        className="profile-slider"
-        style={{ width: "100%", margin: "8px 0" }}
-      />
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,107,232,.4)", marginTop: 4 }}>
-        <span>13歳</span><span>60歳</span>
-      </div>
-
-      {renderNav({ showBack: true, onNext: () => setProfileStep(2) })}
-      <style>{sliderCSS}</style>
-    </div>
-  );
+    );
+  };
 
   // ==================== Step 2: 恋愛経験 ====================
+  // staggered fadeUp + ホバーtransform + 選択時popBounce
   const renderStep2 = () => (
     <div className="animate-fadeUp">
       {renderHeader(3, "恋愛経験は\nどのくらい？", "経験が愛着スタイルの形成に影響します。\n（Hazan & Shaver 1987 / 関係経験と内的作業モデル）")}
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-        {EXP_OPTIONS.map((opt) => (
-          <div
-            key={opt.value}
-            style={{
-              ...cardBase,
-              borderRadius: 16,
-              padding: "16px 12px",
-              ...(profile.exp === opt.value ? cardSelected : {}),
-            }}
-            onClick={() => setExp(opt.value)}
-          >
-            <span style={{ fontSize: 28, display: "block", marginBottom: 6 }}>{opt.emoji}</span>
-            <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 2 }}>{opt.label}</div>
-            <div style={{ fontSize: 10, color: "#C8AEED" }}>{opt.sub}</div>
-          </div>
-        ))}
+        {EXP_OPTIONS.map((opt, idx) => {
+          const isSelected = profile.exp === opt.value;
+          const isHovered = hoveredCard === `exp-${opt.value}`;
+          const isBouncing = bouncingCard === `exp-${opt.value}`;
+
+          return (
+            <div
+              key={opt.value}
+              // staggered fadeUp（0.1秒ずつ遅延して順番に登場）+ 選択時popBounce
+              className={[
+                step2Entered ? `animate-stagger-${idx + 1}` : "",
+                isBouncing ? "animate-popBounceRich" : "",
+              ].filter(Boolean).join(" ")}
+              style={{
+                ...cardBase,
+                borderRadius: 16,
+                padding: "16px 12px",
+                ...(isSelected ? cardSelected : {}),
+                // ホバー時に浮き上がり + 影
+                transform: isHovered && !isBouncing ? "translateY(-3px)" : "translateY(0)",
+                boxShadow: isSelected
+                  ? "0 0 20px rgba(255,107,232,.15)"
+                  : isHovered
+                    ? "0 6px 20px rgba(255,107,232,.12)"
+                    : "none",
+              }}
+              onMouseEnter={() => setHoveredCard(`exp-${opt.value}`)}
+              onMouseLeave={() => setHoveredCard(null)}
+              onClick={() => {
+                setExp(opt.value);
+                triggerBounce(`exp-${opt.value}`);
+              }}
+            >
+              {/* 絵文字: 選択時にfloatアニメーション */}
+              <span
+                className={isSelected ? "animate-emojiFloat" : ""}
+                style={{
+                  fontSize: 28,
+                  display: "block",
+                  marginBottom: 6,
+                  transition: "transform .3s ease",
+                }}
+              >
+                {opt.emoji}
+              </span>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 2 }}>{opt.label}</div>
+              <div style={{ fontSize: 10, color: "#C8AEED" }}>{opt.sub}</div>
+            </div>
+          );
+        })}
       </div>
 
       {renderNav({
@@ -285,7 +472,7 @@ export default function ProfileSetup() {
   );
 }
 
-// ---------- スライダーのカスタムCSS（サムのbox-shadow控えめに調整） ----------
+// ---------- スライダーのカスタムCSS（サムにglowトランジション追加） ----------
 
 const sliderCSS = `
   .profile-slider {
@@ -313,7 +500,8 @@ const sliderCSS = `
     background: linear-gradient(135deg, #FF6BE8, #C45AFF);
     border: none;
     margin-top: -10px;
-    box-shadow: 0 2px 10px rgba(255,107,232,.3);
+    box-shadow: 0 2px 12px rgba(255,107,232,.35);
+    transition: box-shadow .2s ease, transform .15s ease;
   }
   .profile-slider::-moz-range-thumb {
     width: 26px;
@@ -321,6 +509,7 @@ const sliderCSS = `
     border-radius: 50%;
     background: linear-gradient(135deg, #FF6BE8, #C45AFF);
     border: none;
-    box-shadow: 0 2px 10px rgba(255,107,232,.3);
+    box-shadow: 0 2px 12px rgba(255,107,232,.35);
+    transition: box-shadow .2s ease, transform .15s ease;
   }
 `;

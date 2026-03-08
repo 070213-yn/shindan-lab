@@ -136,3 +136,386 @@ body {
   0% { opacity: 1; transform: translateY(0); }
   100% { opacity: 0; transform: translateY(-120px) rotate(15deg); }
 }
+
+/* ===========================
+   追加アニメーション定義（リッチ演出）
+   =========================== */
+
+/* 1. シマーエフェクト — キラキラ光が横に流れる */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* 2. 浮遊アニメーション — ゆったりした上下の揺れ */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* 浮遊バリエーション：大きめの揺れ */
+@keyframes floatLarge {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-18px) rotate(1deg); }
+  66% { transform: translateY(-8px) rotate(-1deg); }
+}
+
+/* 浮遊バリエーション：斜め方向の揺れ */
+@keyframes floatDiagonal {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(6px, -10px); }
+  50% { transform: translate(-4px, -16px); }
+  75% { transform: translate(-8px, -6px); }
+}
+
+/* 3. 背景グラデーションシフト — ゆっくり色が移動する */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 4. 左からスライドイン */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* 4. 右からスライドイン */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* 5. スケールアップで登場 */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 6. 発光呼吸 — 光がゆっくり強弱する */
+@keyframes glowBreath {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(255, 107, 232, 0.3),
+                0 0 20px rgba(196, 90, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 107, 232, 0.6),
+                0 0 50px rgba(196, 90, 255, 0.3),
+                0 0 80px rgba(123, 92, 255, 0.15);
+  }
+}
+
+/* 7. カード選択時の気持ちいいバウンス（popBounce強化版） */
+@keyframes popBounceRich {
+  0% { transform: scale(1); }
+  15% { transform: scale(0.95); }
+  40% { transform: scale(1.12); }
+  60% { transform: scale(0.98); }
+  80% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* 8. プログレスバー上を光が流れるシマー */
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+/* 9. 順番にフェードアップ（staggered用ベース） */
+@keyframes staggeredFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* 10. セクション区切り線 — 中央から左右に伸びる */
+@keyframes lineExpand {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+/* セクション区切り線のシマー（線上をキラキラが流れる） */
+@keyframes lineShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ===========================
+   ユーティリティクラス（アニメーション適用）
+   =========================== */
+
+/* シマーエフェクト — テキストや装飾にキラキラを乗せる */
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 107, 232, 0.08) 20%,
+    rgba(255, 255, 255, 0.25) 40%,
+    rgba(196, 90, 255, 0.15) 60%,
+    rgba(255, 255, 255, 0.25) 80%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* 浮遊エフェクト — 要素をふわふわ漂わせる */
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-large {
+  animation: floatLarge 6s ease-in-out infinite;
+}
+.animate-float-diagonal {
+  animation: floatDiagonal 7s ease-in-out infinite;
+}
+
+/* スケールイン — 0から拡大して登場 */
+.animate-scaleIn {
+  animation: scaleIn 0.5s var(--ease-smooth) both;
+}
+
+/* 左からスライドイン */
+.animate-slideInLeft {
+  animation: slideInLeft 0.6s var(--ease-smooth) both;
+}
+
+/* 右からスライドイン */
+.animate-slideInRight {
+  animation: slideInRight 0.6s var(--ease-smooth) both;
+}
+
+/* 発光呼吸 — ゆっくり光の強弱が繰り返される */
+.animate-glowBreath {
+  animation: glowBreath 3s ease-in-out infinite;
+}
+
+/* グラデーションシフト — 背景色がゆっくり動く（background-size: 200%以上と併用） */
+.animate-gradientShift {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+/* カード選択時のリッチバウンス */
+.animate-popBounceRich {
+  animation: popBounceRich 0.5s var(--ease-smooth);
+}
+
+/* 順番にフェードアップ（staggered delay、0.1s刻み） */
+.animate-stagger-1 { animation: staggeredFadeUp 0.5s var(--ease-smooth) 0.1s both; }
+.animate-stagger-2 { animation: staggeredFadeUp 0.5s var(--ease-smooth) 0.2s both; }
+.animate-stagger-3 { animation: staggeredFadeUp 0.5s var(--ease-smooth) 0.3s both; }
+.animate-stagger-4 { animation: staggeredFadeUp 0.5s var(--ease-smooth) 0.4s both; }
+.animate-stagger-5 { animation: staggeredFadeUp 0.5s var(--ease-smooth) 0.5s both; }
+.animate-stagger-6 { animation: staggeredFadeUp 0.5s var(--ease-smooth) 0.6s both; }
+
+/* セクション区切り線アニメーション — 中央から左右に伸びて、シマーが流れる */
+.section-line-animate {
+  position: relative;
+  height: 1px;
+  margin: 2rem auto;
+  overflow: hidden;
+  animation: lineExpand 0.8s var(--ease-smooth) both;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 107, 232, 0.5),
+    rgba(196, 90, 255, 0.6),
+    rgba(123, 92, 255, 0.5),
+    transparent
+  );
+}
+.section-line-animate::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.7),
+    transparent
+  );
+  animation: lineShimmer 2.5s ease-in-out infinite;
+}
+
+/* プログレスバーのシマーオーバーレイ — .progress-bar内にspanとして配置して使う */
+.progress-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  animation: progressShimmer 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ===========================
+   ProfileSetup 演出用
+   =========================== */
+
+/* 絵文字が選択時にふわっと浮き上がる */
+@keyframes emojiFloat {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-6px); }
+  100% { transform: translateY(-3px); }
+}
+.animate-emojiFloat {
+  animation: emojiFloat 0.4s var(--ease-smooth) forwards;
+}
+
+/* 年齢数字のスムーズなトランジション */
+.age-display {
+  display: inline-block;
+  transition: transform 0.12s var(--ease-smooth);
+}
+
+/* スライダーサムのglowエフェクト（ドラッグ中に強く光る） */
+.profile-slider:active::-webkit-slider-thumb,
+.profile-slider:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 16px rgba(255,107,232,.6), 0 0 30px rgba(196,90,255,.35) !important;
+}
+.profile-slider:active::-moz-range-thumb,
+.profile-slider:focus::-moz-range-thumb {
+  box-shadow: 0 0 16px rgba(255,107,232,.6), 0 0 30px rgba(196,90,255,.35) !important;
+}
+
+/* 「次へ」ボタンが有効な時のglow呼吸 */
+@keyframes btnGlowBreath {
+  0%, 100% { box-shadow: 0 4px 20px rgba(255,107,232,.25); }
+  50% { box-shadow: 0 4px 28px rgba(255,107,232,.45), 0 0 36px rgba(196,90,255,.2); }
+}
+.btn-glow-active {
+  animation: btnGlowBreath 2s ease-in-out infinite;
+}
+.btn-glow-active:active {
+  transform: scale(0.97);
+}
+
+/* ===========================
+   QuizFeed 演出強化
+   =========================== */
+
+/* 質問カード — IntersectionObserver連動のフェードアップ初期状態 */
+.quiz-card-hidden {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s var(--ease-smooth), transform 0.55s var(--ease-smooth);
+}
+.quiz-card-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 回答済みチェックマーク */
+@keyframes checkPop {
+  0% { opacity: 0; transform: scale(0.3); }
+  60% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.answered-check {
+  animation: checkPop 0.35s var(--ease-smooth) forwards;
+}
+
+/* 選択済みボタンのキラキラ擬似要素パーティクル */
+.scale-btn-selected {
+  position: relative;
+  overflow: visible;
+}
+.scale-btn-selected::before,
+.scale-btn-selected::after {
+  content: '✦';
+  position: absolute;
+  font-size: 7px;
+  color: rgba(255,107,232,.65);
+  animation: sparkleUp 1.4s ease-out forwards;
+  pointer-events: none;
+  z-index: 2;
+}
+.scale-btn-selected::before {
+  top: -3px;
+  right: 5px;
+  --tx: 10px;
+  --ty: -16px;
+}
+.scale-btn-selected::after {
+  bottom: -2px;
+  left: 8px;
+  --tx: -12px;
+  --ty: -18px;
+  animation-delay: 0.12s;
+}
+
+/* 選択ボタン ホバー時ふわっと拡大 */
+.scale-btn-hover {
+  transition: transform 0.2s var(--ease-smooth), border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.scale-btn-hover:hover {
+  transform: scale(1.06);
+}
+
+/* popBounce適用クラス（選択時に付与） */
+.animate-popBounce {
+  animation: popBounce 0.35s var(--ease-smooth);
+}
+
+/* セクションテキストのシマー（テキストグラデーション版） */
+.section-text-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,107,232,.55) 0%,
+    rgba(255,255,255,.85) 30%,
+    rgba(196,90,255,.65) 50%,
+    rgba(255,255,255,.85) 70%,
+    rgba(255,107,232,.55) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* CTAテキスト切り替えアニメーション */
+@keyframes ctaTextSwap {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.cta-text-enter {
+  animation: ctaTextSwap 0.4s var(--ease-smooth);
+}
+
+/* スパークルバーストパーティクル（ボタン押下時に飛散） */
+@keyframes sparkBurst {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(0); }
+}
+.spark-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--pk);
+  pointer-events: none;
+  animation: sparkBurst 0.5s ease-out forwards;
+}

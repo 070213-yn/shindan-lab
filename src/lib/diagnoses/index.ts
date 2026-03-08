@@ -22,6 +22,12 @@ import { leadershipDiagnosis } from './leadership';
 import { creativeDiagnosis } from './creative';
 import { stressDiagnosis } from './stress';
 import { friendshipDiagnosis } from './friendship';
+import { chronoDiagnosis } from './chrono';
+import { moneyDiagnosis } from './money';
+import { impressionDiagnosis } from './impression';
+import { brainDiagnosis } from './brain';
+import { jobDiagnosis } from './job';
+import { learningDiagnosis } from './learning';
 
 /** 全診断の設定マップ（ID → 設定） */
 export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
@@ -39,6 +45,12 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   creative: creativeDiagnosis,
   stress: stressDiagnosis,
   friendship: friendshipDiagnosis,
+  chrono: chronoDiagnosis,
+  money: moneyDiagnosis,
+  impression: impressionDiagnosis,
+  brain: brainDiagnosis,
+  job: jobDiagnosis,
+  learning: learningDiagnosis,
 };
 
 /** ポータル表示用の診断一覧（表示順制御） */
@@ -57,4 +69,10 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   creativeDiagnosis,
   stressDiagnosis,
   friendshipDiagnosis,
+  chronoDiagnosis,
+  moneyDiagnosis,
+  impressionDiagnosis,
+  brainDiagnosis,
+  jobDiagnosis,
+  learningDiagnosis,
 ];

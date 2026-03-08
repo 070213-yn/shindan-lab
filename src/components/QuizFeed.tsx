@@ -1,48 +1,149 @@
 "use client";
 
 /**
- * QuizFeed — スクロール形式の43問診断フィード
+ * QuizFeed — スクロール形式の43問診断フィード（演出強化版）
  *
  * 全質問をカード形式で縦に並べ、回答するとスムーズに次の未回答へスクロール。
- * 全問回答後にCTAボタンが有効化され、結果画面へ遷移する。
+ * IntersectionObserverによるフェードアップ、選択時パーティクル、
+ * プログレスバーシマー、セクション区切りアニメーション等のリッチ演出を搭載。
  */
 
 import { useQuizStore } from "@/store/quizStore";
 import { QUESTIONS, SECTION_NAMES } from "@/lib/questions";
-import { useRef } from "react";
+import { useRef, useEffect, useCallback, useState } from "react";
 
 /** 5段階の選択肢ラベル */
 const SCALE_LABELS = ["思わない", "やや違う", "どちらでも", "ややそう", "そう思う"];
 
+/** セクションごとのアイコン（区切り表示用） */
+const SECTION_ICONS: Record<number, string> = {
+  1: "🔗",
+  2: "💌",
+  3: "🔥",
+  4: "🏠",
+  5: "👥",
+  6: "🧭",
+  7: "🌿",
+  8: "🔮",
+};
+
+/**
+ * 選択時にボタンからスパークルパーティクルを飛散させる関数
+ * ボタンのDOM要素を基準に小さな光の粒を放射状に生成する
+ */
+function spawnSparkles(buttonEl: HTMLElement) {
+  const rect = buttonEl.getBoundingClientRect();
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  // 6個のパーティクルを生成
+  for (let i = 0; i < 6; i++) {
+    const dot = document.createElement("span");
+    dot.className = "spark-dot";
+    // 放射状にランダムな方向へ飛ばす
+    const angle = (Math.PI * 2 * i) / 6 + (Math.random() - 0.5) * 0.5;
+    const dist = 18 + Math.random() * 14;
+    dot.style.cssText = `
+      left: ${centerX}px;
+      top: ${centerY}px;
+      --sx: ${Math.cos(angle) * dist}px;
+      --sy: ${Math.sin(angle) * dist}px;
+      background: ${i % 2 === 0 ? "#FF6BE8" : "#C45AFF"};
+    `;
+    buttonEl.appendChild(dot);
+    // アニメーション終了後にDOMから削除
+    setTimeout(() => dot.remove(), 550);
+  }
+}
+
 export default function QuizFeed() {
   const { answers, setAnswer, setCurrentStep } = useQuizStore();
 
-  // 各質問カードへのref（スムーズスクロール用）
+  // 各質問カードへのref（スムーズスクロール用 & IntersectionObserver用）
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // popBounce中のボタンを追跡（qIndex-value形式のキー）
+  const [bouncingKeys, setBouncingKeys] = useState<Set<string>>(new Set());
+  // 前回のallAnswered状態を追跡（CTAテキスト変化のアニメーション発火用）
+  const prevAllAnsweredRef = useRef(false);
+  const [ctaAnimating, setCtaAnimating] = useState(false);
 
   // 回答済みの数
   const answeredCount = answers.filter((a) => a !== null).length;
-  const totalCount = QUESTIONS.length; // 43
+  const totalCount = QUESTIONS.length;
   const allAnswered = answeredCount === totalCount;
 
-  // --- 選択ハンドラ ---
-  const handleSelect = (qIndex: number, value: number) => {
-    setAnswer(qIndex, value);
-
-    // 次の未回答質問へスムーズスクロール
-    const nextUnanswered = answers.findIndex(
-      (a, i) => a === null && i !== qIndex
-    );
-    if (nextUnanswered !== -1 && cardRefs.current[nextUnanswered]) {
-      // 少し遅延させてからスクロール（state更新後にUIが反映されるのを待つ）
-      setTimeout(() => {
-        cardRefs.current[nextUnanswered]?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
+  // --- IntersectionObserver: カードが画面内に入ったらフェードアップ ---
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // quiz-card-hiddenを外してvisibleを付与
+            entry.target.classList.remove("quiz-card-hidden");
+            entry.target.classList.add("quiz-card-visible");
+            // 一度表示したら監視を解除（再度隠す必要がないため）
+            observer.unobserve(entry.target);
+          }
         });
-      }, 180);
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    // 全カードを監視対象に登録
+    cardRefs.current.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // --- CTAテキスト変化時のアニメーション発火 ---
+  useEffect(() => {
+    if (allAnswered && !prevAllAnsweredRef.current) {
+      setCtaAnimating(true);
+      const timer = setTimeout(() => setCtaAnimating(false), 500);
+      return () => clearTimeout(timer);
     }
-  };
+    prevAllAnsweredRef.current = allAnswered;
+  }, [allAnswered]);
+
+  // --- 選択ハンドラ ---
+  const handleSelect = useCallback(
+    (qIndex: number, value: number, e: React.MouseEvent<HTMLButtonElement>) => {
+      setAnswer(qIndex, value);
+
+      // スパークルパーティクル発射
+      spawnSparkles(e.currentTarget);
+
+      // popBounceアニメーション管理
+      const key = `${qIndex}-${value}`;
+      setBouncingKeys((prev) => {
+        const next = new Set(prev);
+        next.add(key);
+        return next;
+      });
+      setTimeout(() => {
+        setBouncingKeys((prev) => {
+          const next = new Set(prev);
+          next.delete(key);
+          return next;
+        });
+      }, 380);
+
+      // 次の未回答質問へスムーズスクロール
+      const nextUnanswered = answers.findIndex(
+        (a, i) => a === null && i !== qIndex
+      );
+      if (nextUnanswered !== -1 && cardRefs.current[nextUnanswered]) {
+        setTimeout(() => {
+          cardRefs.current[nextUnanswered]?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }, 200);
+      }
+    },
+    [answers, setAnswer]
+  );
 
   // --- CTA押下 ---
   const handleSubmit = () => {
@@ -51,7 +152,6 @@ export default function QuizFeed() {
   };
 
   // --- セクション区切りの挿入判定 ---
-  // 各質問の前に、セクションが変わるタイミングで区切りを表示する
   const shouldShowSection = (index: number): boolean => {
     if (index === 0) return true;
     return QUESTIONS[index].sid !== QUESTIONS[index - 1].sid;
@@ -75,7 +175,7 @@ export default function QuizFeed() {
           padding: "12px 20px 10px",
         }}
       >
-        {/* 上段: タイトル & 閉じるボタン（スコア表示は削除しシンプルに） */}
+        {/* 上段: タイトル & 閉じるボタン */}
         <div
           style={{
             display: "flex",
@@ -107,7 +207,7 @@ export default function QuizFeed() {
           </button>
         </div>
 
-        {/* プログレスバー（色はそのまま維持） */}
+        {/* プログレスバー（先端シマーエフェクト付き） */}
         <div
           style={{
             display: "flex",
@@ -122,17 +222,24 @@ export default function QuizFeed() {
               height: 5,
               borderRadius: 4,
               overflow: "hidden",
+              position: "relative",
             }}
           >
+            {/* バー本体 — transition改善でぬるっと伸びる */}
             <div
               style={{
                 height: "100%",
                 width: `${(answeredCount / totalCount) * 100}%`,
                 background: "linear-gradient(90deg,#FF6BE8,#C45AFF)",
                 borderRadius: 4,
-                transition: "width .35s ease",
+                transition: "width .5s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                position: "relative",
+                overflow: "hidden",
               }}
-            />
+            >
+              {/* バー先端を流れるシマー光 */}
+              <span className="progress-shimmer" />
+            </div>
           </div>
           <span
             style={{
@@ -140,6 +247,8 @@ export default function QuizFeed() {
               fontWeight: 700,
               color: "#FF6BE8",
               whiteSpace: "nowrap",
+              minWidth: 48,
+              textAlign: "right",
             }}
           >
             {answeredCount} / {totalCount}
@@ -157,7 +266,7 @@ export default function QuizFeed() {
       >
         {QUESTIONS.map((q, idx) => (
           <div key={idx}>
-            {/* --- セクション区切り（控えめな色に変更） --- */}
+            {/* --- セクション区切り（アニメーション付き） --- */}
             {shouldShowSection(idx) && (
               <div
                 style={{
@@ -167,39 +276,49 @@ export default function QuizFeed() {
                   margin: idx === 0 ? "0 0 20px" : "36px 0 20px",
                 }}
               >
+                {/* 左の線 — section-line-animateでアニメーション伸長 */}
                 <div
+                  className="section-line-animate"
                   style={{
                     flex: 1,
                     height: 1,
-                    background: "rgba(255,255,255,.15)",
+                    margin: 0,
+                    animationDelay: `${idx * 0.05}s`,
                   }}
                 />
+                {/* セクション名 — アイコン付き＆シマーエフェクト */}
                 <span
+                  className="section-text-shimmer"
                   style={{
                     fontSize: 10,
                     letterSpacing: 3,
-                    color: "rgba(255,107,232,.55)",
                     whiteSpace: "nowrap",
                     textTransform: "uppercase",
+                    fontWeight: 700,
                   }}
                 >
-                  SECTION {q.sid} &mdash; {SECTION_NAMES[q.sid]}
+                  {SECTION_ICONS[q.sid] || "✦"} SECTION {q.sid} &mdash;{" "}
+                  {SECTION_NAMES[q.sid]}
                 </span>
+                {/* 右の線 */}
                 <div
+                  className="section-line-animate"
                   style={{
                     flex: 1,
                     height: 1,
-                    background: "rgba(255,255,255,.15)",
+                    margin: 0,
+                    animationDelay: `${idx * 0.05 + 0.15}s`,
                   }}
                 />
               </div>
             )}
 
-            {/* --- 質問カード（padding左右に余裕を持たせる） --- */}
+            {/* --- 質問カード（IntersectionObserverフェードアップ） --- */}
             <div
               ref={(el) => {
                 cardRefs.current[idx] = el;
               }}
+              className="quiz-card-hidden"
               style={{
                 background:
                   answers[idx] !== null
@@ -214,9 +333,33 @@ export default function QuizFeed() {
                 padding: "20px 22px",
                 marginBottom: 14,
                 transition: "border-color .3s, background .3s",
+                position: "relative",
               }}
             >
-              {/* 質問番号（コントラスト改善: .45 → .6） */}
+              {/* 回答済みチェックマーク（右上に控えめ表示） */}
+              {answers[idx] !== null && (
+                <div
+                  className="answered-check"
+                  style={{
+                    position: "absolute",
+                    top: 12,
+                    right: 14,
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    background: "rgba(255,107,232,.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 10,
+                    color: "#FF6BE8",
+                  }}
+                >
+                  ✓
+                </div>
+              )}
+
+              {/* 質問番号 */}
               <div
                 style={{
                   fontSize: 10,
@@ -237,12 +380,13 @@ export default function QuizFeed() {
                   color: "#fff",
                   lineHeight: 1.65,
                   margin: "0 0 6px",
+                  paddingRight: answers[idx] !== null ? 28 : 0,
                 }}
               >
                 {q.text}
               </p>
 
-              {/* 出典（コントラスト改善: .45 → .55） */}
+              {/* 出典 */}
               <p
                 style={{
                   fontSize: 9.5,
@@ -256,14 +400,24 @@ export default function QuizFeed() {
                 {q.source}
               </p>
 
-              {/* 5段階選択ボタン（タッチターゲット拡大 + smooth scaleアニメーション） */}
+              {/* 5段階選択ボタン（ホバー拡大 + popBounce + キラキラ擬似要素） */}
               <div style={{ display: "flex", gap: 6 }}>
                 {[1, 2, 3, 4, 5].map((val) => {
                   const isSelected = answers[idx] === val;
+                  const bounceKey = `${idx}-${val}`;
+                  const isBouncing = bouncingKeys.has(bounceKey);
+
                   return (
                     <button
                       key={val}
-                      onClick={() => handleSelect(idx, val)}
+                      onClick={(e) => handleSelect(idx, val, e)}
+                      className={[
+                        "scale-btn-hover",
+                        isSelected ? "scale-btn-selected" : "",
+                        isBouncing ? "animate-popBounce" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
                       style={{
                         flex: 1,
                         minHeight: 56,
@@ -285,21 +439,22 @@ export default function QuizFeed() {
                         justifyContent: "center",
                         gap: 2,
                         padding: 0,
-                        transition:
-                          "border-color .2s, background .2s, box-shadow .2s, transform .4s cubic-bezier(.25,.1,.25,1)",
-                        transform: isSelected ? "scale(1.04)" : "scale(1)",
+                        position: "relative",
+                        overflow: "visible",
                       }}
                     >
-                      {/* 数字（font-stick） */}
+                      {/* 数字 */}
                       <span className="font-stick" style={{ fontSize: 18 }}>
                         {val}
                       </span>
-                      {/* ラベル（コントラスト改善: .4 → .55） */}
+                      {/* ラベル */}
                       <span
                         style={{
                           fontSize: 8,
                           lineHeight: 1.1,
-                          color: isSelected ? "#fff" : "rgba(255,107,232,.55)",
+                          color: isSelected
+                            ? "#fff"
+                            : "rgba(255,107,232,.55)",
                         }}
                       >
                         {SCALE_LABELS[val - 1]}
@@ -313,7 +468,7 @@ export default function QuizFeed() {
         ))}
       </div>
 
-      {/* ===== 固定CTA（ctaPulseアニメーション削除、静的box-shadowに変更） ===== */}
+      {/* ===== 固定CTA（全問回答時にglowBreathアニメーション） ===== */}
       <div
         style={{
           position: "fixed",
@@ -330,7 +485,12 @@ export default function QuizFeed() {
           <button
             onClick={handleSubmit}
             disabled={!allAnswered}
-            className={allAnswered ? "btn-gradient" : ""}
+            className={[
+              allAnswered ? "btn-gradient" : "",
+              allAnswered ? "animate-glowBreath" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
             style={{
               width: "100%",
               borderRadius: 50,
@@ -342,15 +502,18 @@ export default function QuizFeed() {
               cursor: allAnswered ? "pointer" : "default",
               opacity: allAnswered ? 1 : 0.4,
               background: "linear-gradient(135deg,#FF6BE8,#C45AFF)",
-              boxShadow: allAnswered
-                ? "0 0 30px rgba(255,107,232,.3)"
-                : "none",
-              transition: "opacity .3s",
+              transition: "opacity .3s, transform .2s",
             }}
           >
-            {allAnswered
-              ? "全問回答完了！結果を見る"
-              : `あと ${totalCount - answeredCount} 問`}
+            {/* CTAテキスト — 切り替え時にフェードアニメーション */}
+            <span
+              className={ctaAnimating ? "cta-text-enter" : ""}
+              style={{ display: "inline-block" }}
+            >
+              {allAnswered
+                ? "全問回答完了！結果を見る ✨"
+                : `あと ${totalCount - answeredCount} 問`}
+            </span>
           </button>
         </div>
       </div>

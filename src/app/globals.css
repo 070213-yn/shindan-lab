@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Stick&family=Zen+Maru+Gothic:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+@import "tailwindcss";
+
+/* CSS変数 */
+:root {
+  --pk: #FF6BE8;
+  --pu: #C45AFF;
+  --vi: #7B5CFF;
+  --bg: #0D0118;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0D0118 !important; color: #fff !important; scroll-behavior: smooth; }
+body { font-family: 'Noto Sans JP', sans-serif; overflow-x: hidden; }
+
+/* 見出し用フォント */
+.font-stick { font-family: 'Stick', sans-serif; }
+.font-zen { font-family: 'Zen Maru Gothic', sans-serif; }
+
+/* グラデーションボタン */
+.btn-gradient {
+  background: linear-gradient(135deg, #FF6BE8, #C45AFF);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-weight: 700;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-gradient:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 60px rgba(255, 107, 232, 0.6);
+}
+
+/* 星の瞬きアニメーション */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.9; transform: scale(1.8); }
+}
+
+/* ブロブアニメーション */
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(20px, -25px); }
+}
+
+/* スピン */
+@keyframes spin360 { to { transform: rotate(360deg); } }
+
+/* コア脈動 */
+@keyframes coreBeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); box-shadow: 0 0 44px rgba(255, 107, 232, 1); }
+}
+
+/* ドット脈動 */
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; transform: scale(1.5); }
+}
+
+/* フェードアップ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeUp { animation: fadeUp 0.4s ease; }
+
+/* ティッカー背景 */
+@keyframes tickerBg {
+  0% { background-position: 0%; }
+  100% { background-position: 300%; }
+}
+
+/* ティッカースクロール */
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ぷよんアニメ（選択時） */
+@keyframes popBounce {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.2); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* スパークル飛散 */
+@keyframes sparkleUp {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.3); }
+}
+
+/* ハート浮き上がり */
+@keyframes heartFloat {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-120px) rotate(15deg); }
+}
+
+/* CTAパルス */
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(255, 107, 232, 0.4); }
+  50% { box-shadow: 0 0 60px rgba(255, 107, 232, 0.7); }
+}

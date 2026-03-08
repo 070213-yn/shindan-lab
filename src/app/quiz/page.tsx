@@ -7,7 +7,7 @@
  * currentStep に応じて profile → quiz → name → loading → result と画面を切り替える。
  */
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useQuizStore } from "@/store/quizStore";
 import ProfileSetup from "@/components/ProfileSetup";
 import QuizFeed from "@/components/QuizFeed";
@@ -25,19 +25,20 @@ export default function QuizPage() {
     setCurrentStep("profile");
   }, []);
 
-  // ---------- 星空パーティクル（100個）をメモ化 ----------
-  const stars = useMemo(
-    () =>
+  // ---------- 星空パーティクル（クライアント側のみで生成してハイドレーションエラーを防ぐ） ----------
+  const [stars, setStars] = useState<{ id: number; top: string; left: string; size: number; delay: string; duration: string }[]>([]);
+  useEffect(() => {
+    setStars(
       Array.from({ length: 100 }, (_, i) => ({
         id: i,
         top: `${Math.random() * 100}%`,
         left: `${Math.random() * 100}%`,
-        size: Math.random() * 2.5 + 0.5, // 0.5〜3px
+        size: Math.random() * 2.5 + 0.5,
         delay: `${Math.random() * 4}s`,
         duration: `${2 + Math.random() * 3}s`,
-      })),
-    []
-  );
+      }))
+    );
+  }, []);
 
   // ---------- 名前送信ハンドラ ----------
   const handleNameSubmit = () => {

@@ -18,6 +18,10 @@ import { careerDiagnosis } from './career';
 import { shadowDiagnosis } from './shadow';
 import { snsDiagnosis } from './sns';
 import { pastlifeDiagnosis } from './pastlife';
+import { leadershipDiagnosis } from './leadership';
+import { creativeDiagnosis } from './creative';
+import { stressDiagnosis } from './stress';
+import { friendshipDiagnosis } from './friendship';
 
 /** 全診断の設定マップ（ID → 設定） */
 export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
@@ -31,6 +35,10 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   shadow: shadowDiagnosis,
   sns: snsDiagnosis,
   pastlife: pastlifeDiagnosis,
+  leadership: leadershipDiagnosis,
+  creative: creativeDiagnosis,
+  stress: stressDiagnosis,
+  friendship: friendshipDiagnosis,
 };
 
 /** ポータル表示用の診断一覧（表示順制御） */
@@ -45,4 +53,8 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   shadowDiagnosis,
   snsDiagnosis,
   pastlifeDiagnosis,
+  leadershipDiagnosis,
+  creativeDiagnosis,
+  stressDiagnosis,
+  friendshipDiagnosis,
 ];

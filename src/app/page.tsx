@@ -170,6 +170,7 @@ export default function PortalPage() {
 
   // グローバルプロフィール設定UI
   const [showProfileSetup, setShowProfileSetup] = useState(false);
+  const [tempName, setTempName] = useState<string>(globalProfile.name ?? "");
   const [tempGender, setTempGender] = useState<string | null>(globalProfile.gender);
   const [tempAge, setTempAge] = useState<number>(globalProfile.age ?? 16);
 
@@ -219,7 +220,7 @@ export default function PortalPage() {
 
   // プロフィール保存ハンドラ
   const handleSaveProfile = () => {
-    setGlobalProfile(tempGender, tempAge);
+    setGlobalProfile(tempName.trim() || null, tempGender, tempAge);
     setShowProfileSetup(false);
   };
 
@@ -418,11 +419,12 @@ export default function PortalPage() {
                   ✓
                 </span>
                 <span style={{ fontSize: 13, color: "rgba(255,255,255,.8)" }}>
-                  <strong style={{ color: "#14B8A6" }}>{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で診断中
+                  <strong style={{ color: "#14B8A6" }}>{globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で診断中
                 </span>
               </div>
               <button
                 onClick={() => {
+                  setTempName(globalProfile.name ?? "");
                   setTempGender(globalProfile.gender);
                   setTempAge(globalProfile.age ?? 16);
                   setShowProfileSetup(true);
@@ -440,7 +442,7 @@ export default function PortalPage() {
             // 未設定表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
               <span style={{ fontSize: 13, color: "rgba(255,255,255,.6)" }}>
-                🧪 年齢と性別を設定すると、診断がスムーズに！
+                🧪 名前・年齢・性別を設定すると、診断がスムーズに！
               </span>
               <button
                 onClick={() => setShowProfileSetup(true)}
@@ -465,6 +467,28 @@ export default function PortalPage() {
                 animation: "slideDown 0.3s ease-out",
               }}
             >
+              {/* 名前入力 */}
+              <div style={{ marginBottom: 14 }}>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
+                <input
+                  type="text"
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  placeholder="ニックネームを入力"
+                  maxLength={20}
+                  style={{
+                    width: "100%", padding: "10px 14px", borderRadius: 10,
+                    background: "rgba(255,255,255,.04)",
+                    border: "1px solid rgba(255,255,255,.1)",
+                    color: "#fff", fontSize: 14, outline: "none",
+                    fontFamily: "'Zen Maru Gothic', sans-serif",
+                    transition: "border-color 0.2s ease",
+                  }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "#6366F1"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,.1)"; }}
+                />
+              </div>
+
               {/* 性別選択 */}
               <div style={{ marginBottom: 14 }}>
                 <p style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginBottom: 8 }}>性別</p>

@@ -24,8 +24,9 @@ export interface DiagnosisResult {
   completedAt: number;
 }
 
-/** グローバルプロフィール（全診断で使い回す年齢・性別） */
+/** グローバルプロフィール（全診断で使い回す名前・年齢・性別） */
 export interface GlobalProfile {
+  name: string | null;
   gender: string | null;
   age: number | null;
 }
@@ -39,7 +40,7 @@ interface PersonaState {
 
   // グローバルプロフィール
   globalProfile: GlobalProfile;
-  setGlobalProfile: (gender: string | null, age: number | null) => void;
+  setGlobalProfile: (name: string | null, gender: string | null, age: number | null) => void;
 }
 
 /** localStorageキー */
@@ -62,13 +63,13 @@ function loadFromStorage(): Record<string, DiagnosisResult> {
 
 /** グローバルプロフィールをlocalStorageから復元 */
 function loadProfileFromStorage(): GlobalProfile {
-  if (typeof window === 'undefined') return { gender: null, age: null };
+  if (typeof window === 'undefined') return { name: null, gender: null, age: null };
   try {
     const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
-    if (!raw) return { gender: null, age: null };
+    if (!raw) return { name: null, gender: null, age: null };
     return JSON.parse(raw);
   } catch {
-    return { gender: null, age: null };
+    return { name: null, gender: null, age: null };
   }
 }
 
@@ -120,8 +121,8 @@ export const usePersonaStore = create<PersonaState>((set, get) => ({
   // グローバルプロフィール
   globalProfile: loadProfileFromStorage(),
 
-  setGlobalProfile: (gender, age) => {
-    const newProfile: GlobalProfile = { gender, age };
+  setGlobalProfile: (name, gender, age) => {
+    const newProfile: GlobalProfile = { name, gender, age };
     saveProfileToStorage(newProfile);
     set({ globalProfile: newProfile });
   },

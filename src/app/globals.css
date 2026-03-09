@@ -8,12 +8,12 @@
   --pk: #FF6BE8;
   --pu: #C45AFF;
   --vi: #7B5CFF;
-  --bg: #0F172A;
-  /* 新ブランドカラー */
+  --bg: #070B1A;
+  /* ブランドカラー */
   --primary: #6366F1;
   --secondary: #EC4899;
   --accent: #14B8A6;
-  --card-bg: rgba(255, 255, 255, 0.06);
+  --card-bg: rgba(255, 255, 255, 0.04);
   /* カスタムイージング（smooth deceleration、ease-out-quart相当） */
   --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -22,7 +22,7 @@
    リセット・ベーススタイル
    =========================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: #0F172A !important; color: #fff !important; scroll-behavior: smooth; }
+html, body { background: #070B1A !important; color: #fff !important; scroll-behavior: smooth; min-height: 100vh; }
 body {
   font-family: 'Noto Sans JP', sans-serif;
   overflow-x: hidden;
@@ -38,15 +38,15 @@ body {
 
 /* テキスト選択時の配色 */
 ::selection {
-  background: rgba(255, 107, 232, .3);
+  background: rgba(99, 102, 241, .3);
   color: #fff;
 }
 
 /* スクロールバー（webkit系ブラウザ向け） */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255, 107, 232, .2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255, 107, 232, .4); }
+::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, .2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, .4); }
 
 /* ===========================
    見出し用フォント
@@ -576,4 +576,117 @@ body {
   0% { transform: scale(0); }
   60% { transform: scale(1.2); }
   100% { transform: scale(1); }
+}
+
+/* ===========================
+   パーティクルアニメーション（診断テーマ別）
+   =========================== */
+
+/* バブル上昇 — 泡がゆっくり上に浮かぶ */
+@keyframes particleBubbleRise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+}
+
+/* スパークルきらめき — 星型が回転しながら明滅 */
+@keyframes particleSparkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.6) rotate(0deg); }
+  25% { opacity: 1; transform: scale(1.2) rotate(90deg); }
+  50% { opacity: 0.3; transform: scale(0.8) rotate(180deg); }
+  75% { opacity: 0.9; transform: scale(1.1) rotate(270deg); }
+}
+
+/* 雪の落下 — 左右に揺れながらゆっくり落ちる */
+@keyframes particleSnowFall {
+  0% { transform: translateY(-20px) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  25% { transform: translateY(25vh) translateX(10px); }
+  50% { transform: translateY(50vh) translateX(-8px); }
+  75% { transform: translateY(75vh) translateX(12px); }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(100vh) translateX(-4px); opacity: 0; }
+}
+
+/* ハートの浮遊 — ふわふわ上下に揺れる */
+@keyframes particleHeartFloat {
+  0%, 100% { transform: translateY(0) scale(1) rotate(-5deg); opacity: 0.2; }
+  25% { transform: translateY(-15px) scale(1.1) rotate(5deg); opacity: 0.6; }
+  50% { transform: translateY(-8px) scale(0.95) rotate(-3deg); opacity: 0.4; }
+  75% { transform: translateY(-20px) scale(1.05) rotate(8deg); opacity: 0.5; }
+}
+
+/* 葉の落下 — 風に揺れながら斜めに落ちる */
+@keyframes particleLeafFall {
+  0% { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  25% { transform: translateY(25vh) translateX(20px) rotate(45deg); }
+  50% { transform: translateY(50vh) translateX(-15px) rotate(120deg); }
+  75% { transform: translateY(75vh) translateX(25px) rotate(200deg); }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(100vh) translateX(5px) rotate(300deg); opacity: 0; }
+}
+
+/* 稲妻の閃光 — ランダムに光る */
+@keyframes particleLightningFlash {
+  0%, 40%, 60%, 100% { opacity: 0; }
+  45% { opacity: 0.15; }
+  50% { opacity: 0.3; }
+  55% { opacity: 0.1; }
+}
+
+/* オーブの浮遊 — 大きな光の球がゆっくり漂う */
+@keyframes particleOrbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.1); }
+  50% { transform: translate(-20px, -40px) scale(0.9); }
+  75% { transform: translate(15px, -15px) scale(1.05); }
+}
+
+/* ピクセルの落下 — マトリックス風に上から下へ */
+@keyframes particlePixelFall {
+  0% { transform: translateY(-20px); opacity: 0; }
+  10% { opacity: 0.8; }
+  80% { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* ===========================
+   ダークUI: オーロラ背景アニメーション
+   =========================== */
+@keyframes auroraWave1 {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); opacity: 0.8; }
+  25% { transform: translateX(5vw) translateY(-3vh) scale(1.1); opacity: 1; }
+  50% { transform: translateX(-3vw) translateY(5vh) scale(0.95); opacity: 0.7; }
+  75% { transform: translateX(4vw) translateY(2vh) scale(1.05); opacity: 0.9; }
+}
+@keyframes auroraWave2 {
+  0%, 100% { transform: translateX(0) scale(1); opacity: 0.6; }
+  33% { transform: translateX(-4vw) scale(1.15); opacity: 0.9; }
+  66% { transform: translateX(6vw) scale(0.9); opacity: 0.5; }
+}
+@keyframes auroraWave3 {
+  0%, 100% { transform: translateX(0) translateY(0); opacity: 0.5; }
+  50% { transform: translateX(-8vw) translateY(4vh); opacity: 0.8; }
+}
+@keyframes auroraWave4 {
+  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
+  40% { transform: translateX(3vw) translateY(-5vh) scale(1.1); }
+  80% { transform: translateX(-5vw) translateY(3vh) scale(0.95); }
+}
+
+/* 流れ星アニメーション */
+@keyframes shootingStar {
+  0% { transform: translateX(0) translateY(0); opacity: 1; width: 0; }
+  10% { opacity: 1; width: 80px; }
+  70% { opacity: 1; }
+  100% { transform: translateX(300px) translateY(200px); opacity: 0; width: 0; }
+}
+
+/* タイトルのオーロラテキストグラデーション */
+@keyframes textAuroraShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

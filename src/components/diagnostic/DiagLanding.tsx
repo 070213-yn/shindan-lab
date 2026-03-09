@@ -7,9 +7,11 @@
  * 診断ごとのテーマカラーに基づいた演出で期待感を高める。
  */
 
+import { useMemo } from "react";
 import Link from "next/link";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
+import { getDiagnosticTheme } from "@/lib/diagnosticThemes";
 
 interface Props {
   config: DiagnosisConfig;
@@ -18,6 +20,8 @@ interface Props {
 
 export default function DiagLanding({ config, store }: Props) {
   const { setCurrentStep } = store;
+  // テーマから色情報を取得
+  const theme = useMemo(() => getDiagnosticTheme(config.id), [config.id]);
 
   // 参考文献の最初の1つからラベルを生成
   const referenceLabel = config.references.length > 0
@@ -48,9 +52,9 @@ export default function DiagLanding({ config, store }: Props) {
             gap: 6,
             padding: "8px 14px",
             borderRadius: 20,
-            background: "rgba(255,255,255,.04)",
-            border: "1px solid rgba(255,255,255,.08)",
-            color: "rgba(255,255,255,.6)",
+            background: theme.cardBg,
+            border: `1px solid ${theme.cardBorder}`,
+            color: theme.textSecondary,
             fontSize: 12,
             fontWeight: 600,
             textDecoration: "none",
@@ -94,7 +98,7 @@ export default function DiagLanding({ config, store }: Props) {
           className="font-stick"
           style={{
             fontSize: 24,
-            color: "#fff",
+            color: theme.textPrimary,
             marginBottom: 6,
             animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.1s both",
           }}
@@ -117,11 +121,11 @@ export default function DiagLanding({ config, store }: Props) {
           {config.catchphrase}
         </p>
 
-        {/* 説明カード */}
+        {/* 説明カード（テーマ色で差別化） */}
         <div
           style={{
-            background: "rgba(255,255,255,.04)",
-            border: "1px solid rgba(255,255,255,.08)",
+            background: theme.cardBg,
+            border: `1px solid ${theme.cardBorder}`,
             borderRadius: 16,
             padding: "16px 16px",
             marginBottom: 20,
@@ -146,7 +150,7 @@ export default function DiagLanding({ config, store }: Props) {
             <p
               style={{
                 fontSize: 13,
-                color: "rgba(255,255,255,.7)",
+                color: theme.textSecondary,
                 lineHeight: 1.7,
               }}
             >
@@ -181,7 +185,7 @@ export default function DiagLanding({ config, store }: Props) {
               >
                 {config.questionCount}
               </div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,.5)" }}>
+              <div style={{ fontSize: 10, color: theme.textSecondary }}>
                 問
               </div>
             </div>
@@ -205,7 +209,7 @@ export default function DiagLanding({ config, store }: Props) {
               >
                 {config.estimatedMinutes}
               </div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,.5)" }}>
+              <div style={{ fontSize: 10, color: theme.textSecondary }}>
                 分
               </div>
             </div>
@@ -229,7 +233,7 @@ export default function DiagLanding({ config, store }: Props) {
               >
                 {config.resultTypes.length}
               </div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,.5)" }}>
+              <div style={{ fontSize: 10, color: theme.textSecondary }}>
                 タイプ
               </div>
             </div>
@@ -265,7 +269,7 @@ export default function DiagLanding({ config, store }: Props) {
             style={{
               marginTop: 12,
               fontSize: 10,
-              color: "rgba(255,255,255,.3)",
+              color: theme.textSecondary,
               animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.55s both",
             }}
           >

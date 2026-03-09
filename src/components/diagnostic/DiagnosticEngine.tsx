@@ -7,15 +7,15 @@
  * 一つのコンポーネントで管理する。各診断ページはこのコンポーネントにconfigを渡すだけ。
  *
  * 改修内容:
- * - ランディング画面の追加（診断イントロ）
- * - 診断ごとのUIテーマシステム（背景パターン、CSS変数）
- * - グローバルプロフィールによるプロフィール入力スキップ
+ * - テーマごとに背景色・グラデーション・パーティクル・ブロブを完全差別化
+ * - adjustBgColor廃止 → theme.bgColor / theme.bgGradient を直接使用
+ * - パーティクルタイプ別の描画ロジック（stars/bubbles/sparkles/snow/hearts/leaves/lightning/orbs/pixels/none）
  */
 
 import { useEffect, useMemo, useState } from "react";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import { createDiagnosticStore, type GenericDiagState } from "@/store/createDiagnosticStore";
-import { getDiagnosticTheme } from "@/lib/diagnosticThemes";
+import { getDiagnosticTheme, type ParticleType } from "@/lib/diagnosticThemes";
 import DiagLanding from "./DiagLanding";
 import DiagProfileSetup from "./DiagProfileSetup";
 import DiagQuizFeed from "./DiagQuizFeed";
@@ -26,17 +26,184 @@ interface Props {
   config: DiagnosisConfig;
 }
 
-/** テーマカラーから暗い背景色を生成する */
-function adjustBgColor(hex: string): string {
-  // hexからRGBを抽出して、非常に暗いバージョンを作る
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  // 元の色の5%だけ混ぜた暗い背景
-  const br = Math.round(13 + r * 0.04);
-  const bg = Math.round(1 + g * 0.03);
-  const bb = Math.round(24 + b * 0.05);
-  return `rgb(${br}, ${bg}, ${bb})`;
+/** パーティクル1つ分のデータ */
+interface ParticleData {
+  id: number;
+  top: string;
+  left: string;
+  size: number;
+  delay: string;
+  duration: string;
+  color: string;
+  // パーティクルタイプごとに追加データ
+  opacity?: number;
+  char?: string; // 文字ベースのパーティクル用（hearts, sparkles, leaves）
+}
+
+/**
+ * パーティクルタイプに応じたデータ配列を生成する
+ */
+function generateParticles(
+  type: ParticleType,
+  count: number,
+  colors: string[]
+): ParticleData[] {
+  if (type === 'none' || count === 0 || colors.length === 0) return [];
+
+  return Array.from({ length: count }, (_, i) => {
+    const color = colors[i % colors.length];
+    const base: ParticleData = {
+      id: i,
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      size: 2,
+      delay: `${Math.random() * 5}s`,
+      duration: `${3 + Math.random() * 4}s`,
+      color,
+      opacity: 0.6 + Math.random() * 0.4,
+    };
+
+    switch (type) {
+      case 'stars':
+        // 小さい丸、twinkleアニメーション
+        base.size = Math.random() * 2.5 + 0.5;
+        break;
+      case 'bubbles':
+        // やや大きめの丸、ゆっくり上昇
+        base.size = Math.random() * 6 + 3;
+        base.duration = `${6 + Math.random() * 6}s`;
+        base.opacity = 0.2 + Math.random() * 0.3;
+        break;
+      case 'sparkles':
+        // キラキラ星型文字
+        base.char = '✦';
+        base.size = Math.random() * 10 + 6;
+        break;
+      case 'snow':
+        // 白い粒、ゆっくり落下
+        base.size = Math.random() * 3 + 1.5;
+        base.duration = `${8 + Math.random() * 8}s`;
+        base.opacity = 0.3 + Math.random() * 0.4;
+        break;
+      case 'hearts':
+        // 小さいハート
+        base.char = '♥';
+        base.size = Math.random() * 10 + 8;
+        base.duration = `${6 + Math.random() * 6}s`;
+        base.opacity = 0.3 + Math.random() * 0.4;
+        break;
+      case 'leaves':
+        // 小さい葉
+        base.char = '🍃';
+        base.size = Math.random() * 10 + 8;
+        base.duration = `${8 + Math.random() * 8}s`;
+        base.opacity = 0.3 + Math.random() * 0.4;
+        break;
+      case 'lightning':
+        // ランダムな閃光（数は少なく、大きめ）
+        base.size = Math.random() * 60 + 40;
+        base.duration = `${2 + Math.random() * 4}s`;
+        base.delay = `${Math.random() * 8}s`;
+        base.opacity = 0.05 + Math.random() * 0.1;
+        break;
+      case 'orbs':
+        // 大きめの光の球（3-5個程度）
+        base.size = Math.random() * 80 + 40;
+        base.duration = `${10 + Math.random() * 10}s`;
+        base.opacity = 0.06 + Math.random() * 0.08;
+        break;
+      case 'pixels':
+        // 小さい四角、マトリックス風に落下
+        base.size = Math.random() * 4 + 2;
+        base.duration = `${4 + Math.random() * 6}s`;
+        base.opacity = 0.3 + Math.random() * 0.5;
+        break;
+    }
+
+    return base;
+  });
+}
+
+/**
+ * パーティクルタイプに応じたアニメーション名を取得する
+ */
+function getParticleAnimation(type: ParticleType): string {
+  switch (type) {
+    case 'stars': return 'twinkle';
+    case 'bubbles': return 'particleBubbleRise';
+    case 'sparkles': return 'particleSparkle';
+    case 'snow': return 'particleSnowFall';
+    case 'hearts': return 'particleHeartFloat';
+    case 'leaves': return 'particleLeafFall';
+    case 'lightning': return 'particleLightningFlash';
+    case 'orbs': return 'particleOrbFloat';
+    case 'pixels': return 'particlePixelFall';
+    default: return 'twinkle';
+  }
+}
+
+/**
+ * パーティクルタイプに応じたスタイルを返す
+ */
+function getParticleStyle(p: ParticleData, type: ParticleType): React.CSSProperties {
+  const animName = getParticleAnimation(type);
+  const baseStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: p.top,
+    left: p.left,
+    animation: `${animName} ${p.duration} ${p.delay} infinite`,
+    opacity: p.opacity ?? 0.6,
+    pointerEvents: 'none',
+  };
+
+  // 文字ベースのパーティクル
+  if (p.char) {
+    return {
+      ...baseStyle,
+      fontSize: p.size,
+      color: p.color,
+      lineHeight: 1,
+    };
+  }
+
+  // ドット/球ベースのパーティクル
+  switch (type) {
+    case 'pixels':
+      return {
+        ...baseStyle,
+        width: p.size,
+        height: p.size,
+        background: p.color,
+        // 四角（borderRadiusなし）
+      };
+    case 'lightning':
+      return {
+        ...baseStyle,
+        width: p.size,
+        height: 2,
+        background: `linear-gradient(90deg, transparent, ${p.color}, transparent)`,
+        borderRadius: 1,
+        filter: `blur(1px)`,
+      };
+    case 'orbs':
+      return {
+        ...baseStyle,
+        width: p.size,
+        height: p.size,
+        borderRadius: '50%',
+        background: `radial-gradient(circle, ${p.color}40, transparent 70%)`,
+        filter: 'blur(8px)',
+      };
+    default:
+      // stars, bubbles, snow はすべて丸
+      return {
+        ...baseStyle,
+        width: p.size,
+        height: p.size,
+        borderRadius: '50%',
+        background: p.color,
+      };
+  }
 }
 
 export default function DiagnosticEngine({ config }: Props) {
@@ -50,30 +217,18 @@ export default function DiagnosticEngine({ config }: Props) {
   // 診断テーマを取得
   const theme = useMemo(() => getDiagnosticTheme(config.id), [config.id]);
 
-  // 初期表示時にlandingステップへ（ストアのデフォルトが'landing'なので実質不要だが明示的に）
+  // 初期表示時にlandingステップへ
   useEffect(() => {
     store.setCurrentStep("landing");
   }, []);
 
-  // 星空パーティクル（ハイドレーション対策でクライアントのみ）
-  const [stars, setStars] = useState<
-    { id: number; top: string; left: string; size: number; delay: string; duration: string }[]
-  >([]);
+  // パーティクル（ハイドレーション対策でクライアントのみ生成）
+  const [particles, setParticles] = useState<ParticleData[]>([]);
   useEffect(() => {
-    setStars(
-      Array.from({ length: 80 }, (_, i) => ({
-        id: i,
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        size: Math.random() * 2.5 + 0.5,
-        delay: `${Math.random() * 4}s`,
-        duration: `${2 + Math.random() * 3}s`,
-      }))
+    setParticles(
+      generateParticles(theme.particleType, theme.particleCount, theme.particleColors)
     );
-  }, []);
-
-  // 動的に生成した背景色
-  const dynamicBg = adjustBgColor(config.themeColor);
+  }, [theme]);
 
   return (
     <div
@@ -82,8 +237,10 @@ export default function DiagnosticEngine({ config }: Props) {
         ['--diag-primary' as string]: config.themeColor,
         ['--diag-from' as string]: config.gradientFrom,
         ['--diag-to' as string]: config.gradientTo,
-        ['--diag-bg' as string]: dynamicBg,
-        background: dynamicBg,
+        ['--diag-bg' as string]: theme.bgColor,
+        ['--diag-card-bg' as string]: theme.cardBg,
+        ['--diag-card-border' as string]: theme.cardBorder,
+        background: theme.bgGradient,
         minHeight: "100vh",
         position: "relative",
         overflow: "hidden",
@@ -101,26 +258,18 @@ export default function DiagnosticEngine({ config }: Props) {
         aria-hidden="true"
       />
 
-      {/* 背景：星空パーティクル */}
-      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }} aria-hidden="true">
-        {stars.map((star) => (
-          <div
-            key={star.id}
-            style={{
-              position: "absolute",
-              top: star.top,
-              left: star.left,
-              width: star.size,
-              height: star.size,
-              borderRadius: "50%",
-              background: "#fff",
-              animation: `twinkle ${star.duration} ${star.delay} infinite`,
-            }}
-          />
-        ))}
-      </div>
+      {/* 背景：パーティクル */}
+      {theme.particleType !== 'none' && (
+        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }} aria-hidden="true">
+          {particles.map((p) => (
+            <div key={p.id} style={getParticleStyle(p, theme.particleType)}>
+              {p.char || null}
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* 背景：ブロブ */}
+      {/* 背景：ブロブ（テーマ色で差別化） */}
       <div
         style={{
           position: "fixed",
@@ -129,7 +278,7 @@ export default function DiagnosticEngine({ config }: Props) {
           width: 340,
           height: 340,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${config.themeColor}25, transparent 70%)`,
+          background: `radial-gradient(circle, ${theme.blob1Color}, transparent 70%)`,
           filter: "blur(60px)",
           animation: "blobFloat 8s ease-in-out infinite",
           pointerEvents: "none",
@@ -145,7 +294,7 @@ export default function DiagnosticEngine({ config }: Props) {
           width: 300,
           height: 300,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${config.gradientTo}20, transparent 70%)`,
+          background: `radial-gradient(circle, ${theme.blob2Color}, transparent 70%)`,
           filter: "blur(60px)",
           animation: "blobFloat 10s 2s ease-in-out infinite",
           pointerEvents: "none",

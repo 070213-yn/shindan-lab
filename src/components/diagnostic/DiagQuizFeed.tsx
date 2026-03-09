@@ -39,20 +39,35 @@ export default function DiagQuizFeed({ config, store }: Props) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
-  // セクション演出オーバーレイ
+  // セクション演出オーバーレイ（フェーズ番号・総数も保持）
   const [sectionOverlay, setSectionOverlay] = useState<{
     show: boolean;
     emoji: string;
     name: string;
+    phaseNumber: number;
+    totalPhases: number;
   } | null>(null);
   const shownSections = useRef<Set<number>>(new Set());
+
+  // セクション一覧（重複排除で順序を保持）
+  const sectionList = (() => {
+    const seen = new Set<number>();
+    const list: { sid: number; emoji: string; sectionName: string }[] = [];
+    for (const q of questions) {
+      if (!seen.has(q.sid)) {
+        seen.add(q.sid);
+        list.push({ sid: q.sid, emoji: q.emoji, sectionName: q.sectionName });
+      }
+    }
+    return list;
+  })();
 
   // 回答済み数
   const answeredCount = answers.filter((a) => a !== null).length;
   const allAnswered = answeredCount === questions.length;
   const progress = (answeredCount / questions.length) * 100;
 
-  // IntersectionObserverでカードのフェードアップ + セクション演出
+  // IntersectionObserverでカードのフェードアップ（セクション演出はhandleSelectで発火）
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -60,17 +75,6 @@ export default function DiagQuizFeed({ config, store }: Props) {
           if (entry.isIntersecting) {
             const idx = Number((entry.target as HTMLElement).dataset.idx);
             setVisibleCards((prev) => new Set(prev).add(idx));
-
-            // セクション演出: 新しいセクションの最初のカードが見えたらオーバーレイ表示
-            const q = questions[idx];
-            if (idx > 0 && q.sid !== questions[idx - 1]?.sid && !shownSections.current.has(q.sid)) {
-              shownSections.current.add(q.sid);
-              setSectionOverlay({ show: true, emoji: q.emoji, name: q.sectionName });
-              setTimeout(() => {
-                setSectionOverlay(null);
-              }, 1200);
-            }
-
             observer.unobserve(entry.target);
           }
         });
@@ -100,13 +104,49 @@ export default function DiagQuizFeed({ config, store }: Props) {
     [answers]
   );
 
-  // 回答選択ハンドラ
+  // 回答選択ハンドラ（セクション全問回答後にオーバーレイ演出を発火）
   const handleSelect = useCallback(
     (qIndex: number, value: number) => {
       setAnswer(qIndex, value, questions[qIndex].weights);
+
+      // 回答した質問のセクションIDを取得
+      const currentSid = questions[qIndex].sid;
+
+      // このセクションに属する全質問のインデックスを取得
+      const sectionQuestionIndices = questions
+        .map((q, idx) => (q.sid === currentSid ? idx : -1))
+        .filter((idx) => idx !== -1);
+
+      // 今回の回答を反映した上で、このセクションの全質問が回答済みかチェック
+      // （answersはまだ更新前の可能性があるため、今回答したインデックスは回答済みとして扱う）
+      const allSectionAnswered = sectionQuestionIndices.every(
+        (idx) => idx === qIndex || answers[idx] !== null
+      );
+
+      if (allSectionAnswered) {
+        // 次のセクションを特定
+        const currentSectionIdx = sectionList.findIndex((s) => s.sid === currentSid);
+        const nextSection = sectionList[currentSectionIdx + 1];
+
+        // 次のセクションが存在し、まだ演出を出していない場合にオーバーレイ表示
+        if (nextSection && !shownSections.current.has(nextSection.sid)) {
+          shownSections.current.add(nextSection.sid);
+          setSectionOverlay({
+            show: true,
+            emoji: nextSection.emoji,
+            name: nextSection.sectionName,
+            phaseNumber: currentSectionIdx + 2, // 次のフェーズ番号（1始まり）
+            totalPhases: sectionList.length,
+          });
+          setTimeout(() => {
+            setSectionOverlay(null);
+          }, 1800); // 1.2秒→1.8秒に延長
+        }
+      }
+
       scrollToNext(qIndex);
     },
-    [setAnswer, questions, scrollToNext]
+    [setAnswer, questions, scrollToNext, answers, sectionList]
   );
 
   // セクション区切りを判定
@@ -114,7 +154,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
 
   return (
     <div style={{ minHeight: "100vh", paddingBottom: 100 }}>
-      {/* セクション切り替えオーバーレイ */}
+      {/* セクション切り替えオーバーレイ（研究所フェーズ切り替え風） */}
       {sectionOverlay && (
         <div
           style={{
@@ -125,12 +165,28 @@ export default function DiagQuizFeed({ config, store }: Props) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(255,255,255,0.85)",
-            backdropFilter: "blur(8px)",
-            animation: "sectionOverlayAnim 1.2s cubic-bezier(0.25,1,0.5,1) forwards",
+            background: `linear-gradient(180deg, rgba(255,255,255,0.95) 0%, ${config.themeColor}18 50%, rgba(255,255,255,0.95) 100%)`,
+            backdropFilter: "blur(12px)",
+            animation: "sectionOverlayAnim 1.8s cubic-bezier(0.25,1,0.5,1) forwards",
             pointerEvents: "none",
           }}
         >
+          {/* フェーズラベル */}
+          <div
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.15em",
+              color: `${config.themeColor}99`,
+              textTransform: "uppercase",
+              marginBottom: 8,
+              animation: "staggeredFadeUp 0.5s cubic-bezier(0.25,1,0.5,1) 0.05s both",
+            }}
+          >
+            Phase {sectionOverlay.phaseNumber} / {sectionOverlay.totalPhases}
+          </div>
+
+          {/* セクション絵文字 */}
           <div
             style={{
               fontSize: 56,
@@ -140,16 +196,42 @@ export default function DiagQuizFeed({ config, store }: Props) {
           >
             {sectionOverlay.emoji}
           </div>
+
+          {/* セクション名 */}
           <div
             className="font-zen"
             style={{
               fontSize: 20,
               fontWeight: 700,
               color: config.themeColor,
+              marginBottom: 16,
               animation: "staggeredFadeUp 0.5s cubic-bezier(0.25,1,0.5,1) 0.15s both",
             }}
           >
             {sectionOverlay.name}
+          </div>
+
+          {/* プログレスバー装飾（フェーズ進捗） */}
+          <div
+            style={{
+              width: 120,
+              height: 3,
+              borderRadius: 2,
+              background: `${config.themeColor}20`,
+              overflow: "hidden",
+              animation: "staggeredFadeUp 0.5s cubic-bezier(0.25,1,0.5,1) 0.25s both",
+            }}
+          >
+            <div
+              style={{
+                width: `${(sectionOverlay.phaseNumber / sectionOverlay.totalPhases) * 100}%`,
+                height: "100%",
+                borderRadius: 2,
+                background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo})`,
+                transformOrigin: "left",
+                animation: "phaseBarFill 0.6s cubic-bezier(0.25,1,0.5,1) 0.35s both",
+              }}
+            />
           </div>
         </div>
       )}

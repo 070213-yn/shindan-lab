@@ -298,6 +298,42 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     textSecondary: '#4a6572',
     accentEmoji: '💕',
   },
+
+  // ── torisetsu: 淡いピンク ──
+  torisetsu: {
+    bgColor: '#FFF0F5',
+    bgGradient: 'linear-gradient(135deg, #FFF0F5 0%, #FFF5EB 50%, #FFF0F8 100%)',
+    bgPattern: 'fresh',
+    bgStyle: {},
+    particleColors: ['rgba(244,114,182,0.3)', 'rgba(251,146,60,0.25)'],
+    particleCount: 0,
+    particleType: 'none' as const,
+    blob1Color: 'rgba(244,114,182,0.1)',
+    blob2Color: 'rgba(251,146,60,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(244,114,182,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '📋',
+  },
+
+  // ── deathcause: 淡いパープル ──
+  deathcause: {
+    bgColor: '#F0ECFF',
+    bgGradient: 'linear-gradient(135deg, #F0ECFF 0%, #E8F0FF 50%, #F5ECFF 100%)',
+    bgPattern: 'fresh',
+    bgStyle: {},
+    particleColors: ['rgba(139,92,246,0.3)', 'rgba(99,102,241,0.25)'],
+    particleCount: 0,
+    particleType: 'none' as const,
+    blob1Color: 'rgba(139,92,246,0.1)',
+    blob2Color: 'rgba(99,102,241,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(139,92,246,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '💀',
+  },
 };
 
 /** デフォルトのテーマ（マッチしなかった場合用、淡いティール） */

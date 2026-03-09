@@ -57,6 +57,8 @@ const CATEGORY_MAP: Record<string, CategoryKey> = {
   spirit: "mystery",
   isekai: "mystery",
   pastlife: "mystery",
+  torisetsu: "personality",
+  deathcause: "mystery",
 };
 
 // 全カードデータ（MBTI-128を先頭 + 恋愛 + 他の診断）

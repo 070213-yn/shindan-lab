@@ -19,6 +19,8 @@ import { moneyDiagnosis } from './money';
 import { jobDiagnosis } from './job';
 import { learningDiagnosis } from './learning';
 import { mbti128Diagnosis } from './mbti128';
+import { torisetsuDiagnosis } from './torisetsu';
+import { deathcauseDiagnosis } from './deathcause';
 
 /** 全診断の設定マップ（ID → 設定） */
 export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
@@ -33,6 +35,8 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   job: jobDiagnosis,
   learning: learningDiagnosis,
   mbti128: mbti128Diagnosis,
+  torisetsu: torisetsuDiagnosis,
+  deathcause: deathcauseDiagnosis,
 };
 
 /** ポータル表示用の診断一覧（表示順制御） */
@@ -48,4 +52,6 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   jobDiagnosis,
   learningDiagnosis,
   mbti128Diagnosis,
+  torisetsuDiagnosis,
+  deathcauseDiagnosis,
 ];

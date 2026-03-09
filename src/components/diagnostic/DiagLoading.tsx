@@ -3,35 +3,34 @@
 /**
  * 汎用診断ローディングアニメーション
  *
- * 診断テーマカラーに応じたオーブアニメーションと
- * ステップリストを表示する。約5秒後に結果画面へ遷移。
+ * 診断テーマカラーに応じたリングアニメーションと
+ * 診断固有のステップテキストを表示する。約5秒後に結果画面へ遷移。
+ *
+ * 改修内容:
+ * - テーマカラーベースのリングアニメーション強化
+ * - 診断IDに応じた固有のステップテキスト
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
+import { getLoadingSteps } from "@/lib/diagnosticThemes";
 
 interface Props {
   config: DiagnosisConfig;
   store: GenericDiagState;
 }
 
-/** 分析ステップの定義 */
-const ANALYSIS_STEPS = [
-  { label: "回答データを収集中...", delay: 0 },
-  { label: "多次元スコアを計算中...", delay: 800 },
-  { label: "パターンを分析中...", delay: 1800 },
-  { label: "タイプを照合中...", delay: 2800 },
-  { label: "結果を生成中...", delay: 3800 },
-];
-
 export default function DiagLoading({ config, store }: Props) {
   const [activeStep, setActiveStep] = useState(0);
   const [percent, setPercent] = useState(0);
 
+  // 診断IDに応じたステップテキストを取得
+  const analysisSteps = useMemo(() => getLoadingSteps(config.id), [config.id]);
+
   // ステップ進行
   useEffect(() => {
-    const timers = ANALYSIS_STEPS.map((step, i) =>
+    const timers = analysisSteps.map((step, i) =>
       setTimeout(() => setActiveStep(i + 1), step.delay)
     );
 
@@ -60,7 +59,7 @@ export default function DiagLoading({ config, store }: Props) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#0D0118",
+        background: "var(--diag-bg, #0D0118)",
         zIndex: 300,
         display: "flex",
         flexDirection: "column",
@@ -69,44 +68,73 @@ export default function DiagLoading({ config, store }: Props) {
         padding: "40px 24px",
       }}
     >
-      {/* オーブアニメーション */}
+      {/* テーマカラーの背景グロー */}
+      <div
+        style={{
+          position: "absolute",
+          top: "30%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 300,
+          height: 300,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${config.themeColor}15, transparent 70%)`,
+          filter: "blur(40px)",
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* リングアニメーション */}
       <div
         style={{
           position: "relative",
-          width: 140,
-          height: 140,
+          width: 150,
+          height: 150,
           marginBottom: 40,
         }}
       >
-        {/* 外側リング1 */}
+        {/* 外側リング1: テーマカラー */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             border: `2px solid ${config.themeColor}30`,
             borderTopColor: config.themeColor,
+            borderRightColor: `${config.themeColor}60`,
             borderRadius: "50%",
             animation: "spin360 2s linear infinite",
           }}
         />
-        {/* 外側リング2（逆回転） */}
+        {/* 外側リング2: グラデーション（逆回転） */}
         <div
           style={{
             position: "absolute",
-            inset: 12,
-            border: `2px solid ${config.gradientTo}25`,
+            inset: 10,
+            border: `2px solid ${config.gradientTo}20`,
             borderBottomColor: config.gradientTo,
+            borderLeftColor: `${config.gradientTo}50`,
             borderRadius: "50%",
             animation: "spin360 3s linear infinite reverse",
           }}
         />
-        {/* 外側リング3 */}
+        {/* 外側リング3: 薄い点線風 */}
         <div
           style={{
             position: "absolute",
-            inset: 24,
-            border: `1px solid ${config.themeColor}20`,
-            borderLeftColor: `${config.themeColor}80`,
+            inset: 22,
+            border: `1px dashed ${config.themeColor}18`,
+            borderRadius: "50%",
+            animation: "spin360 6s linear infinite",
+          }}
+        />
+        {/* 内側リング */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 30,
+            border: `1px solid ${config.themeColor}15`,
+            borderLeftColor: `${config.themeColor}70`,
             borderRadius: "50%",
             animation: "spin360 4s linear infinite",
           }}
@@ -115,14 +143,14 @@ export default function DiagLoading({ config, store }: Props) {
         <div
           style={{
             position: "absolute",
-            inset: 36,
+            inset: 40,
             borderRadius: "50%",
-            background: `radial-gradient(circle, ${config.themeColor}40, ${config.gradientTo}20, transparent)`,
+            background: `radial-gradient(circle, ${config.themeColor}35, ${config.gradientTo}15, transparent)`,
             animation: "coreBeat 2s ease-in-out infinite",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 32,
+            fontSize: 36,
           }}
         >
           {config.emoji}
@@ -133,9 +161,10 @@ export default function DiagLoading({ config, store }: Props) {
       <div
         className="font-stick"
         style={{
-          fontSize: 32,
+          fontSize: 36,
           color: config.themeColor,
           marginBottom: 8,
+          textShadow: `0 0 20px ${config.themeColor}40`,
         }}
       >
         {Math.min(percent, 100)}%
@@ -161,13 +190,16 @@ export default function DiagLoading({ config, store }: Props) {
             background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo})`,
             borderRadius: 2,
             transition: "width 0.1s linear",
+            position: "relative",
           }}
-        />
+        >
+          <span className="progress-shimmer" />
+        </div>
       </div>
 
       {/* ステップリスト */}
       <div style={{ maxWidth: 280, width: "100%" }}>
-        {ANALYSIS_STEPS.map((step, i) => {
+        {analysisSteps.map((step, i) => {
           const status =
             i + 1 < activeStep ? "done" : i + 1 === activeStep ? "active" : "waiting";
           return (
@@ -196,7 +228,9 @@ export default function DiagLoading({ config, store }: Props) {
                       : "rgba(255,255,255,.2)",
                   boxShadow:
                     status === "active"
-                      ? `0 0 8px ${config.themeColor}`
+                      ? `0 0 8px ${config.themeColor}, 0 0 16px ${config.themeColor}50`
+                      : status === "done"
+                      ? `0 0 4px ${config.themeColor}50`
                       : "none",
                   animation:
                     status === "active"

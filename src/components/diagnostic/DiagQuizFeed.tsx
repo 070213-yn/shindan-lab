@@ -5,6 +5,12 @@
  *
  * スクロール型で質問を表示し、選択するとリアルタイムでスコア加算。
  * IntersectionObserverでフェードアップアニメーション。
+ *
+ * 改修内容:
+ * - テーマカラーでボーダーアクセントの質問カードデザイン
+ * - 回答ボタンの見た目改善（間隔、サイズ、アニメーション）
+ * - セクション切り替え時のフルスクリーンオーバーレイ演出
+ * - プログレスバーのテーマカラーグラデーション
  */
 
 import { useEffect, useRef, useCallback, useState } from "react";
@@ -18,11 +24,11 @@ interface Props {
 
 /** 回答選択肢の定義 */
 const SCALE_OPTIONS = [
-  { value: 1, label: "全然違う" },
-  { value: 2, label: "あまり" },
-  { value: 3, label: "どちらとも" },
-  { value: 4, label: "まあまあ" },
-  { value: 5, label: "めっちゃ当てはまる" },
+  { value: 1, label: "全然違う", short: "1" },
+  { value: 2, label: "あまり", short: "2" },
+  { value: 3, label: "どちらとも", short: "3" },
+  { value: 4, label: "まあまあ", short: "4" },
+  { value: 5, label: "めっちゃ当てはまる", short: "5" },
 ];
 
 export default function DiagQuizFeed({ config, store }: Props) {
@@ -32,12 +38,20 @@ export default function DiagQuizFeed({ config, store }: Props) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
 
+  // セクション演出オーバーレイ
+  const [sectionOverlay, setSectionOverlay] = useState<{
+    show: boolean;
+    emoji: string;
+    name: string;
+  } | null>(null);
+  const shownSections = useRef<Set<number>>(new Set());
+
   // 回答済み数
   const answeredCount = answers.filter((a) => a !== null).length;
   const allAnswered = answeredCount === questions.length;
   const progress = (answeredCount / questions.length) * 100;
 
-  // IntersectionObserverでカードのフェードアップ
+  // IntersectionObserverでカードのフェードアップ + セクション演出
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -45,6 +59,17 @@ export default function DiagQuizFeed({ config, store }: Props) {
           if (entry.isIntersecting) {
             const idx = Number((entry.target as HTMLElement).dataset.idx);
             setVisibleCards((prev) => new Set(prev).add(idx));
+
+            // セクション演出: 新しいセクションの最初のカードが見えたらオーバーレイ表示
+            const q = questions[idx];
+            if (idx > 0 && q.sid !== questions[idx - 1]?.sid && !shownSections.current.has(q.sid)) {
+              shownSections.current.add(q.sid);
+              setSectionOverlay({ show: true, emoji: q.emoji, name: q.sectionName });
+              setTimeout(() => {
+                setSectionOverlay(null);
+              }, 1200);
+            }
+
             observer.unobserve(entry.target);
           }
         });
@@ -88,6 +113,46 @@ export default function DiagQuizFeed({ config, store }: Props) {
 
   return (
     <div style={{ minHeight: "100vh", paddingBottom: 100 }}>
+      {/* セクション切り替えオーバーレイ */}
+      {sectionOverlay && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 200,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(13,1,24,.85)",
+            backdropFilter: "blur(8px)",
+            animation: "sectionOverlayAnim 1.2s cubic-bezier(0.25,1,0.5,1) forwards",
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 56,
+              marginBottom: 12,
+              animation: "scaleIn 0.4s cubic-bezier(0.25,1,0.5,1) both",
+            }}
+          >
+            {sectionOverlay.emoji}
+          </div>
+          <div
+            className="font-zen"
+            style={{
+              fontSize: 20,
+              fontWeight: 700,
+              color: config.themeColor,
+              animation: "staggeredFadeUp 0.5s cubic-bezier(0.25,1,0.5,1) 0.15s both",
+            }}
+          >
+            {sectionOverlay.name}
+          </div>
+        </div>
+      )}
+
       {/* プログレスバー（固定） */}
       <div
         style={{
@@ -185,11 +250,14 @@ export default function DiagQuizFeed({ config, store }: Props) {
                 border: `1px solid ${
                   answers[i] !== null ? `${config.themeColor}30` : "rgba(255,255,255,.08)"
                 }`,
+                borderLeft: answers[i] !== null
+                  ? `3px solid ${config.themeColor}60`
+                  : `1px solid rgba(255,255,255,.08)`,
                 borderRadius: 16,
                 padding: "20px 18px",
                 marginBottom: 14,
                 position: "relative",
-                transition: "border-color 0.3s, opacity 0.55s var(--ease-smooth), transform 0.55s var(--ease-smooth)",
+                transition: "border-color 0.3s, border-left 0.3s, opacity 0.55s var(--ease-smooth), transform 0.55s var(--ease-smooth)",
               }}
             >
               {/* 質問番号 + 回答済みチェック */}
@@ -219,36 +287,40 @@ export default function DiagQuizFeed({ config, store }: Props) {
                   fontWeight: 700,
                   lineHeight: 1.7,
                   color: "rgba(255,255,255,.9)",
-                  marginBottom: 14,
+                  marginBottom: 16,
                 }}
               >
                 {q.text}
               </p>
 
-              {/* 5段階選択肢 */}
+              {/* 5段階選択肢（改善版） */}
               <div
                 style={{
                   display: "flex",
-                  gap: 6,
+                  gap: 8,
                   justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 {SCALE_OPTIONS.map((opt) => {
                   const isSelected = answers[i] === opt.value;
+                  // サイズを端ほど小さく、中央を大きくする配列
+                  const sizes = [40, 44, 48, 44, 40];
+                  const size = sizes[opt.value - 1];
                   return (
                     <button
                       key={opt.value}
                       onClick={() => handleSelect(i, opt.value)}
                       className={`scale-btn-hover ${isSelected ? "scale-btn-selected animate-popBounce" : ""}`}
                       style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 12,
+                        width: size,
+                        height: size,
+                        borderRadius: 14,
                         border: `2px solid ${
                           isSelected ? config.themeColor : "rgba(255,255,255,.12)"
                         }`,
                         background: isSelected
-                          ? `${config.themeColor}25`
+                          ? `linear-gradient(135deg, ${config.gradientFrom}30, ${config.gradientTo}30)`
                           : "rgba(255,255,255,.03)",
                         color: isSelected ? "#fff" : "rgba(255,255,255,.6)",
                         fontSize: 15,
@@ -258,8 +330,9 @@ export default function DiagQuizFeed({ config, store }: Props) {
                         alignItems: "center",
                         justifyContent: "center",
                         boxShadow: isSelected
-                          ? `0 0 12px ${config.themeColor}30`
+                          ? `0 0 16px ${config.themeColor}35`
                           : "none",
+                        transition: "all 0.25s cubic-bezier(0.25, 1, 0.5, 1)",
                       }}
                       title={opt.label}
                     >
@@ -274,7 +347,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  marginTop: 4,
+                  marginTop: 6,
                   fontSize: 9,
                   color: "rgba(255,255,255,.3)",
                   padding: "0 4px",

@@ -5,9 +5,14 @@
  *
  * スコア計算 → タイプ判定 → 結果表示 → 広告 → シェアボタン
  * Google広告は結果表示の直前に配置（インタースティシャル風）。
+ *
+ * 改修内容:
+ * - テーマカラーを全面に使用
+ * - タイプ発表時の演出強化（ぼかし→フェードイン）
+ * - シェア画像にもテーマカラーを反映
  */
 
-import { useMemo, useEffect, useRef } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import { normalizeScoresGeneric, findBestTypeGeneric, applyProfileModifiersGeneric } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
@@ -34,10 +39,21 @@ function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: num
   ctx.closePath();
 }
 
+/** hex色からRGB抽出 */
+function hexToRgb(hex: string) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return { r, g, b };
+}
+
 export default function DiagResult({ config, store }: Props) {
   const { scores, profileData, reset, setCurrentStep } = store;
   const { saveResult } = usePersonaStore();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  // タイプ発表演出の状態
+  const [revealed, setRevealed] = useState(false);
 
   // スコア正規化 → タイプ判定
   const result = useMemo(() => {
@@ -48,6 +64,12 @@ export default function DiagResult({ config, store }: Props) {
   }, [scores, profileData, config]);
 
   const { norm, bestType } = result;
+
+  // タイプ発表演出: 少し遅れてから表示
+  useEffect(() => {
+    const timer = setTimeout(() => setRevealed(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
 
   // ペルソナストアに結果を保存
   useEffect(() => {
@@ -84,11 +106,15 @@ export default function DiagResult({ config, store }: Props) {
     canvas.width = W;
     canvas.height = H;
 
-    // 背景
+    // テーマカラーからRGB取得
+    const themeRgb = hexToRgb(config.themeColor);
+    const gradToRgb = hexToRgb(config.gradientTo);
+
+    // 背景: テーマカラーを反映した暗いグラデーション
     const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-    bgGrad.addColorStop(0, "#0D0118");
-    bgGrad.addColorStop(0.5, "#1A0230");
-    bgGrad.addColorStop(1, "#0D0118");
+    bgGrad.addColorStop(0, `rgb(${Math.round(themeRgb.r * 0.05 + 10)}, ${Math.round(themeRgb.g * 0.03)}, ${Math.round(themeRgb.b * 0.06 + 18)})`);
+    bgGrad.addColorStop(0.5, `rgb(${Math.round(themeRgb.r * 0.08 + 15)}, ${Math.round(themeRgb.g * 0.04 + 2)}, ${Math.round(themeRgb.b * 0.1 + 25)})`);
+    bgGrad.addColorStop(1, `rgb(${Math.round(themeRgb.r * 0.05 + 10)}, ${Math.round(themeRgb.g * 0.03)}, ${Math.round(themeRgb.b * 0.06 + 18)})`);
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
@@ -100,7 +126,14 @@ export default function DiagResult({ config, store }: Props) {
       ctx.fill();
     }
 
-    // 枠線
+    // テーマカラーのグロー
+    const glow = ctx.createRadialGradient(W * 0.2, H * 0.3, 0, W * 0.2, H * 0.3, 200);
+    glow.addColorStop(0, `rgba(${themeRgb.r}, ${themeRgb.g}, ${themeRgb.b}, 0.08)`);
+    glow.addColorStop(1, 'transparent');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    // 枠線（テーマカラー）
     roundedRect(ctx, 8, 8, W - 16, H - 16, 16);
     ctx.strokeStyle = `${config.themeColor}50`;
     ctx.lineWidth = 1.5;
@@ -218,43 +251,95 @@ export default function DiagResult({ config, store }: Props) {
       {/* 広告枠（結果表示前） */}
       <AdPlacement slot="result-interstitial" themeColor={config.themeColor} />
 
-      {/* タイプヒーロー */}
+      {/* タイプヒーロー（演出強化版） */}
       <div
         style={{
           textAlign: "center",
-          background: "rgba(255,255,255,.06)",
-          border: "1px solid rgba(255,255,255,.1)",
+          background: `linear-gradient(135deg, rgba(255,255,255,.06), ${config.themeColor}08)`,
+          border: `1px solid ${config.themeColor}20`,
           borderRadius: 20,
           padding: "32px 24px",
           marginBottom: 16,
           animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) both",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <div style={{ fontSize: 70, marginBottom: 8 }}>{bestType.emoji}</div>
+        {/* テーマカラーのグロー背景 */}
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 200,
+            height: 200,
+            borderRadius: "50%",
+            background: `radial-gradient(circle, ${config.themeColor}12, transparent 70%)`,
+            pointerEvents: "none",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* 絵文字 */}
+        <div
+          style={{
+            fontSize: 70,
+            marginBottom: 8,
+            position: "relative",
+            filter: revealed ? "blur(0px)" : "blur(12px)",
+            opacity: revealed ? 1 : 0,
+            transform: revealed ? "scale(1)" : "scale(0.8)",
+            transition: "all 0.8s cubic-bezier(0.25, 1, 0.5, 1)",
+          }}
+        >
+          {bestType.emoji}
+        </div>
+
+        {/* タイプ名（ぼかし→フェードイン演出） */}
         <h2
           className="font-stick"
-          style={{ fontSize: 28, color: config.themeColor, marginBottom: 8 }}
+          style={{
+            fontSize: 28,
+            color: config.themeColor,
+            marginBottom: 8,
+            position: "relative",
+            filter: revealed ? "blur(0px)" : "blur(16px)",
+            opacity: revealed ? 1 : 0,
+            transform: revealed ? "translateY(0)" : "translateY(10px)",
+            transition: "all 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.2s",
+            textShadow: revealed ? `0 0 30px ${config.themeColor}30` : "none",
+          }}
         >
           {bestType.name}
         </h2>
+
+        {/* タグ */}
         <span
           style={{
             display: "inline-block",
             background: `${config.themeColor}18`,
-            color: "#D4B8F5",
+            color: config.themeColor,
             fontSize: 11,
             padding: "4px 12px",
             borderRadius: 20,
             marginBottom: 16,
+            opacity: revealed ? 1 : 0,
+            transition: "opacity 0.6s 0.5s",
           }}
         >
           {bestType.tag}
         </span>
+
+        {/* 説明文 */}
         <p
           style={{
             color: "rgba(255,255,255,.75)",
             fontSize: 14,
             lineHeight: 1.8,
+            position: "relative",
+            opacity: revealed ? 1 : 0,
+            transition: "opacity 0.6s 0.7s",
           }}
         >
           {bestType.description}
@@ -269,6 +354,8 @@ export default function DiagResult({ config, store }: Props) {
               gap: 6,
               justifyContent: "center",
               marginTop: 14,
+              opacity: revealed ? 1 : 0,
+              transition: "opacity 0.6s 0.9s",
             }}
           >
             {bestType.traits.map((trait) => (
@@ -351,7 +438,8 @@ export default function DiagResult({ config, store }: Props) {
       {/* アドバイスカード */}
       <div
         style={{
-          background: "rgba(255,255,255,.04)",
+          background: `linear-gradient(135deg, rgba(255,255,255,.04), ${config.themeColor}06)`,
+          border: `1px solid ${config.themeColor}15`,
           borderRadius: 16,
           padding: "20px 18px",
           marginBottom: 16,
@@ -384,7 +472,7 @@ export default function DiagResult({ config, store }: Props) {
       <div
         style={{
           background: `linear-gradient(135deg, ${config.themeColor}10, ${config.gradientTo}10)`,
-          border: "1px solid rgba(255,255,255,.08)",
+          border: `1px solid ${config.themeColor}15`,
           borderRadius: 16,
           padding: "20px 18px",
           textAlign: "center",
@@ -430,13 +518,14 @@ export default function DiagResult({ config, store }: Props) {
             width: "100%",
             marginTop: 12,
             padding: "12px 0",
-            background: "rgba(255,255,255,.06)",
+            background: `linear-gradient(135deg, ${config.themeColor}10, ${config.gradientTo}10)`,
             border: `1px solid ${config.themeColor}40`,
             borderRadius: 12,
             color: config.themeColor,
             fontSize: 14,
             fontWeight: 700,
             cursor: "pointer",
+            transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
           }}
         >
           画像を保存
@@ -540,7 +629,7 @@ export default function DiagResult({ config, store }: Props) {
             gap: 6,
             padding: "10px 16px",
             background: "transparent",
-            border: "1px solid rgba(255,255,255,.15)",
+            border: `1px solid ${config.themeColor}30`,
             borderRadius: 12,
             color: "rgba(255,255,255,.7)",
             fontSize: 13,

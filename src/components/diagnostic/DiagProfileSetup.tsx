@@ -5,11 +5,14 @@
  *
  * 診断設定のprofileFieldsに基づいて、動的にプロフィール入力画面を生成する。
  * 性別選択 → 年齢スライダー → ... の順でステップ進行。
+ *
+ * 改修: globalProfileが設定済みの場合、対応フィールドをスキップする。
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import type { ProfileFieldConfig, DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
+import { usePersonaStore } from "@/store/personaStore";
 
 interface Props {
   config: DiagnosisConfig;
@@ -18,16 +21,85 @@ interface Props {
 
 export default function DiagProfileSetup({ config, store }: Props) {
   const { profileData, setProfileField, profileStep, setProfileStep, setCurrentStep } = store;
+  const { globalProfile } = usePersonaStore();
   const fields = config.profileFields;
   const currentField = fields[profileStep];
+  const hasAutoSkipped = useRef(false);
+
+  // グローバルプロフィールの自動適用とスキップ
+  useEffect(() => {
+    if (hasAutoSkipped.current) return;
+    hasAutoSkipped.current = true;
+
+    if (!globalProfile) return;
+
+    const { gender, age } = globalProfile;
+    let skipCount = 0;
+
+    // 各フィールドに対してglobalProfileの値を自動セット
+    fields.forEach((field, i) => {
+      if (field.id === 'gender' && gender) {
+        setProfileField('gender', gender);
+        skipCount++;
+      } else if (field.id === 'age' && age !== null) {
+        setProfileField('age', age);
+        skipCount++;
+      }
+    });
+
+    // gender と age の両方が設定済みで、profileFieldsがその2つだけの場合 → クイズへ直行
+    if (gender && age !== null) {
+      const allFieldIds = fields.map(f => f.id);
+      const profileFieldsAreOnlyGenderAge =
+        allFieldIds.length <= 2 &&
+        allFieldIds.every(id => id === 'gender' || id === 'age');
+
+      if (profileFieldsAreOnlyGenderAge) {
+        // 全フィールドがglobalProfileで埋まるのでクイズへ直行
+        setCurrentStep("quiz");
+        return;
+      }
+    }
+
+    // 一部だけ設定済みの場合、設定済みフィールドをスキップ
+    if (skipCount > 0) {
+      // 最初の未設定フィールドを探す
+      let firstUnsatisfied = 0;
+      for (let i = 0; i < fields.length; i++) {
+        const fid = fields[i].id;
+        if (fid === 'gender' && gender) continue;
+        if (fid === 'age' && age !== null) continue;
+        firstUnsatisfied = i;
+        break;
+      }
+      if (firstUnsatisfied > 0) {
+        setProfileStep(firstUnsatisfied);
+      }
+    }
+  }, []);
 
   const handleNext = useCallback(() => {
-    if (profileStep < fields.length - 1) {
-      setProfileStep(profileStep + 1);
+    // 次の未設定フィールドを探す（globalProfileで設定済みのフィールドはスキップ）
+    let nextStep = profileStep + 1;
+    while (nextStep < fields.length) {
+      const nextField = fields[nextStep];
+      if (nextField.id === 'gender' && globalProfile?.gender) {
+        nextStep++;
+        continue;
+      }
+      if (nextField.id === 'age' && globalProfile?.age !== null && globalProfile?.age !== undefined) {
+        nextStep++;
+        continue;
+      }
+      break;
+    }
+
+    if (nextStep < fields.length) {
+      setProfileStep(nextStep);
     } else {
       setCurrentStep("quiz");
     }
-  }, [profileStep, fields.length, setProfileStep, setCurrentStep]);
+  }, [profileStep, fields.length, setProfileStep, setCurrentStep, globalProfile, fields]);
 
   const isCurrentValid = currentField
     ? currentField.type === "slider"

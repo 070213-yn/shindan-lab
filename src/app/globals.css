@@ -8,7 +8,12 @@
   --pk: #FF6BE8;
   --pu: #C45AFF;
   --vi: #7B5CFF;
-  --bg: #0D0118;
+  --bg: #0F172A;
+  /* 新ブランドカラー */
+  --primary: #6366F1;
+  --secondary: #EC4899;
+  --accent: #14B8A6;
+  --card-bg: rgba(255, 255, 255, 0.06);
   /* カスタムイージング（smooth deceleration、ease-out-quart相当） */
   --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -17,7 +22,7 @@
    リセット・ベーススタイル
    =========================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: #0D0118 !important; color: #fff !important; scroll-behavior: smooth; }
+html, body { background: #0F172A !important; color: #fff !important; scroll-behavior: smooth; }
 body {
   font-family: 'Noto Sans JP', sans-serif;
   overflow-x: hidden;
@@ -520,6 +525,14 @@ body {
   animation: sparkBurst 0.5s ease-out forwards;
 }
 
+/* セクション切り替えオーバーレイ（フェードイン→フェードアウト） */
+@keyframes sectionOverlayAnim {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* パーソナルフレンズ: マスコットのホバー揺れアニメーション */
 @keyframes mascotWobble {
   0%, 100% { transform: rotate(0deg) scale(1); }
@@ -528,4 +541,39 @@ body {
 }
 .mascot-bounce:hover {
   animation: mascotWobble 0.5s ease-in-out;
+}
+
+/* ===========================
+   ポータルページ改修用アニメーション
+   =========================== */
+
+/* 波紋エフェクト（タップ時） */
+@keyframes rippleEffect {
+  0% { transform: scale(0); opacity: 0.5; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+/* カードグローホバー */
+@keyframes cardGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* カテゴリタブのスライドインジケーター */
+@keyframes tabSlideIn {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* プロフィールセクションのスライドダウン */
+@keyframes slideDown {
+  from { opacity: 0; max-height: 0; transform: translateY(-8px); }
+  to { opacity: 1; max-height: 200px; transform: translateY(0); }
+}
+
+/* プロフィール設定完了のチェックアニメーション */
+@keyframes profileCheckPop {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }

@@ -24,16 +24,29 @@ export interface DiagnosisResult {
   completedAt: number;
 }
 
+/** グローバルプロフィール（全診断で使い回す年齢・性別） */
+export interface GlobalProfile {
+  gender: string | null;
+  age: number | null;
+}
+
 interface PersonaState {
   results: Record<string, DiagnosisResult>; // diagnosisId → result
   saveResult: (result: DiagnosisResult) => void;
   removeResult: (diagnosisId: string) => void;
   clearAll: () => void;
   getCompletedCount: () => number;
+
+  // グローバルプロフィール
+  globalProfile: GlobalProfile;
+  setGlobalProfile: (gender: string | null, age: number | null) => void;
 }
 
 /** localStorageキー */
 const STORAGE_KEY = 'tokimeki-lab-persona';
+
+/** グローバルプロフィール用localStorageキー */
+const PROFILE_STORAGE_KEY = 'tokimeki-lab-global-profile';
 
 /** localStorageから復元 */
 function loadFromStorage(): Record<string, DiagnosisResult> {
@@ -44,6 +57,28 @@ function loadFromStorage(): Record<string, DiagnosisResult> {
     return JSON.parse(raw);
   } catch {
     return {};
+  }
+}
+
+/** グローバルプロフィールをlocalStorageから復元 */
+function loadProfileFromStorage(): GlobalProfile {
+  if (typeof window === 'undefined') return { gender: null, age: null };
+  try {
+    const raw = localStorage.getItem(PROFILE_STORAGE_KEY);
+    if (!raw) return { gender: null, age: null };
+    return JSON.parse(raw);
+  } catch {
+    return { gender: null, age: null };
+  }
+}
+
+/** グローバルプロフィールをlocalStorageに保存 */
+function saveProfileToStorage(profile: GlobalProfile) {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+  } catch {
+    // 容量超過時は無視
   }
 }
 
@@ -81,4 +116,13 @@ export const usePersonaStore = create<PersonaState>((set, get) => ({
   },
 
   getCompletedCount: () => Object.keys(get().results).length,
+
+  // グローバルプロフィール
+  globalProfile: loadProfileFromStorage(),
+
+  setGlobalProfile: (gender, age) => {
+    const newProfile: GlobalProfile = { gender, age };
+    saveProfileToStorage(newProfile);
+    set({ globalProfile: newProfile });
+  },
 }));

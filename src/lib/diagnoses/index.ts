@@ -28,6 +28,7 @@ import { impressionDiagnosis } from './impression';
 import { brainDiagnosis } from './brain';
 import { jobDiagnosis } from './job';
 import { learningDiagnosis } from './learning';
+import { mbti64Diagnosis } from './mbti64';
 
 /** 全診断の設定マップ（ID → 設定） */
 export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
@@ -51,6 +52,7 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   brain: brainDiagnosis,
   job: jobDiagnosis,
   learning: learningDiagnosis,
+  mbti64: mbti64Diagnosis,
 };
 
 /** ポータル表示用の診断一覧（表示順制御） */
@@ -75,4 +77,5 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   brainDiagnosis,
   jobDiagnosis,
   learningDiagnosis,
+  mbti64Diagnosis,
 ];

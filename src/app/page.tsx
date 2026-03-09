@@ -1,11 +1,10 @@
 "use client";
 
 /**
- * ときめきラボ ポータルページ（改修版）
+ * ときめきラボ ポータルページ（超ハイクオリティ・ダークUI版）
  *
- * 22種の総合診断サイトとしてリブランディング。
- * サイエンス×ポップな「自分発見ラボ」をコンセプトに、
- * コンパクトなヒーロー、グローバルプロフィール、カテゴリ分けカードグリッドを実装。
+ * オーロラ背景 + 星空 + 流れ星 + グリッドライン で
+ * 「一つのハイクオリティなゲーム」をプレイしているような体験を実現。
  */
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -18,7 +17,7 @@ const LOVE_DIAGNOSIS = {
   id: "love",
   title: "恋愛性格診断",
   subtitle: "本格12タイプ判定",
-  emoji: "💘",
+  emoji: "\u{1F498}",
   themeColor: "#FF6BE8",
   gradientFrom: "#FF6BE8",
   gradientTo: "#C45AFF",
@@ -35,42 +34,36 @@ const LOVE_DIAGNOSIS = {
 // カテゴリ定義
 type CategoryKey = "all" | "personality" | "mind" | "ability" | "career" | "social" | "mystery";
 const CATEGORIES: { key: CategoryKey; label: string; emoji: string }[] = [
-  { key: "all", label: "すべて", emoji: "✦" },
-  { key: "personality", label: "性格・タイプ", emoji: "🧬" },
-  { key: "mind", label: "メンタル・心理", emoji: "🧠" },
-  { key: "ability", label: "能力・才能", emoji: "⭐" },
-  { key: "career", label: "仕事・将来", emoji: "🚀" },
-  { key: "social", label: "対人・SNS", emoji: "💬" },
-  { key: "mystery", label: "スピ・エンタメ", emoji: "🔮" },
+  { key: "all", label: "すべて", emoji: "\u2726" },
+  { key: "personality", label: "性格・タイプ", emoji: "\u{1F9EC}" },
+  { key: "mind", label: "メンタル・心理", emoji: "\u{1F9E0}" },
+  { key: "ability", label: "能力・才能", emoji: "\u2B50" },
+  { key: "career", label: "仕事・将来", emoji: "\u{1F680}" },
+  { key: "social", label: "対人・SNS", emoji: "\u{1F4AC}" },
+  { key: "mystery", label: "スピ・エンタメ", emoji: "\u{1F52E}" },
 ];
 
 // 各診断をカテゴリに分類するマップ
 const CATEGORY_MAP: Record<string, CategoryKey> = {
-  // 性格・タイプ
   mbti128: "personality",
   shadow: "personality",
   impression: "personality",
   chrono: "personality",
-  // メンタル・心理
   mental: "mind",
   stress: "mind",
   brain: "mind",
-  // 能力・才能
   talent: "ability",
   creative: "ability",
   learning: "ability",
-  // 仕事・将来
   career: "career",
   job: "career",
   leadership: "career",
   money: "career",
-  // 対人・SNS
   love: "social",
   commu: "social",
   friendship: "social",
   sns: "social",
   oshi: "social",
-  // スピ・エンタメ
   spirit: "mystery",
   isekai: "mystery",
   pastlife: "mystery",
@@ -104,16 +97,16 @@ const ALL_DIAGNOSES = [
 ];
 
 export default function PortalPage() {
-  // 星空パーティクル（50個以下に最適化）
+  // 星空パーティクル（ダーク背景向け）
   const starsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!starsRef.current) return;
     const container = starsRef.current;
     container.innerHTML = "";
-    // 白い星: 35個
-    for (let i = 0; i < 35; i++) {
+    // 白い星: 60個
+    for (let i = 0; i < 60; i++) {
       const star = document.createElement("div");
-      const size = Math.random() * 2.5 + 0.5;
+      const size = Math.random() * 2.5 + 1;
       Object.assign(star.style, {
         position: "absolute",
         width: `${size}px`,
@@ -122,32 +115,30 @@ export default function PortalPage() {
         borderRadius: "50%",
         top: `${Math.random() * 100}%`,
         left: `${Math.random() * 100}%`,
-        animation: `twinkle ${2 + Math.random() * 4}s ease-in-out infinite`,
+        animation: `twinkle ${3 + Math.random() * 4}s ease-in-out infinite`,
         animationDelay: `${Math.random() * 5}s`,
         opacity: "0.15",
       });
       container.appendChild(star);
     }
-    // 色付き星: 10個
-    const colors = ["#6366F1", "#EC4899", "#14B8A6", "#818CF8", "#F472B6", "#2DD4BF"];
-    for (let i = 0; i < 10; i++) {
-      const star = document.createElement("div");
-      const size = 2.5 + Math.random() * 1.5;
-      const c = colors[i % colors.length];
-      Object.assign(star.style, {
+
+    // 流れ星: 3個（時間差で出現）
+    for (let i = 0; i < 3; i++) {
+      const shooting = document.createElement("div");
+      Object.assign(shooting.style, {
         position: "absolute",
-        width: `${size}px`,
-        height: `${size}px`,
-        background: c,
-        borderRadius: "50%",
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        animation: `twinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
-        animationDelay: `${Math.random() * 4}s`,
-        opacity: "0.2",
-        boxShadow: `0 0 6px ${c}`,
+        top: `${5 + Math.random() * 30}%`,
+        left: `${Math.random() * 60}%`,
+        width: "0px",
+        height: "1px",
+        background: "linear-gradient(90deg, rgba(255,255,255,0.8), transparent)",
+        borderRadius: "1px",
+        animation: `shootingStar ${1.5 + Math.random()}s ease-in-out infinite`,
+        animationDelay: `${5 + i * 8 + Math.random() * 4}s`,
+        opacity: "0.7",
+        transformOrigin: "left center",
       });
-      container.appendChild(star);
+      container.appendChild(shooting);
     }
   }, []);
 
@@ -230,7 +221,7 @@ export default function PortalPage() {
     "脳タイプ完全解析",
     "裏キャラを暴く",
   ];
-  const tickerText = [...tickerItems, ...tickerItems].map((t) => `★ ${t} `).join("");
+  const tickerText = [...tickerItems, ...tickerItems].map((t) => `\u2605 ${t} `).join("");
 
   // プロフィール保存ハンドラ
   const handleSaveProfile = () => {
@@ -248,50 +239,87 @@ export default function PortalPage() {
 
   return (
     <>
-      {/* 背景エフェクト */}
+      {/* ===== 背景レイヤー群 ===== */}
+
+      {/* 星空パーティクル + 流れ星 */}
       <div
         ref={starsRef}
         style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}
         aria-hidden="true"
       />
 
-      {/* ブロブ（新カラーに変更） */}
-      <div
-        className="blob-dynamic-1"
-        style={{
-          position: "fixed", width: 500, height: 500, borderRadius: "50%",
-          background: "rgba(99,102,241,.08)", filter: "blur(90px)",
-          top: -150, right: -150, zIndex: 0, pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      />
-      <div
-        className="blob-dynamic-2"
-        style={{
-          position: "fixed", width: 400, height: 400, borderRadius: "50%",
-          background: "rgba(236,72,153,.06)", filter: "blur(90px)",
-          bottom: 0, left: -150, zIndex: 0, pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      />
+      {/* SFグリッドライン */}
       <div
         style={{
-          position: "fixed", width: 300, height: 300, borderRadius: "50%",
-          background: "rgba(20,184,166,.06)", filter: "blur(80px)",
-          top: "60%", left: "50%", zIndex: 0, pointerEvents: "none",
-          animation: "blobFloat 15s ease-in-out infinite",
+          position: "fixed", inset: 0,
+          backgroundImage: "linear-gradient(rgba(99,102,241,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,.03) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+          pointerEvents: "none", zIndex: 0,
         }}
         aria-hidden="true"
       />
 
-      {/* ティッカー（最上部固定） */}
+      {/* オーロラレイヤー1: 大きなインディゴブロブ */}
+      <div
+        style={{
+          position: "fixed", top: "-20%", left: "-10%",
+          width: "120vw", height: "50vh",
+          background: "radial-gradient(ellipse at 30% 50%, rgba(99,102,241,.18) 0%, transparent 60%)",
+          filter: "blur(80px)",
+          animation: "auroraWave1 20s ease-in-out infinite",
+          pointerEvents: "none", zIndex: 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* オーロラレイヤー2: ティールの光 */}
+      <div
+        style={{
+          position: "fixed", top: "10%", left: "20%",
+          width: "60vw", height: "40vh",
+          background: "radial-gradient(ellipse at 50% 50%, rgba(20,184,166,.12) 0%, transparent 70%)",
+          filter: "blur(100px)",
+          animation: "auroraWave2 25s ease-in-out infinite",
+          pointerEvents: "none", zIndex: 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* オーロラレイヤー3: マゼンタのアクセント */}
+      <div
+        style={{
+          position: "fixed", top: "30%", right: "-10%",
+          width: "50vw", height: "50vh",
+          background: "radial-gradient(ellipse at 60% 50%, rgba(236,72,153,.1) 0%, transparent 65%)",
+          filter: "blur(90px)",
+          animation: "auroraWave3 18s ease-in-out infinite",
+          pointerEvents: "none", zIndex: 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* オーロラレイヤー4: 底部のディープパープル */}
+      <div
+        style={{
+          position: "fixed", bottom: "-10%", left: "30%",
+          width: "70vw", height: "40vh",
+          background: "radial-gradient(ellipse at 50% 70%, rgba(139,92,246,.12) 0%, transparent 60%)",
+          filter: "blur(120px)",
+          animation: "auroraWave4 22s ease-in-out infinite",
+          pointerEvents: "none", zIndex: 0,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ===== ティッカー（最上部固定） ===== */}
       <div
         style={{
           position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
           overflow: "hidden", whiteSpace: "nowrap",
           padding: "4px 0", fontSize: "12px", fontWeight: 700,
           color: "#fff", letterSpacing: "0.04em",
-          background: "linear-gradient(135deg, #6366F1, #818CF8, #6366F1)",
+          background: "linear-gradient(135deg, rgba(99,102,241,.9), rgba(129,140,248,.9), rgba(99,102,241,.9))",
+          backdropFilter: "blur(8px)",
         }}
       >
         <span style={{ display: "inline-block", animation: "tickerScroll 25s linear infinite" }}>
@@ -299,37 +327,47 @@ export default function PortalPage() {
         </span>
       </div>
 
-      {/* ナビバー（ティッカーの下に配置） */}
+      {/* ===== ナビバー（ダーク半透明ガラス） ===== */}
       <nav
         style={{
           position: "fixed", top: 24, left: 0, right: 0, zIndex: 100,
           display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "12px 24px",
-          background: "rgba(15,23,42,.85)", backdropFilter: "blur(12px)",
-          borderBottom: "1px solid rgba(99,102,241,.15)",
+          background: "rgba(7,11,26,.8)",
+          backdropFilter: "blur(20px)",
+          borderBottom: "1px solid transparent",
+          borderImage: "linear-gradient(90deg, transparent, #6366F1, #EC4899, #14B8A6, transparent) 1",
+          boxShadow: "0 4px 20px rgba(0,0,0,.3)",
         }}
       >
-        <span className="font-stick" style={{ color: "#6366F1", fontSize: "1.2rem" }}>
+        <span className="font-stick" style={{
+          background: "linear-gradient(135deg, #818CF8, #EC4899, #14B8A6)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          fontSize: "1.2rem",
+        }}>
           ときめきラボ
         </span>
         <Link
           href="/persona"
           style={{
             padding: "6px 14px",
-            background: completedCount > 0 ? "linear-gradient(135deg, #6366F1, #818CF8)" : "rgba(255,255,255,.06)",
+            background: completedCount > 0 ? "linear-gradient(135deg, #6366F1, #818CF8)" : "rgba(99,102,241,.15)",
             borderRadius: 20,
             color: completedCount > 0 ? "#fff" : "rgba(255,255,255,.5)",
             fontSize: 11,
             fontWeight: 700,
             textDecoration: "none",
             letterSpacing: "0.03em",
+            border: completedCount > 0 ? "none" : "1px solid rgba(99,102,241,.2)",
           }}
         >
           {completedCount > 0 ? `PERSONA (${completedCount})` : "PERSONA CARD"}
         </Link>
       </nav>
 
-      {/* ヒーローセクション（コンパクト化） */}
+      {/* ===== ヒーローセクション ===== */}
       <section
         style={{
           minHeight: "40svh", display: "flex", flexDirection: "column",
@@ -337,9 +375,8 @@ export default function PortalPage() {
           padding: "100px 20px 24px", position: "relative", zIndex: 1,
         }}
       >
-        {/* メインタイトル */}
+        {/* メインタイトル（オーロラテキストグラデーション） */}
         <h1
-          className="hero-title-glow"
           style={{
             lineHeight: 1.1, marginBottom: 12,
             opacity: heroMounted ? 1 : 0,
@@ -349,10 +386,13 @@ export default function PortalPage() {
         >
           <span className="font-stick" style={{
             display: "block", fontSize: "clamp(36px, 10vw, 64px)",
-            background: "linear-gradient(135deg, #6366F1, #EC4899, #14B8A6)",
+            background: "linear-gradient(135deg, #818CF8, #EC4899, #14B8A6, #A78BFA, #F472B6)",
+            backgroundSize: "300% 300%",
+            animation: "textAuroraShift 8s ease-in-out infinite",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
+            filter: "drop-shadow(0 0 30px rgba(99,102,241,.3))",
           }}>
             ときめきラボ
           </span>
@@ -362,7 +402,7 @@ export default function PortalPage() {
         <p
           className="font-zen"
           style={{
-            fontSize: "1.1rem", fontWeight: 700, color: "rgba(255,255,255,.9)",
+            fontSize: "1.1rem", fontWeight: 700, color: "rgba(255,255,255,.85)",
             marginBottom: 16,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
@@ -372,7 +412,7 @@ export default function PortalPage() {
           22の診断で自分を完全解析。
         </p>
 
-        {/* バッジ（1行にコンパクトに） */}
+        {/* バッジ */}
         <div
           style={{
             display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap",
@@ -382,19 +422,20 @@ export default function PortalPage() {
           }}
         >
           {[
-            { label: "22種類", icon: "🧪" },
-            { label: "心理学ベース", icon: "🧠" },
-            { label: "完全無料", icon: "✦" },
-            { label: "ペルソナカード", icon: "🃏" },
+            { label: "22種類", icon: "\u{1F9EA}" },
+            { label: "心理学ベース", icon: "\u{1F9E0}" },
+            { label: "完全無料", icon: "\u2726" },
+            { label: "ペルソナカード", icon: "\u{1F0CF}" },
           ].map((badge) => (
             <span
               key={badge.label}
               style={{
                 padding: "4px 12px", borderRadius: 20,
-                background: "rgba(99,102,241,.08)",
+                background: "rgba(99,102,241,.1)",
                 border: "1px solid rgba(99,102,241,.2)",
                 fontSize: 11, color: "rgba(255,255,255,.7)",
                 letterSpacing: "0.03em",
+                backdropFilter: "blur(8px)",
               }}
             >
               <span style={{ marginRight: 3 }}>{badge.icon}</span>
@@ -404,21 +445,23 @@ export default function PortalPage() {
         </div>
       </section>
 
-      {/* 診断カードグリッド */}
+      {/* ===== 診断カードグリッド ===== */}
       <section
         style={{
           padding: "24px 16px 80px", maxWidth: 1100, margin: "0 auto",
           position: "relative", zIndex: 1,
         }}
       >
-        {/* グローバルプロフィール設定 */}
+        {/* グローバルプロフィール設定（ダークガラスカード） */}
         <div
           style={{
             marginBottom: 24,
             background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(99,102,241,.15)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255,255,255,.06)",
             borderRadius: 16,
             padding: "14px 20px",
+            boxShadow: "0 4px 20px rgba(0,0,0,.2)",
           }}
         >
           {globalProfile.gender && globalProfile.age ? (
@@ -428,11 +471,11 @@ export default function PortalPage() {
                 <span style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
                   width: 28, height: 28, borderRadius: "50%",
-                  background: "rgba(20,184,166,.15)", fontSize: 14,
+                  background: "rgba(20,184,166,.15)", fontSize: 14, color: "#14B8A6",
                 }}>
                   ✓
                 </span>
-                <span style={{ fontSize: 13, color: "rgba(255,255,255,.8)" }}>
+                <span style={{ fontSize: 13, color: "rgba(255,255,255,.6)" }}>
                   <strong style={{ color: "#14B8A6" }}>{globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で診断中
                 </span>
               </div>
@@ -445,7 +488,7 @@ export default function PortalPage() {
                 }}
                 style={{
                   padding: "4px 12px", borderRadius: 12,
-                  background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.2)",
+                  background: "rgba(99,102,241,.12)", border: "1px solid rgba(99,102,241,.2)",
                   color: "#818CF8", fontSize: 11, fontWeight: 700, cursor: "pointer",
                 }}
               >
@@ -455,7 +498,7 @@ export default function PortalPage() {
           ) : (
             // 未設定表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <span style={{ fontSize: 13, color: "rgba(255,255,255,.6)" }}>
+              <span style={{ fontSize: 13, color: "rgba(255,255,255,.5)" }}>
                 🧪 名前・年齢・性別を設定すると、診断がスムーズに！
               </span>
               <button
@@ -477,13 +520,13 @@ export default function PortalPage() {
             <div
               style={{
                 marginTop: 16, paddingTop: 16,
-                borderTop: "1px solid rgba(99,102,241,.1)",
+                borderTop: "1px solid rgba(255,255,255,.06)",
                 animation: "slideDown 0.3s ease-out",
               }}
             >
               {/* 名前入力 */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,.4)", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
                 <input
                   type="text"
                   value={tempName}
@@ -492,7 +535,7 @@ export default function PortalPage() {
                   maxLength={20}
                   style={{
                     width: "100%", padding: "10px 14px", borderRadius: 10,
-                    background: "rgba(255,255,255,.04)",
+                    background: "rgba(255,255,255,.06)",
                     border: "1px solid rgba(255,255,255,.1)",
                     color: "#fff", fontSize: 14, outline: "none",
                     fontFamily: "'Zen Maru Gothic', sans-serif",
@@ -505,7 +548,7 @@ export default function PortalPage() {
 
               {/* 性別選択 */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginBottom: 8 }}>性別</p>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,.4)", marginBottom: 8 }}>性別</p>
                 <div style={{ display: "flex", gap: 8 }}>
                   {[
                     { value: "male", label: "男性", emoji: "♂" },
@@ -518,8 +561,8 @@ export default function PortalPage() {
                       style={{
                         flex: 1, padding: "8px 0", borderRadius: 10,
                         background: tempGender === g.value ? "rgba(99,102,241,.2)" : "rgba(255,255,255,.04)",
-                        border: tempGender === g.value ? "1.5px solid #6366F1" : "1px solid rgba(255,255,255,.1)",
-                        color: tempGender === g.value ? "#818CF8" : "rgba(255,255,255,.6)",
+                        border: tempGender === g.value ? "1.5px solid #6366F1" : "1px solid rgba(255,255,255,.08)",
+                        color: tempGender === g.value ? "#818CF8" : "rgba(255,255,255,.5)",
                         fontSize: 13, fontWeight: 600, cursor: "pointer",
                         transition: "all 0.2s ease",
                       }}
@@ -532,8 +575,8 @@ export default function PortalPage() {
 
               {/* 年齢スライダー */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginBottom: 8 }}>
-                  年齢: <strong style={{ color: "#6366F1", fontSize: 16 }}>{tempAge}</strong>歳
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,.4)", marginBottom: 8 }}>
+                  年齢: <strong style={{ color: "#818CF8", fontSize: 16 }}>{tempAge}</strong>歳
                 </p>
                 <input
                   type="range"
@@ -545,7 +588,7 @@ export default function PortalPage() {
                   style={{
                     width: "100%", height: 6,
                     WebkitAppearance: "none", appearance: "none",
-                    background: `linear-gradient(to right, #6366F1 ${((tempAge - 10) / 50) * 100}%, rgba(255,255,255,.1) ${((tempAge - 10) / 50) * 100}%)`,
+                    background: `linear-gradient(to right, #6366F1 ${((tempAge - 10) / 50) * 100}%, rgba(255,255,255,.08) ${((tempAge - 10) / 50) * 100}%)`,
                     borderRadius: 3, outline: "none", cursor: "pointer",
                   }}
                 />
@@ -561,7 +604,7 @@ export default function PortalPage() {
                     ? "linear-gradient(135deg, #6366F1, #818CF8)"
                     : "rgba(255,255,255,.06)",
                   border: "none",
-                  color: tempGender ? "#fff" : "rgba(255,255,255,.3)",
+                  color: tempGender ? "#fff" : "rgba(255,255,255,.2)",
                   fontSize: 13, fontWeight: 700, cursor: tempGender ? "pointer" : "default",
                   transition: "all 0.2s ease",
                 }}
@@ -574,15 +617,15 @@ export default function PortalPage() {
 
         {/* セクションタイトル */}
         <div style={{ textAlign: "left", marginBottom: 20 }}>
-          <span style={{ fontSize: "0.75rem", letterSpacing: "0.15em", color: "#6366F1", display: "block", marginBottom: 6 }}>
+          <span style={{ fontSize: "0.75rem", letterSpacing: "0.15em", color: "#818CF8", display: "block", marginBottom: 6 }}>
             ALL DIAGNOSES
           </span>
-          <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)" }}>
+          <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)", color: "#fff" }}>
             診断を選ぶ
           </h2>
         </div>
 
-        {/* カテゴリタブ */}
+        {/* カテゴリタブ（ダーク対応） */}
         <div
           style={{
             display: "flex", gap: 8, marginBottom: 20,
@@ -598,7 +641,7 @@ export default function PortalPage() {
                 padding: "8px 16px", borderRadius: 20,
                 background: activeCategory === cat.key
                   ? "linear-gradient(135deg, #6366F1, #818CF8)"
-                  : "rgba(255,255,255,0.04)",
+                  : "rgba(255,255,255,.04)",
                 border: activeCategory === cat.key
                   ? "none"
                   : "1px solid rgba(255,255,255,.08)",
@@ -606,6 +649,7 @@ export default function PortalPage() {
                 fontSize: 12, fontWeight: 700, cursor: "pointer",
                 whiteSpace: "nowrap",
                 transition: "all 0.25s ease",
+                backdropFilter: "blur(8px)",
               }}
             >
               {cat.emoji} {cat.label}
@@ -637,28 +681,32 @@ export default function PortalPage() {
                   alignItems: "flex-start",
                   gap: 16,
                   textDecoration: "none",
-                  background: "rgba(255,255,255,0.04)",
-                  backdropFilter: "blur(8px)",
+                  background: "rgba(255,255,255,.03)",
+                  backdropFilter: "blur(12px)",
                   borderRadius: 16,
                   padding: "18px 18px",
                   border: "1px solid rgba(255,255,255,.06)",
+                  borderTop: "1px solid rgba(255,255,255,.06)",
                   position: "relative",
                   overflow: "hidden",
                   opacity: cardsVisible ? 1 : 0,
                   transform: cardsVisible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
-                  transition: `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, transform 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, border-color 0.3s, box-shadow 0.3s`,
+                  transition: `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, transform 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, border-color 0.3s, box-shadow 0.3s, border-top 0.3s`,
+                  boxShadow: "0 2px 8px rgba(0,0,0,.2)",
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
                   el.style.transform = "translateY(-3px) scale(1.01)";
-                  el.style.borderColor = diag.themeColor + "60";
-                  el.style.boxShadow = `0 0 20px ${diag.themeColor}20, 0 8px 24px rgba(0,0,0,.2)`;
+                  el.style.borderColor = diag.themeColor + "40";
+                  el.style.borderTop = `2px solid ${diag.themeColor}`;
+                  el.style.boxShadow = `0 0 25px ${diag.themeColor}20, 0 8px 30px rgba(0,0,0,.3)`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
                   el.style.transform = "none";
                   el.style.borderColor = "rgba(255,255,255,.06)";
-                  el.style.boxShadow = "none";
+                  el.style.borderTop = "1px solid rgba(255,255,255,.06)";
+                  el.style.boxShadow = "0 2px 8px rgba(0,0,0,.2)";
                 }}
               >
                 {/* 左側: 大きな絵文字アイコン */}
@@ -671,7 +719,7 @@ export default function PortalPage() {
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: 14,
-                    background: `linear-gradient(135deg, ${diag.themeColor}12, ${diag.themeColor}06)`,
+                    background: `linear-gradient(135deg, ${diag.themeColor}18, ${diag.themeColor}08)`,
                     flexShrink: 0,
                   }}
                 >
@@ -686,7 +734,7 @@ export default function PortalPage() {
                       className="font-zen"
                       style={{
                         fontSize: "0.95rem", fontWeight: 700,
-                        color: "rgba(255,255,255,.9)",
+                        color: "#fff",
                         margin: 0,
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                       }}
@@ -697,7 +745,7 @@ export default function PortalPage() {
                       <span style={{
                         display: "inline-flex", alignItems: "center", justifyContent: "center",
                         width: 18, height: 18, borderRadius: "50%",
-                        background: "rgba(20,184,166,.2)", fontSize: 10, color: "#14B8A6",
+                        background: "rgba(20,184,166,.15)", fontSize: 10, color: "#14B8A6",
                         flexShrink: 0,
                       }}>
                         ✓
@@ -721,14 +769,14 @@ export default function PortalPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                     <span style={{
                       padding: "2px 8px", borderRadius: 8,
-                      background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.15)",
+                      background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.2)",
                       fontSize: 10, color: "rgba(255,255,255,.5)",
                     }}>
                       {diag.questionCount}問
                     </span>
                     <span style={{
                       padding: "2px 8px", borderRadius: 8,
-                      background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.15)",
+                      background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.2)",
                       fontSize: 10, color: "rgba(255,255,255,.5)",
                     }}>
                       約{diag.estimatedMinutes}分
@@ -736,7 +784,7 @@ export default function PortalPage() {
                     {isCompleted && result && (
                       <span style={{
                         padding: "2px 8px", borderRadius: 8,
-                        background: "rgba(20,184,166,.1)", border: "1px solid rgba(20,184,166,.15)",
+                        background: "rgba(20,184,166,.1)", border: "1px solid rgba(20,184,166,.2)",
                         fontSize: 10, color: "#14B8A6", fontWeight: 600,
                       }}>
                         {result.typeName}
@@ -761,7 +809,7 @@ export default function PortalPage() {
                   style={{
                     position: "absolute",
                     top: 0, right: 0, width: 100, height: 100,
-                    background: `radial-gradient(circle at top right, ${diag.themeColor}08, transparent 70%)`,
+                    background: `radial-gradient(circle at top right, ${diag.themeColor}0A, transparent 70%)`,
                     pointerEvents: "none",
                   }}
                 />
@@ -771,7 +819,7 @@ export default function PortalPage() {
         </div>
       </section>
 
-      {/* ペルソナカード誘導セクション */}
+      {/* ===== ペルソナカード誘導セクション ===== */}
       <section
         style={{
           padding: "40px 20px",
@@ -784,22 +832,31 @@ export default function PortalPage() {
       >
         <div
           style={{
-            background: "linear-gradient(135deg, rgba(99,102,241,.08), rgba(236,72,153,.06), rgba(20,184,166,.06))",
-            border: "1px solid rgba(99,102,241,.15)",
+            background: "rgba(255,255,255,.04)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255,255,255,.06)",
             borderRadius: 20,
             padding: "32px 24px",
+            boxShadow: "0 4px 30px rgba(0,0,0,.2)",
           }}
         >
           <div style={{ fontSize: 40, marginBottom: 12 }}>🃏</div>
           <h2
             className="font-stick"
-            style={{ fontSize: "clamp(1.2rem, 4vw, 1.6rem)", color: "#6366F1", marginBottom: 10 }}
+            style={{
+              fontSize: "clamp(1.2rem, 4vw, 1.6rem)",
+              background: "linear-gradient(135deg, #818CF8, #EC4899, #14B8A6)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              marginBottom: 10,
+            }}
           >
             ペルソナカード
           </h2>
           <p
             style={{
-              fontSize: 13, color: "rgba(255,255,255,.6)", lineHeight: 1.8,
+              fontSize: 13, color: "rgba(255,255,255,.5)", lineHeight: 1.8,
               marginBottom: 20, maxWidth: 400, margin: "0 auto 20px",
             }}
           >
@@ -818,7 +875,7 @@ export default function PortalPage() {
               borderRadius: 50,
               fontWeight: 700,
               fontFamily: "'Zen Maru Gothic', sans-serif",
-              boxShadow: "0 4px 20px rgba(99,102,241,.2)",
+              boxShadow: "0 4px 20px rgba(99,102,241,.3)",
               transition: "all 0.3s ease",
             }}
           >
@@ -829,7 +886,7 @@ export default function PortalPage() {
         </div>
       </section>
 
-      {/* フッター */}
+      {/* ===== フッター ===== */}
       <footer
         style={{
           padding: "40px 20px 30px", textAlign: "center",
@@ -839,7 +896,7 @@ export default function PortalPage() {
       >
         <div className="font-stick" style={{
           fontSize: "1.2rem", marginBottom: 8,
-          background: "linear-gradient(135deg, #6366F1, #EC4899)",
+          background: "linear-gradient(135deg, #818CF8, #EC4899)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
           backgroundClip: "text",
@@ -862,34 +919,7 @@ export default function PortalPage() {
           }
         }
 
-        .hero-title-glow span {
-          animation: titleGlowBreath 3s ease-in-out infinite;
-        }
-        @keyframes titleGlowBreath {
-          0%, 100% {
-            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.15));
-          }
-          50% {
-            filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.4)) drop-shadow(0 0 50px rgba(236, 72, 153, 0.15));
-          }
-        }
-
-        .blob-dynamic-1 { animation: blobDynamic1 14s ease-in-out infinite; }
-        @keyframes blobDynamic1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(-40px, 30px) scale(1.05); }
-          50% { transform: translate(30px, -50px) scale(0.95); }
-          75% { transform: translate(-20px, -30px) scale(1.02); }
-        }
-
-        .blob-dynamic-2 { animation: blobDynamic2 18s ease-in-out infinite; }
-        @keyframes blobDynamic2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(50px, -40px) scale(1.08); }
-          66% { transform: translate(-30px, 40px) scale(0.93); }
-        }
-
-        /* スライダーのサム（つまみ）スタイル */
+        /* スライダーのサム（つまみ）スタイル（ダーク版） */
         input[type="range"]::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
@@ -898,8 +928,8 @@ export default function PortalPage() {
           border-radius: 50%;
           background: #6366F1;
           cursor: pointer;
-          box-shadow: 0 0 8px rgba(99,102,241,.4);
-          border: 2px solid #fff;
+          box-shadow: 0 0 12px rgba(99,102,241,.5);
+          border: 2px solid rgba(255,255,255,.2);
         }
         input[type="range"]::-moz-range-thumb {
           width: 20px;
@@ -907,8 +937,8 @@ export default function PortalPage() {
           border-radius: 50%;
           background: #6366F1;
           cursor: pointer;
-          box-shadow: 0 0 8px rgba(99,102,241,.4);
-          border: 2px solid #fff;
+          box-shadow: 0 0 12px rgba(99,102,241,.5);
+          border: 2px solid rgba(255,255,255,.2);
         }
       `}</style>
     </>

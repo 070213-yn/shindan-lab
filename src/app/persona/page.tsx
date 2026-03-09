@@ -93,7 +93,18 @@ export default function PersonaPage() {
             borderBottom: "1px solid rgba(255,107,232,.15)",
           }}
         >
-          <Link href="/" style={{ textDecoration: "none" }}>
+          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
+            <span
+              style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                width: 30, height: 30, borderRadius: "50%",
+                background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.1)",
+                color: "rgba(255,255,255,.6)", fontSize: 14,
+                transition: "all 0.2s ease",
+              }}
+            >
+              &#8592;
+            </span>
             <span className="font-stick" style={{ color: "#FF6BE8", fontSize: "1.2rem" }}>
               ときめきラボ
             </span>

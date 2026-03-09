@@ -7,6 +7,7 @@
  * 診断ごとのテーマカラーに基づいた演出で期待感を高める。
  */
 
+import Link from "next/link";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 
@@ -28,11 +29,47 @@ export default function DiagLanding({ config, store }: Props) {
       style={{
         minHeight: "100vh",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "40px 20px",
+        flexDirection: "column",
+        padding: "0 20px 40px",
       }}
     >
+      {/* ホームに戻るリンク */}
+      <div
+        style={{
+          padding: "16px 0 0",
+          animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0s both",
+        }}
+      >
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "8px 14px",
+            borderRadius: 20,
+            background: "rgba(255,255,255,.04)",
+            border: "1px solid rgba(255,255,255,.08)",
+            color: "rgba(255,255,255,.6)",
+            fontSize: 12,
+            fontWeight: 600,
+            textDecoration: "none",
+            transition: "all 0.2s ease",
+          }}
+        >
+          <span style={{ fontSize: 14 }}>&#8592;</span>
+          ホームに戻る
+        </Link>
+      </div>
+
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
       <div
         style={{
           maxWidth: 420,
@@ -40,13 +77,13 @@ export default function DiagLanding({ config, store }: Props) {
           textAlign: "center",
         }}
       >
-        {/* 診断の絵文字（大きめ、ゆらゆらアニメーション） */}
+        {/* 診断の絵文字（コンパクト化） */}
         <div
           style={{
-            fontSize: 72,
-            marginBottom: 20,
+            fontSize: 52,
+            marginBottom: 14,
             animation: "floatDiagonal 5s ease-in-out infinite",
-            filter: `drop-shadow(0 0 20px ${config.themeColor}40)`,
+            filter: `drop-shadow(0 0 16px ${config.themeColor}40)`,
           }}
         >
           {config.emoji}
@@ -56,9 +93,9 @@ export default function DiagLanding({ config, store }: Props) {
         <h1
           className="font-stick"
           style={{
-            fontSize: 26,
+            fontSize: 24,
             color: "#fff",
-            marginBottom: 8,
+            marginBottom: 6,
             animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.1s both",
           }}
         >
@@ -69,10 +106,10 @@ export default function DiagLanding({ config, store }: Props) {
         <p
           className="font-zen"
           style={{
-            fontSize: 14,
+            fontSize: 13,
             color: config.themeColor,
             fontWeight: 700,
-            marginBottom: 28,
+            marginBottom: 20,
             lineHeight: 1.6,
             animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.2s both",
           }}
@@ -86,14 +123,14 @@ export default function DiagLanding({ config, store }: Props) {
             background: "rgba(255,255,255,.04)",
             border: "1px solid rgba(255,255,255,.08)",
             borderRadius: 16,
-            padding: "20px 18px",
-            marginBottom: 24,
+            padding: "16px 16px",
+            marginBottom: 20,
             textAlign: "left",
             animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.3s both",
           }}
         >
           {/* この診断でわかること */}
-          <div style={{ marginBottom: 16 }}>
+          <div style={{ marginBottom: 14 }}>
             <div
               style={{
                 fontSize: 10,
@@ -111,10 +148,6 @@ export default function DiagLanding({ config, store }: Props) {
                 fontSize: 13,
                 color: "rgba(255,255,255,.7)",
                 lineHeight: 1.7,
-                display: "-webkit-box",
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: "vertical",
-                overflow: "hidden",
               }}
             >
               {config.description}
@@ -230,7 +263,7 @@ export default function DiagLanding({ config, store }: Props) {
         {referenceLabel && (
           <p
             style={{
-              marginTop: 16,
+              marginTop: 12,
               fontSize: 10,
               color: "rgba(255,255,255,.3)",
               animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.55s both",
@@ -239,6 +272,7 @@ export default function DiagLanding({ config, store }: Props) {
             {referenceLabel}等の研究に基づいた本格診断
           </p>
         )}
+      </div>
       </div>
     </div>
   );

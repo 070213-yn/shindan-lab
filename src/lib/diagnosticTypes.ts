@@ -165,7 +165,19 @@ export function findBestTypeGeneric(
 
 /**
  * プロフィール情報に基づいてスコアを補正する（汎用版）
- * 性別・年齢による微調整
+ *
+ * 科学的根拠:
+ * - Eriksonの心理社会的発達理論: 各ライフステージで異なる発達課題がある
+ *   (少年期=勤勉性, 青年期=アイデンティティ, 壮年期=生殖性, 熟年期=統合性)
+ * - Cattellの流動性知能(Gf)/結晶性知能(Gc)理論:
+ *   流動性知能(創造力・適応力)は青年期にピーク、結晶性知能(経験・知恵)は加齢で上昇
+ * - Costa & McCrae (1992) Big Five年齢変化研究:
+ *   外向性・開放性は加齢で微減、協調性・誠実性は加齢で微増、神経症傾向は微減
+ * - Helson & Soto (2005) 性格発達研究:
+ *   性別差は存在するが個人差に比べ小さく、年齢とともに縮小する傾向がある
+ *
+ * 補正幅: 最大±8（元のスコアを大きく歪めない程度）
+ * 年齢範囲: 10歳〜70歳（範囲外はクランプ）
  */
 export function applyProfileModifiersGeneric(
   norm: number[],
@@ -176,14 +188,185 @@ export function applyProfileModifiersGeneric(
   const gender = profileData['gender'] as string | null;
   const age = profileData['age'] as number | null;
 
-  // 年齢による微調整（若年層は感性系が高く、年齢が上がると理性系が高い）
+  // --- ライフステージ別キーワードマッチング補正 ---
   if (age !== null) {
-    const ageRatio = Math.min(1, Math.max(0, (age - 10) / 40)); // 10歳→0, 50歳→1
-    // 各次元を±5%の範囲で微調整
-    result.forEach((val, i) => {
-      const adjustment = (i % 2 === 0 ? -1 : 1) * ageRatio * 5;
-      result[i] = Math.max(0, Math.min(100, Math.round(val + adjustment)));
+    // 年齢を10〜70にクランプ
+    const clampedAge = Math.min(70, Math.max(10, age));
+
+    // 各次元のlabelに含まれるキーワードで補正値を決定する
+    // キーワードカテゴリ定義（label部分一致で判定）
+    const keywordCategories: Record<string, string[]> = {
+      // 感性・直感・創造性系
+      sensitivity: ['感性', '感受性', '直感', '創造', 'クリエイティブ', '想像', '芸術', '美的', 'インスピレーション', '好奇心', '遊び'],
+      // 論理・分析・管理系
+      logic: ['論理', '分析', '管理', '計画', '戦略', '体系', '秩序', '効率', '組織', 'マネジメント'],
+      // 冒険・挑戦・行動系
+      adventure: ['冒険', '挑戦', '行動', '大胆', '積極', 'チャレンジ', '開拓', '衝動', '情熱', 'エネルギー'],
+      // 社交・コミュニケーション系
+      social: ['社交', 'コミュニケーション', '外向', '対人', '協調', '共感', '人間関係', 'チームワーク', '交流'],
+      // 安定・堅実・忍耐系
+      stability: ['安定', '堅実', '忍耐', '持続', '継続', '慎重', '保守', '着実', '粘り強', '責任'],
+      // リーダーシップ・実行力系
+      leadership: ['リーダー', '実行', '決断', '主導', '統率', '推進', '意志', '自信', '影響力'],
+      // 知恵・内省・精神性系
+      wisdom: ['知恵', '内省', '精神', '哲学', '洞察', '悟り', '深み', '成熟', '思慮', '俯瞰', '包容'],
+      // 体力・活力・スピード系
+      physical: ['体力', '活力', 'スピード', '瞬発', '反射', '運動', '身体', 'パワー', 'スタミナ'],
+    };
+
+    /**
+     * ライフステージごとの各カテゴリ補正値（最大±8）
+     * 正の値 = そのステージでその特性が高まる
+     * 負の値 = そのステージでその特性が低め
+     */
+    interface StageModifiers {
+      sensitivity: number;
+      logic: number;
+      adventure: number;
+      social: number;
+      stability: number;
+      leadership: number;
+      wisdom: number;
+      physical: number;
+    }
+
+    // 各ライフステージの補正テーブル
+    const stageTable: { minAge: number; maxAge: number; modifiers: StageModifiers }[] = [
+      {
+        // 少年期(10-15): Eriksonの「勤勉性vs劣等感」、Cattellの流動性知能が伸び盛り
+        minAge: 10, maxAge: 15,
+        modifiers: {
+          sensitivity: 7, logic: -4, adventure: 4, social: 2,
+          stability: -5, leadership: -3, wisdom: -3, physical: 5,
+        },
+      },
+      {
+        // 青年期(16-25): Eriksonの「アイデンティティ確立」、外向性・開放性がピーク
+        minAge: 16, maxAge: 25,
+        modifiers: {
+          sensitivity: 4, logic: 0, adventure: 8, social: 6,
+          stability: -4, leadership: 2, wisdom: -2, physical: 6,
+        },
+      },
+      {
+        // 壮年期(26-40): Eriksonの「親密性→生殖性」、Big Fiveの誠実性が上昇
+        minAge: 26, maxAge: 40,
+        modifiers: {
+          sensitivity: 0, logic: 4, adventure: 2, social: 3,
+          stability: 3, leadership: 6, wisdom: 2, physical: 2,
+        },
+      },
+      {
+        // 中年期(41-55): 結晶性知能が高く、Costa & McCraeの協調性・誠実性が高い
+        minAge: 41, maxAge: 55,
+        modifiers: {
+          sensitivity: -2, logic: 5, adventure: -4, social: 0,
+          stability: 7, leadership: 4, wisdom: 5, physical: -3,
+        },
+      },
+      {
+        // 熟年期(56-70): Eriksonの「統合性」、結晶性知能の蓄積、内省的
+        minAge: 56, maxAge: 70,
+        modifiers: {
+          sensitivity: 2, logic: 3, adventure: -6, social: -2,
+          stability: 5, leadership: 0, wisdom: 8, physical: -6,
+        },
+      },
+    ];
+
+    // 現在のライフステージを特定（境界付近はブレンド）
+    const getStageModifier = (ageVal: number): StageModifiers => {
+      // 完全にステージ内にいる場合
+      for (const stage of stageTable) {
+        if (ageVal >= stage.minAge && ageVal <= stage.maxAge) {
+          // ステージ境界3歳以内ならブレンド（滑らかな遷移）
+          const nextStageIdx = stageTable.indexOf(stage) + 1;
+          if (nextStageIdx < stageTable.length) {
+            const nextStage = stageTable[nextStageIdx];
+            const transitionStart = stage.maxAge - 2; // 境界の2歳前からブレンド開始
+            if (ageVal >= transitionStart) {
+              const blend = (ageVal - transitionStart) / (stage.maxAge - transitionStart + 1);
+              const blended = {} as StageModifiers;
+              for (const key of Object.keys(stage.modifiers) as (keyof StageModifiers)[]) {
+                blended[key] = stage.modifiers[key] * (1 - blend) + nextStage.modifiers[key] * blend;
+              }
+              return blended;
+            }
+          }
+          return { ...stage.modifiers };
+        }
+      }
+      // フォールバック（到達しないはず）
+      return { sensitivity: 0, logic: 0, adventure: 0, social: 0, stability: 0, leadership: 0, wisdom: 0, physical: 0 };
+    };
+
+    const stageMods = getStageModifier(clampedAge);
+
+    // 各次元のlabelをキーワードカテゴリにマッチさせて補正を適用
+    dimensions.forEach((dim, i) => {
+      const label = dim.label;
+      let totalAdjustment = 0;
+      let matchCount = 0;
+
+      for (const [category, keywords] of Object.entries(keywordCategories)) {
+        const matched = keywords.some((kw) => label.includes(kw));
+        if (matched) {
+          totalAdjustment += stageMods[category as keyof StageModifiers];
+          matchCount++;
+        }
+      }
+
+      // 複数カテゴリにマッチした場合は平均を取る（過剰補正を防ぐ）
+      if (matchCount > 0) {
+        const adjustment = totalAdjustment / matchCount;
+        result[i] = Math.max(0, Math.min(100, Math.round(result[i] + adjustment)));
+      }
     });
+  }
+
+  // --- 性別による微調整 ---
+  // Costa & McCrae (2001): 女性は協調性・神経症傾向がやや高い、男性は外向性の主張面がやや高い
+  // Helson & Soto (2005): 性差は個人差に比べ小さい → 補正幅は最大±3に抑える
+  if (gender) {
+    const genderKeywordMap: Record<string, { keywords: string[]; maleAdj: number; femaleAdj: number }[]> = {
+      // 共感・感受性: 女性がやや高い傾向（Baron-Cohen共感化-体系化理論、ただし差は小さい）
+      empathy: [
+        { keywords: ['共感', '感受性', '感性', '思いやり', '包容'], maleAdj: -2, femaleAdj: 2 },
+      ],
+      // 体系化・論理: 男性がやや高い傾向（ただしこれも平均差であり個人差が大きい）
+      systemizing: [
+        { keywords: ['論理', '分析', '体系', '戦略'], maleAdj: 2, femaleAdj: -1 },
+      ],
+      // 協調性: 女性がやや高い（Costa & McCrae, 2001）
+      agreeableness: [
+        { keywords: ['協調', 'チームワーク', '調和', '対人'], maleAdj: -1, femaleAdj: 2 },
+      ],
+      // 主張・競争: 男性がやや高い（ただし僅差）
+      assertiveness: [
+        { keywords: ['主導', '競争', '大胆', '挑戦', '決断'], maleAdj: 2, femaleAdj: -1 },
+      ],
+      // 内省・精神性: 女性がやや高い傾向
+      introspection: [
+        { keywords: ['内省', '精神', '直感', '洞察'], maleAdj: -1, femaleAdj: 1 },
+      ],
+    };
+
+    const isMale = gender === 'male' || gender === '男性';
+    const isFemale = gender === 'female' || gender === '女性';
+
+    if (isMale || isFemale) {
+      dimensions.forEach((dim, i) => {
+        const label = dim.label;
+        for (const entries of Object.values(genderKeywordMap)) {
+          for (const entry of entries) {
+            if (entry.keywords.some((kw) => label.includes(kw))) {
+              const adj = isMale ? entry.maleAdj : entry.femaleAdj;
+              result[i] = Math.max(0, Math.min(100, Math.round(result[i] + adj)));
+            }
+          }
+        }
+      });
+    }
   }
 
   return result;

@@ -671,3 +671,39 @@ body {
   90% { opacity: 0.6; }
   100% { transform: translateY(-100vh) rotate(180deg); opacity: 0; }
 }
+
+/* ===========================
+   可愛いエフェクト
+   =========================== */
+
+/* 可愛いカードホバーエフェクト */
+.card-cute:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(45,212,191,0.15), 0 0 0 2px rgba(45,212,191,0.1);
+}
+.card-cute {
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ボタンの可愛いバウンス */
+.btn-cute:active {
+  transform: scale(0.95);
+}
+.btn-cute {
+  transition: all 0.2s ease;
+}
+.btn-cute:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(45,212,191,0.2);
+}
+
+/* タイトルの可愛い装飾 */
+.title-cute::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, #2dd4bf, #38bdf8);
+  border-radius: 2px;
+  margin: 8px auto 0;
+}

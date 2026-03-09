@@ -14,6 +14,7 @@
  */
 
 import { useEffect, useRef, useCallback, useState } from "react";
+import Link from "next/link";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 
@@ -175,12 +176,34 @@ export default function DiagQuizFeed({ config, store }: Props) {
             marginBottom: 6,
           }}
         >
-          <span
-            className="font-zen"
-            style={{ fontSize: 12, fontWeight: 700, color: config.themeColor }}
-          >
-            {config.emoji} {config.title}
-          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Link
+              href="/"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "8px 14px",
+                borderRadius: 20,
+                background: "rgba(255,255,255,0.7)",
+                border: "1px solid rgba(45,212,191,0.2)",
+                color: "#2dd4bf",
+                fontSize: 12,
+                fontWeight: 600,
+                textDecoration: "none",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <span style={{ fontSize: 14 }}>&#8592;</span>
+              ホームに戻る
+            </Link>
+            <span
+              className="font-zen"
+              style={{ fontSize: 12, fontWeight: 700, color: config.themeColor }}
+            >
+              {config.emoji} {config.title}
+            </span>
+          </div>
           <span style={{ fontSize: 12, color: "rgba(74,101,114,.6)" }}>
             {answeredCount} / {questions.length}
           </span>

@@ -111,12 +111,34 @@ export default function LandingPage() {
           boxShadow: "0 2px 12px rgba(0,0,0,.04)",
         }}
       >
-        <span
-          className="font-stick"
-          style={{ color: "#2dd4bf", fontSize: "1.2rem" }}
-        >
-          ときめきラボ
-        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <Link
+            href="/"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "8px 14px",
+              borderRadius: 20,
+              background: "rgba(255,255,255,0.7)",
+              border: "1px solid rgba(45,212,191,0.2)",
+              color: "#2dd4bf",
+              fontSize: 12,
+              fontWeight: 600,
+              textDecoration: "none",
+              backdropFilter: "blur(8px)",
+            }}
+          >
+            <span style={{ fontSize: 14 }}>&#8592;</span>
+            ホームに戻る
+          </Link>
+          <span
+            className="font-stick"
+            style={{ color: "#2dd4bf", fontSize: "1.2rem" }}
+          >
+            ときめきラボ
+          </span>
+        </div>
         <Link
           href="/love/quiz"
           className="btn-gradient"

@@ -9,6 +9,7 @@
  */
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useQuizStore } from "@/store/quizStore";
 import ProfileSetup from "@/components/ProfileSetup";
 import QuizFeed from "@/components/QuizFeed";
@@ -34,6 +35,30 @@ export default function QuizPage() {
 
   return (
     <div className="bg-fresh-pattern" style={{ background: "#F0FAFA", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
+      {/* ===== ホームに戻るボタン ===== */}
+      <div style={{ position: "relative", zIndex: 2, padding: "16px 20px 0" }}>
+        <Link
+          href="/"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            padding: "8px 14px",
+            borderRadius: 20,
+            background: "rgba(255,255,255,0.7)",
+            border: "1px solid rgba(45,212,191,0.2)",
+            color: "#2dd4bf",
+            fontSize: 12,
+            fontWeight: 600,
+            textDecoration: "none",
+            backdropFilter: "blur(8px)",
+          }}
+        >
+          <span style={{ fontSize: 14 }}>&#8592;</span>
+          ホームに戻る
+        </Link>
+      </div>
+
       {/* ===== メインコンテンツ ===== */}
       <div style={{ position: "relative", zIndex: 1 }}>
         {/* ステップ1: プロフィール設定 */}

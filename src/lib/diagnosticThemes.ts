@@ -45,494 +45,489 @@ export interface DiagnosticTheme {
   accentEmoji: string;
 }
 
-/** 全22診断のテーマ定義 */
+/** 全22診断のテーマ定義（爽やかライトテーマ） */
 const FULL_THEMES: Record<string, DiagnosticTheme> = {
-  // ── mbti128: SF・未来的、ディープパープル宇宙 ──
+  // ── mbti128: 淡いラベンダー ──
   mbti128: {
-    bgColor: '#0B0D2E',
-    bgGradient: 'linear-gradient(135deg, #0B0D2E 0%, #1A0A3E 40%, #0D1B3E 100%)',
+    bgColor: '#F0ECFF',
+    bgGradient: 'linear-gradient(135deg, #F0ECFF 0%, #E8F0FF 50%, #F5ECFF 100%)',
     bgPattern: 'dna',
     bgStyle: {
       backgroundImage:
-        'repeating-linear-gradient(45deg, rgba(139,92,246,0.03) 0px, transparent 4px, transparent 12px), repeating-linear-gradient(-45deg, rgba(59,130,246,0.03) 0px, transparent 4px, transparent 12px)',
+        'radial-gradient(circle at 25% 25%, rgba(139,92,246,0.06) 0%, transparent 40%), radial-gradient(circle at 75% 75%, rgba(99,102,241,0.05) 0%, transparent 40%)',
     },
-    particleColors: ['#FF6BE8', '#7B5CFF', '#38BDF8', '#34D399', '#FBBF24'],
-    particleCount: 60,
-    particleType: 'sparkles',
-    blob1Color: 'rgba(139,92,246,0.25)',
-    blob2Color: 'rgba(59,130,246,0.2)',
-    cardBg: 'rgba(139,92,246,0.08)',
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(139,92,246,0.12)',
+    blob2Color: 'rgba(99,102,241,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
     cardBorder: 'rgba(139,92,246,0.2)',
-    textPrimary: '#E0D4FF',
-    textSecondary: 'rgba(224,212,255,0.6)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '🧬',
   },
 
-  // ── talent: 豪華・王者、ゴールド×ダークネイビー ──
+  // ── talent: 淡いゴールド ──
   talent: {
-    bgColor: '#0A0E1A',
-    bgGradient: 'linear-gradient(135deg, #0A0E1A 0%, #1A1500 40%, #0D0A00 100%)',
+    bgColor: '#FFF8E8',
+    bgGradient: 'linear-gradient(135deg, #FFF8E8 0%, #FFF5E0 50%, #FFFAEC 100%)',
     bgPattern: 'sparkle',
     bgStyle: {
       backgroundImage:
-        'radial-gradient(circle at 25% 25%, rgba(250,204,21,0.06) 0%, transparent 40%), radial-gradient(circle at 75% 75%, rgba(234,179,8,0.05) 0%, transparent 40%)',
+        'radial-gradient(circle at 25% 25%, rgba(250,204,21,0.08) 0%, transparent 40%), radial-gradient(circle at 75% 75%, rgba(234,179,8,0.06) 0%, transparent 40%)',
     },
-    particleColors: ['#FFD700', '#FFC107', '#FFE082', '#FFAB00'],
-    particleCount: 50,
-    particleType: 'sparkles',
-    blob1Color: 'rgba(255,215,0,0.2)',
-    blob2Color: 'rgba(255,193,7,0.15)',
-    cardBg: 'rgba(255,215,0,0.06)',
-    cardBorder: 'rgba(255,215,0,0.15)',
-    textPrimary: '#FFF8DC',
-    textSecondary: 'rgba(255,248,220,0.6)',
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(255,215,0,0.12)',
+    blob2Color: 'rgba(255,193,7,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(255,215,0,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '⭐',
   },
 
-  // ── spirit: 瞑想・スピリチュアル、深い藍色 ──
+  // ── spirit: 淡いブルー ──
   spirit: {
-    bgColor: '#060D1F',
-    bgGradient: 'linear-gradient(180deg, #060D1F 0%, #0A1628 50%, #0D0F2A 100%)',
+    bgColor: '#E8F0FF',
+    bgGradient: 'linear-gradient(180deg, #E8F0FF 0%, #EDF4FF 50%, #E8EEFF 100%)',
     bgPattern: 'mystic',
     bgStyle: {
       backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(100,149,237,0.06) 0%, transparent 50%), conic-gradient(from 0deg at 50% 50%, transparent, rgba(100,149,237,0.03), transparent, rgba(70,130,230,0.02), transparent)',
+        'radial-gradient(circle at 50% 50%, rgba(100,149,237,0.08) 0%, transparent 50%)',
     },
-    particleColors: ['#B0C4DE', '#87CEEB', '#E0E8FF'],
-    particleCount: 30,
-    particleType: 'orbs',
-    blob1Color: 'rgba(100,149,237,0.2)',
-    blob2Color: 'rgba(70,130,230,0.15)',
-    cardBg: 'rgba(100,149,237,0.06)',
-    cardBorder: 'rgba(100,149,237,0.15)',
-    textPrimary: '#C8D8F0',
-    textSecondary: 'rgba(200,216,240,0.6)',
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(100,149,237,0.12)',
+    blob2Color: 'rgba(70,130,230,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(100,149,237,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '🔮',
   },
 
-  // ── isekai: RPGファンタジー、暗い森のエメラルドグリーン ──
+  // ── isekai: 淡いグリーン ──
   isekai: {
-    bgColor: '#060F0A',
-    bgGradient: 'linear-gradient(135deg, #060F0A 0%, #0A1A0F 40%, #081510 100%)',
+    bgColor: '#E8FFF0',
+    bgGradient: 'linear-gradient(135deg, #E8FFF0 0%, #EDFFF5 50%, #E8FFEC 100%)',
     bgPattern: 'fantasy',
     bgStyle: {
       backgroundImage:
-        'radial-gradient(circle at 20% 80%, rgba(34,197,94,0.05) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(16,185,129,0.04) 0%, transparent 40%)',
+        'radial-gradient(circle at 20% 80%, rgba(34,197,94,0.07) 0%, transparent 40%), radial-gradient(circle at 80% 20%, rgba(16,185,129,0.05) 0%, transparent 40%)',
     },
-    particleColors: ['#86EFAC', '#4ADE80', '#A7F3D0', '#6EE7B7'],
-    particleCount: 45,
-    particleType: 'leaves',
-    blob1Color: 'rgba(34,197,94,0.2)',
-    blob2Color: 'rgba(16,185,129,0.15)',
-    cardBg: 'rgba(34,197,94,0.06)',
-    cardBorder: 'rgba(34,197,94,0.15)',
-    textPrimary: '#D1FAE5',
-    textSecondary: 'rgba(209,250,229,0.6)',
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(34,197,94,0.12)',
+    blob2Color: 'rgba(16,185,129,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(34,197,94,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '⚔️',
   },
 
-  // ── mental: 深海・静寂、穏やかなティール〜ダークシアン ──
+  // ── mental: 淡いティール ──
   mental: {
-    bgColor: '#041518',
-    bgGradient: 'linear-gradient(180deg, #041518 0%, #06202A 50%, #041820 100%)',
+    bgColor: '#E8FFFE',
+    bgGradient: 'linear-gradient(180deg, #E8FFFE 0%, #ECFFFD 50%, #E8FAFF 100%)',
     bgPattern: 'waves',
     bgStyle: {
       backgroundImage:
-        'repeating-linear-gradient(135deg, rgba(20,184,166,0.02) 0px, transparent 8px, transparent 16px)',
+        'radial-gradient(circle at 50% 50%, rgba(20,184,166,0.07) 0%, transparent 50%)',
     },
-    particleColors: ['#67E8F9', '#5EEAD4', '#A5F3FC', '#99F6E4'],
-    particleCount: 40,
-    particleType: 'bubbles',
-    blob1Color: 'rgba(20,184,166,0.2)',
-    blob2Color: 'rgba(34,211,238,0.15)',
-    cardBg: 'rgba(20,184,166,0.06)',
-    cardBorder: 'rgba(20,184,166,0.15)',
-    textPrimary: '#CCFBF1',
-    textSecondary: 'rgba(204,251,241,0.6)',
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(20,184,166,0.12)',
+    blob2Color: 'rgba(34,211,238,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(20,184,166,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '🛡️',
   },
 
-  // ── commu: ポップ・明るい、オレンジ〜ウォームイエロー ──
+  // ── commu: 淡いオレンジ ──
   commu: {
-    bgColor: '#1A0E00',
-    bgGradient: 'linear-gradient(135deg, #1A0E00 0%, #1F1200 40%, #1A0F05 100%)',
+    bgColor: '#FFF5E8',
+    bgGradient: 'linear-gradient(135deg, #FFF5E8 0%, #FFF8EE 50%, #FFF3E5 100%)',
     bgPattern: 'social',
     bgStyle: {
       backgroundImage:
-        'radial-gradient(circle at 40% 40%, rgba(251,146,60,0.05) 0%, transparent 40%), radial-gradient(circle at 60% 60%, rgba(253,186,116,0.04) 0%, transparent 40%)',
+        'radial-gradient(circle at 40% 40%, rgba(251,146,60,0.07) 0%, transparent 40%), radial-gradient(circle at 60% 60%, rgba(253,186,116,0.05) 0%, transparent 40%)',
     },
     particleColors: [],
     particleCount: 0,
     particleType: 'none',
-    blob1Color: 'rgba(251,146,60,0.2)',
-    blob2Color: 'rgba(253,186,116,0.15)',
-    cardBg: 'rgba(251,146,60,0.06)',
-    cardBorder: 'rgba(251,146,60,0.15)',
-    textPrimary: '#FFF3E0',
-    textSecondary: 'rgba(255,243,224,0.6)',
+    blob1Color: 'rgba(251,146,60,0.12)',
+    blob2Color: 'rgba(253,186,116,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(251,146,60,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '💬',
   },
 
-  // ── oshi: アイドル・ライブ会場、ネオンピンク×パープル ──
+  // ── oshi: 淡いピンク ──
   oshi: {
-    bgColor: '#1A0520',
-    bgGradient: 'linear-gradient(135deg, #1A0520 0%, #200A28 40%, #150818 100%)',
+    bgColor: '#FFE8F5',
+    bgGradient: 'linear-gradient(135deg, #FFE8F5 0%, #FFECF8 50%, #FFE5F0 100%)',
     bgPattern: 'concert',
     bgStyle: {
       backgroundImage:
-        'radial-gradient(circle at 30% 70%, rgba(236,72,153,0.06) 0%, transparent 40%), radial-gradient(circle at 70% 30%, rgba(168,85,247,0.05) 0%, transparent 40%), radial-gradient(circle at 50% 50%, rgba(251,191,36,0.03) 0%, transparent 30%)',
-    },
-    particleColors: ['#FF69B4', '#FF1493', '#FF6EB4', '#FFB6C1'],
-    particleCount: 50,
-    particleType: 'hearts',
-    blob1Color: 'rgba(236,72,153,0.25)',
-    blob2Color: 'rgba(168,85,247,0.2)',
-    cardBg: 'rgba(236,72,153,0.06)',
-    cardBorder: 'rgba(236,72,153,0.18)',
-    textPrimary: '#FFE4F0',
-    textSecondary: 'rgba(255,228,240,0.6)',
-    accentEmoji: '🎪',
-  },
-
-  // ── career: ビジネス・クール、ダークブルー×シルバー ──
-  career: {
-    bgColor: '#06091A',
-    bgGradient: 'linear-gradient(135deg, #06091A 0%, #0A1025 40%, #080D1E 100%)',
-    bgPattern: 'tech',
-    bgStyle: {
-      backgroundImage:
-        'linear-gradient(0deg, rgba(99,102,241,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px)',
-      backgroundSize: '30px 30px',
-    },
-    particleColors: ['#A5B4FC', '#C7D2FE', '#E0E7FF'],
-    particleCount: 40,
-    particleType: 'pixels',
-    blob1Color: 'rgba(99,102,241,0.2)',
-    blob2Color: 'rgba(165,180,252,0.15)',
-    cardBg: 'rgba(99,102,241,0.06)',
-    cardBorder: 'rgba(99,102,241,0.15)',
-    textPrimary: '#E0E7FF',
-    textSecondary: 'rgba(224,231,255,0.6)',
-    accentEmoji: '🚀',
-  },
-
-  // ── shadow: ダーク・ゴシック、真っ黒に赤アクセント ──
-  shadow: {
-    bgColor: '#0A0505',
-    bgGradient: 'linear-gradient(180deg, #0A0505 0%, #120808 50%, #0D0606 100%)',
-    bgPattern: 'dark',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(220,38,38,0.04) 0%, transparent 50%)',
-    },
-    particleColors: ['#EF4444', '#DC2626', '#FCA5A5'],
-    particleCount: 15,
-    particleType: 'lightning',
-    blob1Color: 'rgba(220,38,38,0.2)',
-    blob2Color: 'rgba(185,28,28,0.15)',
-    cardBg: 'rgba(220,38,38,0.05)',
-    cardBorder: 'rgba(220,38,38,0.15)',
-    textPrimary: '#FEE2E2',
-    textSecondary: 'rgba(254,226,226,0.55)',
-    accentEmoji: '🎭',
-  },
-
-  // ── sns: デジタル・サイバーパンク、ネオングリーン×ブルー ──
-  sns: {
-    bgColor: '#030D0A',
-    bgGradient: 'linear-gradient(135deg, #030D0A 0%, #051510 40%, #040F10 100%)',
-    bgPattern: 'digital',
-    bgStyle: {
-      backgroundImage:
-        'linear-gradient(0deg, rgba(34,211,238,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.02) 1px, transparent 1px)',
-      backgroundSize: '20px 20px',
-    },
-    particleColors: ['#22D3EE', '#34D399', '#6EE7B7', '#67E8F9'],
-    particleCount: 50,
-    particleType: 'pixels',
-    blob1Color: 'rgba(34,211,238,0.2)',
-    blob2Color: 'rgba(52,211,153,0.15)',
-    cardBg: 'rgba(34,211,238,0.05)',
-    cardBorder: 'rgba(34,211,238,0.15)',
-    textPrimary: '#D1FAE5',
-    textSecondary: 'rgba(209,250,229,0.6)',
-    accentEmoji: '📱',
-  },
-
-  // ── pastlife: ノスタルジック・古風、セピアトーン ──
-  pastlife: {
-    bgColor: '#14100A',
-    bgGradient: 'linear-gradient(180deg, #14100A 0%, #1A150E 50%, #110D08 100%)',
-    bgPattern: 'vintage',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(180,140,80,0.06) 0%, transparent 60%)',
-    },
-    particleColors: ['#FFF8DC', '#FAEBD7', '#F5DEB3'],
-    particleCount: 30,
-    particleType: 'snow',
-    blob1Color: 'rgba(180,140,80,0.2)',
-    blob2Color: 'rgba(160,120,60,0.15)',
-    cardBg: 'rgba(180,140,80,0.06)',
-    cardBorder: 'rgba(180,140,80,0.15)',
-    textPrimary: '#F5DEB3',
-    textSecondary: 'rgba(245,222,179,0.6)',
-    accentEmoji: '⏳',
-  },
-
-  // ── leadership: 威厳・王宮、ロイヤルブルー×ゴールド ──
-  leadership: {
-    bgColor: '#0A0A1E',
-    bgGradient: 'linear-gradient(135deg, #0A0A1E 0%, #0D1030 40%, #0A0B20 100%)',
-    bgPattern: 'grid',
-    bgStyle: {
-      backgroundImage:
-        'linear-gradient(0deg, rgba(255,215,0,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,215,0,0.02) 1px, transparent 1px)',
-      backgroundSize: '40px 40px',
-    },
-    particleColors: ['#FFD700', '#FFC107', '#FBBF24'],
-    particleCount: 40,
-    particleType: 'sparkles',
-    blob1Color: 'rgba(59,130,246,0.2)',
-    blob2Color: 'rgba(255,215,0,0.15)',
-    cardBg: 'rgba(59,130,246,0.06)',
-    cardBorder: 'rgba(255,215,0,0.12)',
-    textPrimary: '#E0E8FF',
-    textSecondary: 'rgba(224,232,255,0.6)',
-    accentEmoji: '👑',
-  },
-
-  // ── creative: アーティスティック、カラフル虹色 ──
-  creative: {
-    bgColor: '#100818',
-    bgGradient: 'linear-gradient(135deg, #100818 0%, #0D0A20 30%, #081018 60%, #0A1510 100%)',
-    bgPattern: 'paint',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 15% 50%, rgba(236,72,153,0.05) 0%, transparent 35%), radial-gradient(circle at 85% 30%, rgba(59,130,246,0.05) 0%, transparent 35%), radial-gradient(circle at 50% 80%, rgba(234,179,8,0.04) 0%, transparent 35%)',
-    },
-    particleColors: ['#FF6BE8', '#7B5CFF', '#38BDF8', '#34D399', '#FBBF24', '#FB923C'],
-    particleCount: 55,
-    particleType: 'sparkles',
-    blob1Color: 'rgba(236,72,153,0.2)',
-    blob2Color: 'rgba(59,130,246,0.15)',
-    cardBg: 'rgba(168,85,247,0.06)',
-    cardBorder: 'rgba(168,85,247,0.15)',
-    textPrimary: '#F0E4FF',
-    textSecondary: 'rgba(240,228,255,0.6)',
-    accentEmoji: '🎨',
-  },
-
-  // ── stress: 癒し・ナチュラル、穏やかなグリーン ──
-  stress: {
-    bgColor: '#060F08',
-    bgGradient: 'linear-gradient(180deg, #060F08 0%, #0A180D 50%, #081210 100%)',
-    bgPattern: 'clouds',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(ellipse at 30% 20%, rgba(134,239,172,0.05) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(167,243,208,0.04) 0%, transparent 60%)',
-    },
-    particleColors: ['#BBF7D0', '#A7F3D0', '#D1FAE5'],
-    particleCount: 35,
-    particleType: 'leaves',
-    blob1Color: 'rgba(74,222,128,0.18)',
-    blob2Color: 'rgba(134,239,172,0.12)',
-    cardBg: 'rgba(74,222,128,0.06)',
-    cardBorder: 'rgba(74,222,128,0.12)',
-    textPrimary: '#DCFCE7',
-    textSecondary: 'rgba(220,252,231,0.6)',
-    accentEmoji: '🌿',
-  },
-
-  // ── friendship: 温もり、暖かいオレンジ〜ピーチ ──
-  friendship: {
-    bgColor: '#1A0D05',
-    bgGradient: 'linear-gradient(135deg, #1A0D05 0%, #1F1008 40%, #180C04 100%)',
-    bgPattern: 'warm',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(251,146,60,0.05) 0%, transparent 60%)',
-    },
-    particleColors: ['#FDBA74', '#FB923C', '#FED7AA'],
-    particleCount: 35,
-    particleType: 'bubbles',
-    blob1Color: 'rgba(251,146,60,0.2)',
-    blob2Color: 'rgba(253,186,116,0.15)',
-    cardBg: 'rgba(251,146,60,0.06)',
-    cardBorder: 'rgba(251,146,60,0.12)',
-    textPrimary: '#FFF3E0',
-    textSecondary: 'rgba(255,243,224,0.6)',
-    accentEmoji: '🤝',
-  },
-
-  // ── chrono: 宇宙・時間、深い紺×星空 ──
-  chrono: {
-    bgColor: '#050718',
-    bgGradient: 'linear-gradient(180deg, #050718 0%, #0A0D28 50%, #060820 100%)',
-    bgPattern: 'night',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 30% 20%, rgba(99,102,241,0.05) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(67,56,202,0.04) 0%, transparent 40%)',
-    },
-    particleColors: ['#FFFFFF', '#C7D2FE', '#A5B4FC', '#E0E7FF'],
-    particleCount: 70,
-    particleType: 'stars',
-    blob1Color: 'rgba(99,102,241,0.2)',
-    blob2Color: 'rgba(67,56,202,0.15)',
-    cardBg: 'rgba(99,102,241,0.06)',
-    cardBorder: 'rgba(99,102,241,0.12)',
-    textPrimary: '#E0E7FF',
-    textSecondary: 'rgba(224,231,255,0.6)',
-    accentEmoji: '🌙',
-  },
-
-  // ── money: 富・高級感、ダークグリーン×ゴールド ──
-  money: {
-    bgColor: '#050D05',
-    bgGradient: 'linear-gradient(135deg, #050D05 0%, #0A1808 40%, #081005 100%)',
-    bgPattern: 'coins',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 25% 35%, rgba(234,179,8,0.05) 0%, transparent 35%), radial-gradient(circle at 75% 65%, rgba(74,222,128,0.04) 0%, transparent 35%)',
-    },
-    particleColors: ['#FFD700', '#34D399', '#A7F3D0', '#FBBF24'],
-    particleCount: 40,
-    particleType: 'sparkles',
-    blob1Color: 'rgba(34,197,94,0.2)',
-    blob2Color: 'rgba(234,179,8,0.15)',
-    cardBg: 'rgba(34,197,94,0.06)',
-    cardBorder: 'rgba(234,179,8,0.12)',
-    textPrimary: '#D1FAE5',
-    textSecondary: 'rgba(209,250,229,0.6)',
-    accentEmoji: '💰',
-  },
-
-  // ── impression: エレガント、ローズゴールド×ベージュ ──
-  impression: {
-    bgColor: '#150D10',
-    bgGradient: 'linear-gradient(135deg, #150D10 0%, #1A1015 40%, #120A0E 100%)',
-    bgPattern: 'mirror',
-    bgStyle: {
-      backgroundImage:
-        'linear-gradient(180deg, rgba(244,143,177,0.04) 0%, transparent 40%), linear-gradient(0deg, rgba(244,143,177,0.03) 0%, transparent 40%)',
-    },
-    particleColors: ['#F48FB1', '#F8BBD0', '#FCE4EC'],
-    particleCount: 25,
-    particleType: 'orbs',
-    blob1Color: 'rgba(244,143,177,0.2)',
-    blob2Color: 'rgba(248,187,208,0.15)',
-    cardBg: 'rgba(244,143,177,0.06)',
-    cardBorder: 'rgba(244,143,177,0.12)',
-    textPrimary: '#FCE4EC',
-    textSecondary: 'rgba(252,228,236,0.6)',
-    accentEmoji: '🪞',
-  },
-
-  // ── brain: テック・ハッカー、マトリックス風ダークグリーン ──
-  brain: {
-    bgColor: '#020A02',
-    bgGradient: 'linear-gradient(180deg, #020A02 0%, #041205 50%, #030D03 100%)',
-    bgPattern: 'neural',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 30% 40%, rgba(34,197,94,0.04) 0%, transparent 30%), radial-gradient(circle at 70% 60%, rgba(74,222,128,0.03) 0%, transparent 30%)',
-    },
-    particleColors: ['#22C55E', '#4ADE80', '#86EFAC'],
-    particleCount: 55,
-    particleType: 'pixels',
-    blob1Color: 'rgba(34,197,94,0.18)',
-    blob2Color: 'rgba(74,222,128,0.12)',
-    cardBg: 'rgba(34,197,94,0.05)',
-    cardBorder: 'rgba(34,197,94,0.12)',
-    textPrimary: '#DCFCE7',
-    textSecondary: 'rgba(220,252,231,0.6)',
-    accentEmoji: '🧠',
-  },
-
-  // ── job: プロフェッショナル、ネイビー×ティール ──
-  job: {
-    bgColor: '#050A14',
-    bgGradient: 'linear-gradient(135deg, #050A14 0%, #08101E 40%, #061018 100%)',
-    bgPattern: 'tech',
-    bgStyle: {
-      backgroundImage:
-        'linear-gradient(0deg, rgba(20,184,166,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.02) 1px, transparent 1px)',
-      backgroundSize: '25px 25px',
-    },
-    particleColors: ['#38BDF8', '#5EEAD4', '#67E8F9'],
-    particleCount: 35,
-    particleType: 'bubbles',
-    blob1Color: 'rgba(59,130,246,0.2)',
-    blob2Color: 'rgba(20,184,166,0.15)',
-    cardBg: 'rgba(59,130,246,0.06)',
-    cardBorder: 'rgba(20,184,166,0.12)',
-    textPrimary: '#E0F2FE',
-    textSecondary: 'rgba(224,242,254,0.6)',
-    accentEmoji: '🧭',
-  },
-
-  // ── learning: 温かみのある知的、ブックイエロー×ブラウン ──
-  learning: {
-    bgColor: '#12100A',
-    bgGradient: 'linear-gradient(135deg, #12100A 0%, #18150E 40%, #100E08 100%)',
-    bgPattern: 'notebook',
-    bgStyle: {
-      backgroundImage:
-        'linear-gradient(0deg, rgba(180,140,80,0.025) 1px, transparent 1px)',
-      backgroundSize: '100% 24px',
+        'radial-gradient(circle at 30% 70%, rgba(236,72,153,0.07) 0%, transparent 40%), radial-gradient(circle at 70% 30%, rgba(168,85,247,0.05) 0%, transparent 40%)',
     },
     particleColors: [],
     particleCount: 0,
     particleType: 'none',
-    blob1Color: 'rgba(234,179,8,0.18)',
-    blob2Color: 'rgba(180,140,80,0.12)',
-    cardBg: 'rgba(234,179,8,0.06)',
-    cardBorder: 'rgba(180,140,80,0.12)',
-    textPrimary: '#FEF3C7',
-    textSecondary: 'rgba(254,243,199,0.6)',
+    blob1Color: 'rgba(236,72,153,0.12)',
+    blob2Color: 'rgba(168,85,247,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(236,72,153,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🎪',
+  },
+
+  // ── career: 淡いネイビー ──
+  career: {
+    bgColor: '#E8EEFF',
+    bgGradient: 'linear-gradient(135deg, #E8EEFF 0%, #EDF2FF 50%, #E8ECFF 100%)',
+    bgPattern: 'tech',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 50% 50%, rgba(99,102,241,0.06) 0%, transparent 50%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(99,102,241,0.12)',
+    blob2Color: 'rgba(165,180,252,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(99,102,241,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🚀',
+  },
+
+  // ── shadow: 淡いレッド ──
+  shadow: {
+    bgColor: '#F5E8E8',
+    bgGradient: 'linear-gradient(180deg, #F5E8E8 0%, #F8ECEC 50%, #F5EAEA 100%)',
+    bgPattern: 'dark',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 50% 50%, rgba(220,38,38,0.05) 0%, transparent 50%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(220,38,38,0.1)',
+    blob2Color: 'rgba(185,28,28,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(220,38,38,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🎭',
+  },
+
+  // ── sns: 淡いミント ──
+  sns: {
+    bgColor: '#E8FFF5',
+    bgGradient: 'linear-gradient(135deg, #E8FFF5 0%, #ECFFF8 50%, #E8FFF2 100%)',
+    bgPattern: 'digital',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 40% 40%, rgba(34,211,238,0.06) 0%, transparent 40%), radial-gradient(circle at 60% 60%, rgba(52,211,153,0.05) 0%, transparent 40%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(34,211,238,0.12)',
+    blob2Color: 'rgba(52,211,153,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(34,211,238,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '📱',
+  },
+
+  // ── pastlife: 淡いセピア ──
+  pastlife: {
+    bgColor: '#FFF5EC',
+    bgGradient: 'linear-gradient(180deg, #FFF5EC 0%, #FFF8F0 50%, #FFF3E8 100%)',
+    bgPattern: 'vintage',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 50% 50%, rgba(180,140,80,0.07) 0%, transparent 60%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(180,140,80,0.12)',
+    blob2Color: 'rgba(160,120,60,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(180,140,80,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '⏳',
+  },
+
+  // ── leadership: 淡いロイヤルブルー ──
+  leadership: {
+    bgColor: '#ECEDFF',
+    bgGradient: 'linear-gradient(135deg, #ECEDFF 0%, #F0F1FF 50%, #ECEEFF 100%)',
+    bgPattern: 'grid',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 30% 30%, rgba(59,130,246,0.06) 0%, transparent 40%), radial-gradient(circle at 70% 70%, rgba(255,215,0,0.04) 0%, transparent 40%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(59,130,246,0.12)',
+    blob2Color: 'rgba(255,215,0,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(59,130,246,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '👑',
+  },
+
+  // ── creative: 淡いレインボー ──
+  creative: {
+    bgColor: '#FFF0F8',
+    bgGradient: 'linear-gradient(135deg, #FFF0F8 0%, #F0F0FF 30%, #F0FFF8 60%, #FFF8F0 100%)',
+    bgPattern: 'paint',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 15% 50%, rgba(236,72,153,0.06) 0%, transparent 35%), radial-gradient(circle at 85% 30%, rgba(59,130,246,0.06) 0%, transparent 35%), radial-gradient(circle at 50% 80%, rgba(234,179,8,0.05) 0%, transparent 35%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(236,72,153,0.1)',
+    blob2Color: 'rgba(59,130,246,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(168,85,247,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🎨',
+  },
+
+  // ── stress: 淡いグリーン ──
+  stress: {
+    bgColor: '#EEFFF0',
+    bgGradient: 'linear-gradient(180deg, #EEFFF0 0%, #F2FFF5 50%, #EEFFF2 100%)',
+    bgPattern: 'clouds',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(ellipse at 30% 20%, rgba(134,239,172,0.07) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(167,243,208,0.05) 0%, transparent 60%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(74,222,128,0.1)',
+    blob2Color: 'rgba(134,239,172,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(74,222,128,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🌿',
+  },
+
+  // ── friendship: 淡いピーチ ──
+  friendship: {
+    bgColor: '#FFF0E8',
+    bgGradient: 'linear-gradient(135deg, #FFF0E8 0%, #FFF5EE 50%, #FFEDE5 100%)',
+    bgPattern: 'warm',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 50% 50%, rgba(251,146,60,0.06) 0%, transparent 60%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(251,146,60,0.12)',
+    blob2Color: 'rgba(253,186,116,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(251,146,60,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🤝',
+  },
+
+  // ── chrono: 淡い紺 ──
+  chrono: {
+    bgColor: '#ECF0FF',
+    bgGradient: 'linear-gradient(180deg, #ECF0FF 0%, #F0F3FF 50%, #ECF0FF 100%)',
+    bgPattern: 'night',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 30% 20%, rgba(99,102,241,0.06) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(67,56,202,0.05) 0%, transparent 40%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(99,102,241,0.12)',
+    blob2Color: 'rgba(67,56,202,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(99,102,241,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🌙',
+  },
+
+  // ── money: 淡いマネーグリーン ──
+  money: {
+    bgColor: '#F0FFE8',
+    bgGradient: 'linear-gradient(135deg, #F0FFE8 0%, #F5FFEE 50%, #EFFFE5 100%)',
+    bgPattern: 'coins',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 25% 35%, rgba(234,179,8,0.06) 0%, transparent 35%), radial-gradient(circle at 75% 65%, rgba(74,222,128,0.05) 0%, transparent 35%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(34,197,94,0.12)',
+    blob2Color: 'rgba(234,179,8,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(34,197,94,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '💰',
+  },
+
+  // ── impression: 淡いローズ ──
+  impression: {
+    bgColor: '#FFF0EC',
+    bgGradient: 'linear-gradient(135deg, #FFF0EC 0%, #FFF5F2 50%, #FFEDE8 100%)',
+    bgPattern: 'mirror',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 50% 50%, rgba(244,143,177,0.06) 0%, transparent 50%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(244,143,177,0.12)',
+    blob2Color: 'rgba(248,187,208,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(244,143,177,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🪞',
+  },
+
+  // ── brain: 淡いマトリックスグリーン ──
+  brain: {
+    bgColor: '#EEFFEE',
+    bgGradient: 'linear-gradient(180deg, #EEFFEE 0%, #F2FFF2 50%, #EEFFEE 100%)',
+    bgPattern: 'neural',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 30% 40%, rgba(34,197,94,0.06) 0%, transparent 30%), radial-gradient(circle at 70% 60%, rgba(74,222,128,0.05) 0%, transparent 30%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(34,197,94,0.1)',
+    blob2Color: 'rgba(74,222,128,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(34,197,94,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🧠',
+  },
+
+  // ── job: 淡いティール ──
+  job: {
+    bgColor: '#E8F5FF',
+    bgGradient: 'linear-gradient(135deg, #E8F5FF 0%, #EDF8FF 50%, #E8F2FF 100%)',
+    bgPattern: 'tech',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 40% 40%, rgba(20,184,166,0.06) 0%, transparent 40%), radial-gradient(circle at 60% 60%, rgba(59,130,246,0.05) 0%, transparent 40%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(59,130,246,0.12)',
+    blob2Color: 'rgba(20,184,166,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(20,184,166,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
+    accentEmoji: '🧭',
+  },
+
+  // ── learning: 淡いイエロー ──
+  learning: {
+    bgColor: '#FFFAEC',
+    bgGradient: 'linear-gradient(135deg, #FFFAEC 0%, #FFFCF0 50%, #FFF8E8 100%)',
+    bgPattern: 'notebook',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 50% 50%, rgba(234,179,8,0.06) 0%, transparent 50%)',
+    },
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(234,179,8,0.1)',
+    blob2Color: 'rgba(180,140,80,0.08)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(234,179,8,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '📚',
   },
 
-  // ── love: ロマンチック、ピンク×パープル ──
+  // ── love: 淡いロマンティックピンク ──
   love: {
-    bgColor: '#1A0515',
-    bgGradient: 'linear-gradient(135deg, #1A0515 0%, #200A20 40%, #150810 100%)',
+    bgColor: '#FFE8F0',
+    bgGradient: 'linear-gradient(135deg, #FFE8F0 0%, #FFECF5 50%, #FFE5EC 100%)',
     bgPattern: 'hearts',
     bgStyle: {
       backgroundImage:
-        'radial-gradient(circle at 20% 30%, rgba(236,72,153,0.06) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(168,85,247,0.05) 0%, transparent 50%)',
+        'radial-gradient(circle at 20% 30%, rgba(236,72,153,0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(168,85,247,0.05) 0%, transparent 50%)',
     },
-    particleColors: ['#FF69B4', '#DA70D6', '#FF6EB4', '#DDA0DD'],
-    particleCount: 45,
-    particleType: 'hearts',
-    blob1Color: 'rgba(236,72,153,0.25)',
-    blob2Color: 'rgba(168,85,247,0.18)',
-    cardBg: 'rgba(236,72,153,0.06)',
-    cardBorder: 'rgba(236,72,153,0.15)',
-    textPrimary: '#FFE4F0',
-    textSecondary: 'rgba(255,228,240,0.6)',
+    particleColors: [],
+    particleCount: 0,
+    particleType: 'none',
+    blob1Color: 'rgba(236,72,153,0.12)',
+    blob2Color: 'rgba(168,85,247,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(236,72,153,0.2)',
+    textPrimary: '#1a2e3b',
+    textSecondary: '#4a6572',
     accentEmoji: '💕',
   },
 };
 
-/** デフォルトのテーマ（マッチしなかった場合用） */
+/** デフォルトのテーマ（マッチしなかった場合用、淡いティール） */
 const DEFAULT_THEME: DiagnosticTheme = {
-  bgColor: '#0D0118',
-  bgGradient: 'linear-gradient(135deg, #0D0118 0%, #130520 40%, #0A0115 100%)',
+  bgColor: '#F0FAFA',
+  bgGradient: 'linear-gradient(135deg, #F0FAFA 0%, #E8F8F8 50%, #F0FAFF 100%)',
   bgPattern: 'default',
   bgStyle: {
     backgroundImage:
-      'radial-gradient(circle at 50% 50%, rgba(255,107,232,0.04) 0%, transparent 50%)',
+      'radial-gradient(circle at 50% 50%, rgba(45,212,191,0.06) 0%, transparent 50%)',
   },
-  particleColors: ['#FF6BE8', '#C45AFF', '#7B5CFF'],
-  particleCount: 40,
-  particleType: 'stars',
-  blob1Color: 'rgba(255,107,232,0.2)',
-  blob2Color: 'rgba(196,90,255,0.15)',
-  cardBg: 'rgba(255,107,232,0.05)',
-  cardBorder: 'rgba(255,107,232,0.12)',
-  textPrimary: '#F0E4FF',
-  textSecondary: 'rgba(240,228,255,0.6)',
+  particleColors: [],
+  particleCount: 0,
+  particleType: 'none',
+  blob1Color: 'rgba(45,212,191,0.12)',
+  blob2Color: 'rgba(56,189,248,0.1)',
+  cardBg: 'rgba(255,255,255,0.7)',
+  cardBorder: 'rgba(45,212,191,0.2)',
+  textPrimary: '#1a2e3b',
+  textSecondary: '#4a6572',
   accentEmoji: '✨',
 };
 

@@ -8,21 +8,24 @@
   --pk: #FF6BE8;
   --pu: #C45AFF;
   --vi: #7B5CFF;
-  --bg: #070B1A;
-  /* ブランドカラー */
-  --primary: #6366F1;
-  --secondary: #EC4899;
-  --accent: #14B8A6;
-  --card-bg: rgba(255, 255, 255, 0.04);
+  --bg: #F0FAFA;
+  /* ブランドカラー（爽やかティール系） */
+  --primary: #2dd4bf;
+  --secondary: #38bdf8;
+  --accent: #f472b6;
+  --card-bg: rgba(255, 255, 255, 0.7);
   /* カスタムイージング（smooth deceleration、ease-out-quart相当） */
   --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  /* テキスト色 */
+  --text-primary: #1a2e3b;
+  --text-secondary: #4a6572;
 }
 
 /* ===========================
    リセット・ベーススタイル
    =========================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: #070B1A !important; color: #fff !important; scroll-behavior: smooth; min-height: 100vh; }
+html, body { background: #F0FAFA !important; color: #1a2e3b !important; scroll-behavior: smooth; min-height: 100vh; }
 body {
   font-family: 'Noto Sans JP', sans-serif;
   overflow-x: hidden;
@@ -32,21 +35,21 @@ body {
 
 /* フォーカスインジケーター（キーボード操作時のみ表示） */
 :focus-visible {
-  outline: 2px solid #FF6BE8;
+  outline: 2px solid #2dd4bf;
   outline-offset: 2px;
 }
 
 /* テキスト選択時の配色 */
 ::selection {
-  background: rgba(99, 102, 241, .3);
-  color: #fff;
+  background: rgba(45, 212, 191, .3);
+  color: #1a2e3b;
 }
 
 /* スクロールバー（webkit系ブラウザ向け） */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, .2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, .4); }
+::-webkit-scrollbar-thumb { background: rgba(45, 212, 191, .25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(45, 212, 191, .45); }
 
 /* ===========================
    見出し用フォント
@@ -58,19 +61,19 @@ body {
    グラデーションボタン
    =========================== */
 .btn-gradient {
-  background: linear-gradient(135deg, #FF6BE8, #C45AFF);
+  background: linear-gradient(135deg, #2dd4bf, #38bdf8);
   color: #fff;
   border: none;
   border-radius: 50px;
   font-weight: 700;
   font-family: 'Zen Maru Gothic', sans-serif;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(255, 107, 232, .2);
+  box-shadow: 0 4px 20px rgba(45, 212, 191, .2);
   transition: all 0.3s var(--ease-smooth);
 }
 .btn-gradient:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(255, 107, 232, .3);
+  box-shadow: 0 8px 30px rgba(45, 212, 191, .3);
 }
 
 /* ===========================
@@ -336,9 +339,9 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 107, 232, 0.5),
-    rgba(196, 90, 255, 0.6),
-    rgba(123, 92, 255, 0.5),
+    rgba(45, 212, 191, 0.5),
+    rgba(56, 189, 248, 0.6),
+    rgba(45, 212, 191, 0.5),
     transparent
   );
 }
@@ -488,11 +491,11 @@ body {
 .section-text-shimmer {
   background: linear-gradient(
     90deg,
-    rgba(255,107,232,.55) 0%,
-    rgba(255,255,255,.85) 30%,
-    rgba(196,90,255,.65) 50%,
-    rgba(255,255,255,.85) 70%,
-    rgba(255,107,232,.55) 100%
+    rgba(45,212,191,.7) 0%,
+    rgba(56,189,248,.85) 30%,
+    rgba(45,212,191,.9) 50%,
+    rgba(56,189,248,.85) 70%,
+    rgba(45,212,191,.7) 100%
   );
   background-size: 200% auto;
   -webkit-background-clip: text;
@@ -653,40 +656,18 @@ body {
 }
 
 /* ===========================
-   ダークUI: オーロラ背景アニメーション
+   爽やか背景パターン: ○×散らばり
    =========================== */
-@keyframes auroraWave1 {
-  0%, 100% { transform: translateX(0) translateY(0) scale(1); opacity: 0.8; }
-  25% { transform: translateX(5vw) translateY(-3vh) scale(1.1); opacity: 1; }
-  50% { transform: translateX(-3vw) translateY(5vh) scale(0.95); opacity: 0.7; }
-  75% { transform: translateX(4vw) translateY(2vh) scale(1.05); opacity: 0.9; }
-}
-@keyframes auroraWave2 {
-  0%, 100% { transform: translateX(0) scale(1); opacity: 0.6; }
-  33% { transform: translateX(-4vw) scale(1.15); opacity: 0.9; }
-  66% { transform: translateX(6vw) scale(0.9); opacity: 0.5; }
-}
-@keyframes auroraWave3 {
-  0%, 100% { transform: translateX(0) translateY(0); opacity: 0.5; }
-  50% { transform: translateX(-8vw) translateY(4vh); opacity: 0.8; }
-}
-@keyframes auroraWave4 {
-  0%, 100% { transform: translateX(0) translateY(0) scale(1); }
-  40% { transform: translateX(3vw) translateY(-5vh) scale(1.1); }
-  80% { transform: translateX(-5vw) translateY(3vh) scale(0.95); }
+.bg-fresh-pattern {
+  background-color: var(--bg);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Ccircle cx='30' cy='40' r='8' fill='none' stroke='rgba(45,212,191,0.2)' stroke-width='2'/%3E%3Ccircle cx='200' cy='25' r='12' fill='none' stroke='rgba(56,189,248,0.15)' stroke-width='2'/%3E%3Ccircle cx='120' cy='150' r='6' fill='none' stroke='rgba(45,212,191,0.25)' stroke-width='1.5'/%3E%3Ccircle cx='260' cy='180' r='10' fill='none' stroke='rgba(56,189,248,0.18)' stroke-width='2'/%3E%3Ccircle cx='70' cy='230' r='14' fill='none' stroke='rgba(45,212,191,0.12)' stroke-width='2'/%3E%3Ccircle cx='180' cy='80' r='5' fill='none' stroke='rgba(56,189,248,0.22)' stroke-width='1.5'/%3E%3Ccircle cx='250' cy='260' r='7' fill='none' stroke='rgba(45,212,191,0.2)' stroke-width='1.5'/%3E%3Cg stroke='rgba(45,212,191,0.18)' stroke-width='2' stroke-linecap='round'%3E%3Cline x1='85' y1='10' x2='97' y2='22'/%3E%3Cline x1='97' y1='10' x2='85' y2='22'/%3E%3C/g%3E%3Cg stroke='rgba(56,189,248,0.14)' stroke-width='1.5' stroke-linecap='round'%3E%3Cline x1='220' y1='110' x2='230' y2='120'/%3E%3Cline x1='230' y1='110' x2='220' y2='120'/%3E%3C/g%3E%3Cg stroke='rgba(45,212,191,0.2)' stroke-width='2' stroke-linecap='round'%3E%3Cline x1='30' y1='130' x2='45' y2='145'/%3E%3Cline x1='45' y1='130' x2='30' y2='145'/%3E%3C/g%3E%3Cg stroke='rgba(56,189,248,0.16)' stroke-width='1.5' stroke-linecap='round'%3E%3Cline x1='160' y1='210' x2='168' y2='218'/%3E%3Cline x1='168' y1='210' x2='160' y2='218'/%3E%3C/g%3E%3Cg stroke='rgba(45,212,191,0.15)' stroke-width='1.5' stroke-linecap='round'%3E%3Cline x1='280' y1='50' x2='290' y2='60'/%3E%3Cline x1='290' y1='50' x2='280' y2='60'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-/* 流れ星アニメーション */
-@keyframes shootingStar {
-  0% { transform: translateX(0) translateY(0); opacity: 1; width: 0; }
-  10% { opacity: 1; width: 80px; }
-  70% { opacity: 1; }
-  100% { transform: translateX(300px) translateY(200px); opacity: 0; width: 0; }
-}
-
-/* タイトルのオーロラテキストグラデーション */
-@keyframes textAuroraShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* 浮遊○×アニメーション */
+@keyframes floatMaruBatsu {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.6; }
+  100% { transform: translateY(-100vh) rotate(180deg); opacity: 0; }
 }

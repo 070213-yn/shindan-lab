@@ -6,63 +6,11 @@ import { TYPES } from "@/lib/types";
 
 // ============================================================
 // ときめきラボ ランディングページ
-// テーマ: Y2Kグリッター x 宇宙
-// 背景色: #0D0118（ディープスペース）
+// テーマ: 青春 x 爽やか x 透明感
+// 背景色: #F0FAFA（フレッシュミント）
 // ============================================================
 
 export default function LandingPage() {
-  // --- 星空パーティクル生成（150個 + 色付き大型星） ---
-  const starsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!starsRef.current) return;
-    const container = starsRef.current;
-    container.innerHTML = "";
-
-    // 通常の星（140個）
-    for (let i = 0; i < 140; i++) {
-      const star = document.createElement("div");
-      const size = Math.random() * 2.5 + 0.5;
-      Object.assign(star.style, {
-        position: "absolute",
-        width: `${size}px`,
-        height: `${size}px`,
-        background: "#fff",
-        borderRadius: "50%",
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        animation: `twinkle ${2 + Math.random() * 4}s ease-in-out infinite`,
-        animationDelay: `${Math.random() * 5}s`,
-        opacity: "0.1",
-      });
-      container.appendChild(star);
-    }
-
-    // 色付き大型星（10個）— ピンクや紫のアクセント
-    const specialColors = [
-      "#FF6BE8", "#C45AFF", "#FF6BE8", "#7B5CFF", "#FF6BE8",
-      "#C45AFF", "#FF8FF0", "#A06BFF", "#FF6BE8", "#C45AFF",
-    ];
-    for (let i = 0; i < 10; i++) {
-      const star = document.createElement("div");
-      const size = 3 + Math.random() * 1.5; // 3〜4.5px
-      Object.assign(star.style, {
-        position: "absolute",
-        width: `${size}px`,
-        height: `${size}px`,
-        background: specialColors[i],
-        borderRadius: "50%",
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        animation: `twinkle ${2 + Math.random() * 3}s ease-in-out infinite`,
-        animationDelay: `${Math.random() * 4}s`,
-        opacity: "0.15",
-        boxShadow: `0 0 6px ${specialColors[i]}`,
-      });
-      container.appendChild(star);
-    }
-  }, []);
-
   // --- IntersectionObserver: タイプカードのstaggered fadeUp ---
   const typesGridRef = useRef<HTMLDivElement>(null);
   const [typesVisible, setTypesVisible] = useState(false);
@@ -104,7 +52,6 @@ export default function LandingPage() {
   // --- ヒーローセクションのフェードアップ制御 ---
   const [heroMounted, setHeroMounted] = useState(false);
   useEffect(() => {
-    // マウント後に少し遅延させてアニメーション開始
     const timer = setTimeout(() => setHeroMounted(true), 100);
     return () => clearTimeout(timer);
   }, []);
@@ -146,92 +93,7 @@ export default function LandingPage() {
 
   return (
     <>
-      {/* ========== 背景エフェクト ========== */}
-
-      {/* 星空パーティクル */}
-      <div
-        ref={starsRef}
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: "none",
-          overflow: "hidden",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* 流れ星エフェクト（3本） */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 0,
-          pointerEvents: "none",
-          overflow: "hidden",
-        }}
-        aria-hidden="true"
-      >
-        <div className="shooting-star shooting-star-1" />
-        <div className="shooting-star shooting-star-2" />
-        <div className="shooting-star shooting-star-3" />
-      </div>
-
-      {/* ブロブ1（紫系） — よりダイナミックな動き */}
-      <div
-        className="blob-dynamic-1"
-        style={{
-          position: "fixed",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          background: "rgba(196,90,255,.1)",
-          filter: "blur(90px)",
-          top: -150,
-          right: -150,
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ブロブ2（ピンク系） — よりダイナミックな動き */}
-      <div
-        className="blob-dynamic-2"
-        style={{
-          position: "fixed",
-          width: 400,
-          height: 400,
-          borderRadius: "50%",
-          background: "rgba(255,107,232,.08)",
-          filter: "blur(90px)",
-          bottom: 0,
-          left: -150,
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ブロブ3（バイオレット系、画面中央付近、小さめ） — 新規追加 */}
-      <div
-        className="blob-dynamic-3"
-        style={{
-          position: "fixed",
-          width: 250,
-          height: 250,
-          borderRadius: "50%",
-          background: "rgba(123,92,255,.07)",
-          filter: "blur(80px)",
-          top: "45%",
-          left: "40%",
-          zIndex: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ========== ナビバー ========== */}
+      {/* ========== ナビバー（白い半透明ガラス） ========== */}
       <nav
         style={{
           position: "fixed",
@@ -243,14 +105,15 @@ export default function LandingPage() {
           alignItems: "center",
           justifyContent: "space-between",
           padding: "12px 24px",
-          background: "rgba(13,1,24,.85)",
+          background: "rgba(255,255,255,0.8)",
           backdropFilter: "blur(12px)",
-          borderBottom: "1px solid rgba(255,107,232,.15)",
+          borderBottom: "1px solid rgba(45,212,191,0.15)",
+          boxShadow: "0 2px 12px rgba(0,0,0,.04)",
         }}
       >
         <span
           className="font-stick"
-          style={{ color: "#FF6BE8", fontSize: "1.2rem" }}
+          style={{ color: "#2dd4bf", fontSize: "1.2rem" }}
         >
           ときめきラボ
         </span>
@@ -282,9 +145,8 @@ export default function LandingPage() {
           zIndex: 1,
         }}
       >
-        {/* ティッカーバー（shimmerグラデーション背景） */}
+        {/* ティッカーバー */}
         <div
-          className="ticker-shimmer-bg"
           style={{
             position: "relative",
             width: "100vw",
@@ -293,9 +155,10 @@ export default function LandingPage() {
             padding: "6px 0",
             fontSize: "0.75rem",
             fontWeight: 700,
-            color: "#FF6BE8",
+            color: "#2dd4bf",
             letterSpacing: "0.05em",
             marginBottom: 40,
+            background: "rgba(45,212,191,0.08)",
           }}
         >
           <span
@@ -308,9 +171,8 @@ export default function LandingPage() {
           </span>
         </div>
 
-        {/* メインタイトル — glowBreathアニメーション */}
+        {/* メインタイトル */}
         <h1
-          className="hero-title-glow"
           style={{
             lineHeight: 1.1,
             marginBottom: 20,
@@ -324,20 +186,20 @@ export default function LandingPage() {
             style={{
               display: "block",
               fontSize: "clamp(40px, 12vw, 80px)",
-              color: "#FF6BE8",
+              color: "#1a2e3b",
             }}
           >
             ときめきラボ
           </span>
         </h1>
 
-        {/* キャッチコピー — delay 0.3s フェードアップ */}
+        {/* キャッチコピー */}
         <p
           className="font-zen"
           style={{
             fontSize: "1.125rem",
             fontWeight: 700,
-            color: "rgba(255,255,255,.9)",
+            color: "#1a2e3b",
             marginBottom: 16,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
@@ -347,13 +209,13 @@ export default function LandingPage() {
           恋は、勇気が9割。
         </p>
 
-        {/* 説明テキスト — delay 0.5s フェードアップ */}
+        {/* 説明テキスト */}
         <p
           style={{
             maxWidth: 520,
             fontSize: "0.95rem",
             lineHeight: 1.8,
-            color: "rgba(255,255,255,.75)",
+            color: "#4a6572",
             marginBottom: 32,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
@@ -363,7 +225,7 @@ export default function LandingPage() {
           心理学研究をベースにした本格恋愛性格診断。43問の質問に答えるだけで、あなたの恋愛タイプを8次元で分析し、12タイプから判定します。
         </p>
 
-        {/* CTAボタン群 — delay 0.7s フェードアップ */}
+        {/* CTAボタン群 */}
         <div
           style={{
             display: "flex",
@@ -394,7 +256,7 @@ export default function LandingPage() {
               background: "transparent",
               border: "none",
               padding: "8px 0",
-              color: "rgba(255,255,255,.6)",
+              color: "#6b8a99",
               fontSize: "0.85rem",
               cursor: "pointer",
               textDecoration: "underline",
@@ -423,7 +285,7 @@ export default function LandingPage() {
             style={{
               fontSize: "0.75rem",
               letterSpacing: "0.15em",
-              color: "#C45AFF",
+              color: "#2dd4bf",
               display: "block",
               marginBottom: 8,
             }}
@@ -432,13 +294,13 @@ export default function LandingPage() {
           </span>
           <h2
             className="font-stick"
-            style={{ fontSize: "clamp(1.5rem, 5vw, 2.2rem)" }}
+            style={{ fontSize: "clamp(1.5rem, 5vw, 2.2rem)", color: "#1a2e3b" }}
           >
             12の恋愛性格タイプ
           </h2>
         </div>
 
-        {/* タイプカードグリッド — IntersectionObserverでstaggered fadeUp */}
+        {/* タイプカードグリッド */}
         <div
           ref={typesGridRef}
           style={{
@@ -453,30 +315,30 @@ export default function LandingPage() {
               key={type.id}
               className="type-card-hover"
               style={{
-                background: "rgba(10,1,22,.88)",
+                background: "rgba(255,255,255,0.7)",
                 borderRadius: 16,
                 padding: "22px 18px",
-                border: "1px solid transparent",
+                border: "1px solid rgba(45,212,191,.12)",
                 transition: "transform 0.3s, border-color 0.3s, box-shadow 0.3s",
-                // staggered fadeUp: 表示されるまで透明、表示後にアニメーション
                 opacity: typesVisible ? 1 : 0,
                 transform: typesVisible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
                 transitionProperty: "opacity, transform, border-color, box-shadow",
                 transitionDuration: "0.5s, 0.5s, 0.3s, 0.3s",
                 transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
                 transitionDelay: typesVisible ? `${index * 0.06}s` : "0s",
+                boxShadow: "0 2px 12px rgba(0,0,0,.04)",
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.transform = "translateY(-4px)";
                 el.style.borderColor = type.color;
-                el.style.boxShadow = `0 0 20px ${type.color}33, 0 0 40px ${type.color}15`;
+                el.style.boxShadow = `0 0 20px ${type.color}20, 0 8px 24px rgba(0,0,0,.06)`;
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLDivElement;
                 el.style.transform = "none";
-                el.style.borderColor = "transparent";
-                el.style.boxShadow = "none";
+                el.style.borderColor = "rgba(45,212,191,.12)";
+                el.style.boxShadow = "0 2px 12px rgba(0,0,0,.04)";
               }}
             >
               <div style={{ fontSize: "2rem", marginBottom: 8 }}>
@@ -496,7 +358,7 @@ export default function LandingPage() {
               <p
                 style={{
                   fontSize: "0.65rem",
-                  color: "rgba(255,255,255,.55)",
+                  color: "#6b8a99",
                   marginBottom: 10,
                   letterSpacing: "0.03em",
                 }}
@@ -507,7 +369,7 @@ export default function LandingPage() {
                 style={{
                   fontSize: "0.78rem",
                   lineHeight: 1.6,
-                  color: "rgba(255,255,255,.75)",
+                  color: "#4a6572",
                 }}
               >
                 {type.desc}
@@ -534,7 +396,7 @@ export default function LandingPage() {
           style={{
             fontSize: "0.75rem",
             letterSpacing: "0.15em",
-            color: "#C45AFF",
+            color: "#2dd4bf",
             display: "block",
             marginBottom: 8,
             opacity: quizVisible ? 1 : 0,
@@ -549,6 +411,7 @@ export default function LandingPage() {
           style={{
             fontSize: "clamp(1.5rem, 5vw, 2.2rem)",
             marginBottom: 32,
+            color: "#1a2e3b",
             opacity: quizVisible ? 1 : 0,
             transform: quizVisible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.5s ease-out 0.1s, transform 0.5s ease-out 0.1s",
@@ -560,12 +423,13 @@ export default function LandingPage() {
         {/* 診断カード */}
         <div
           style={{
-            background: "rgba(10,1,22,.88)",
+            background: "rgba(255,255,255,0.7)",
             borderRadius: 20,
             padding: "36px 28px",
-            border: "1px solid rgba(255,107,232,.15)",
+            border: "1px solid rgba(45,212,191,.15)",
             marginBottom: 32,
             textAlign: "left",
+            boxShadow: "0 2px 12px rgba(0,0,0,.04)",
             opacity: quizVisible ? 1 : 0,
             transform: quizVisible ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s",
@@ -579,7 +443,6 @@ export default function LandingPage() {
               marginBottom: 24,
             }}
           >
-            {/* 診断の特徴（アイコン付き） */}
             {quizFeatures.map((item) => (
               <div key={item.label} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
                 <span style={{ fontSize: "1.3rem", lineHeight: 1, flexShrink: 0, marginTop: 2 }}>
@@ -591,7 +454,7 @@ export default function LandingPage() {
                     style={{
                       fontWeight: 700,
                       fontSize: "1.05rem",
-                      color: "#FF6BE8",
+                      color: "#2dd4bf",
                       marginBottom: 2,
                     }}
                   >
@@ -600,7 +463,7 @@ export default function LandingPage() {
                   <div
                     style={{
                       fontSize: "0.8rem",
-                      color: "rgba(255,255,255,.6)",
+                      color: "#4a6572",
                     }}
                   >
                     {item.detail}
@@ -614,14 +477,14 @@ export default function LandingPage() {
             style={{
               fontSize: "0.85rem",
               lineHeight: 1.7,
-              color: "rgba(255,255,255,.7)",
+              color: "#4a6572",
             }}
           >
             愛着理論・進化心理学・自己拡張モデルなど、複数の心理学研究をベースに設計。あなたの恋愛における行動パターンや価値観を8つの次元で数値化し、12のタイプから最も近いものを判定します。
           </p>
         </div>
 
-        {/* CTA — glowBreathアニメーション付き */}
+        {/* CTA */}
         <div
           style={{
             textAlign: "center",
@@ -632,7 +495,7 @@ export default function LandingPage() {
         >
           <Link
             href="/love/quiz"
-            className="btn-gradient animate-glowBreath"
+            className="btn-gradient"
             style={{
               padding: "18px 52px",
               fontSize: "1.1rem",
@@ -650,7 +513,7 @@ export default function LandingPage() {
         style={{
           padding: "80px 20px 60px",
           textAlign: "center",
-          borderTop: "1px solid rgba(255,255,255,.08)",
+          borderTop: "1px solid rgba(45,212,191,.1)",
           position: "relative",
           zIndex: 1,
         }}
@@ -659,7 +522,7 @@ export default function LandingPage() {
           className="font-stick"
           style={{
             fontSize: "1.3rem",
-            color: "#FF6BE8",
+            color: "#2dd4bf",
             marginBottom: 12,
           }}
         >
@@ -668,7 +531,7 @@ export default function LandingPage() {
         <p
           style={{
             fontSize: "0.85rem",
-            color: "rgba(255,255,255,.6)",
+            color: "#4a6572",
             marginBottom: 40,
           }}
         >
@@ -679,7 +542,7 @@ export default function LandingPage() {
             maxWidth: 700,
             margin: "0 auto",
             fontSize: "0.6rem",
-            color: "rgba(255,255,255,.3)",
+            color: "#9cb3bf",
             lineHeight: 1.8,
           }}
         >
@@ -689,7 +552,7 @@ export default function LandingPage() {
         <p
           style={{
             fontSize: "0.65rem",
-            color: "rgba(255,255,255,.25)",
+            color: "#9cb3bf",
             marginTop: 40,
           }}
         >
@@ -697,7 +560,7 @@ export default function LandingPage() {
         </p>
       </footer>
 
-      {/* ========== スタイル定義（レスポンシブ + 演出） ========== */}
+      {/* ========== スタイル定義（レスポンシブ） ========== */}
       <style jsx>{`
         /* --- レスポンシブ: グリッド列数 --- */
         @media (max-width: 900px) {
@@ -709,194 +572,6 @@ export default function LandingPage() {
           .types-grid {
             grid-template-columns: repeat(2, 1fr) !important;
           }
-        }
-
-        /* --- タイトルのglowBreathアニメーション（textShadowが呼吸する） --- */
-        .hero-title-glow span {
-          animation: titleGlowBreath 3s ease-in-out infinite;
-        }
-        @keyframes titleGlowBreath {
-          0%, 100% {
-            text-shadow:
-              0 0 20px rgba(255, 107, 232, 0.15),
-              0 0 40px rgba(196, 90, 255, 0.05);
-          }
-          50% {
-            text-shadow:
-              0 0 30px rgba(255, 107, 232, 0.4),
-              0 0 60px rgba(196, 90, 255, 0.2),
-              0 0 100px rgba(123, 92, 255, 0.1);
-          }
-        }
-
-        /* --- ティッカーバーのshimmerグラデーション背景 --- */
-        .ticker-shimmer-bg {
-          background: linear-gradient(
-            90deg,
-            rgba(255, 107, 232, 0.06) 0%,
-            rgba(196, 90, 255, 0.12) 25%,
-            rgba(255, 107, 232, 0.06) 50%,
-            rgba(123, 92, 255, 0.12) 75%,
-            rgba(255, 107, 232, 0.06) 100%
-          );
-          background-size: 200% 100%;
-          animation: tickerShimmerBg 4s ease-in-out infinite;
-        }
-        @keyframes tickerShimmerBg {
-          0% { background-position: 0% center; }
-          100% { background-position: 200% center; }
-        }
-
-        /* --- 流れ星エフェクト --- */
-        .shooting-star {
-          position: absolute;
-          width: 2px;
-          height: 2px;
-          background: #fff;
-          border-radius: 50%;
-          opacity: 0;
-        }
-        /* 流れ星の光の尾 */
-        .shooting-star::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 80px;
-          height: 1px;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.8),
-            rgba(255, 107, 232, 0.4),
-            transparent
-          );
-          transform-origin: left center;
-          transform: rotate(215deg);
-        }
-
-        /* 流れ星1 — 左上から右下、8秒周期 */
-        .shooting-star-1 {
-          top: 8%;
-          left: 25%;
-          animation: shoot1 8s ease-in infinite 2s;
-        }
-        .shooting-star-1::after {
-          width: 100px;
-        }
-        @keyframes shoot1 {
-          0% {
-            opacity: 0;
-            transform: translate(0, 0);
-          }
-          2% {
-            opacity: 1;
-          }
-          12% {
-            opacity: 0;
-            transform: translate(250px, 180px);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(250px, 180px);
-          }
-        }
-
-        /* 流れ星2 — 少し角度を変え、12秒周期 */
-        .shooting-star-2 {
-          top: 15%;
-          left: 60%;
-          animation: shoot2 12s ease-in infinite 5s;
-        }
-        .shooting-star-2::after {
-          width: 60px;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.7),
-            rgba(196, 90, 255, 0.4),
-            transparent
-          );
-          transform: rotate(225deg);
-        }
-        @keyframes shoot2 {
-          0% {
-            opacity: 0;
-            transform: translate(0, 0);
-          }
-          1.5% {
-            opacity: 1;
-          }
-          10% {
-            opacity: 0;
-            transform: translate(180px, 220px);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(180px, 220px);
-          }
-        }
-
-        /* 流れ星3 — もう少し浅い角度、15秒周期 */
-        .shooting-star-3 {
-          top: 5%;
-          left: 45%;
-          animation: shoot3 15s ease-in infinite 9s;
-        }
-        .shooting-star-3::after {
-          width: 70px;
-          background: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 0.6),
-            rgba(255, 107, 232, 0.3),
-            transparent
-          );
-          transform: rotate(205deg);
-        }
-        @keyframes shoot3 {
-          0% {
-            opacity: 0;
-            transform: translate(0, 0);
-          }
-          1% {
-            opacity: 1;
-          }
-          8% {
-            opacity: 0;
-            transform: translate(300px, 140px);
-          }
-          100% {
-            opacity: 0;
-            transform: translate(300px, 140px);
-          }
-        }
-
-        /* --- ブロブのダイナミックな動き --- */
-        .blob-dynamic-1 {
-          animation: blobDynamic1 14s ease-in-out infinite;
-        }
-        @keyframes blobDynamic1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(-40px, 30px) scale(1.05); }
-          50% { transform: translate(30px, -50px) scale(0.95); }
-          75% { transform: translate(-20px, -30px) scale(1.02); }
-        }
-
-        .blob-dynamic-2 {
-          animation: blobDynamic2 18s ease-in-out infinite;
-        }
-        @keyframes blobDynamic2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(50px, -40px) scale(1.08); }
-          66% { transform: translate(-30px, 40px) scale(0.93); }
-        }
-
-        .blob-dynamic-3 {
-          animation: blobDynamic3 20s ease-in-out infinite;
-        }
-        @keyframes blobDynamic3 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          25% { transform: translate(30px, -25px) scale(1.1); }
-          50% { transform: translate(-25px, 20px) scale(0.9); }
-          75% { transform: translate(15px, 30px) scale(1.05); }
         }
       `}</style>
     </>

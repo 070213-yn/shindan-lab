@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * ときめきラボ ポータルページ（超ハイクオリティ・ダークUI版）
+ * ときめきラボ ポータルページ（青春 x 爽やか x 透明感スタイル）
  *
- * オーロラ背景 + 星空 + 流れ星 + グリッドライン で
- * 「一つのハイクオリティなゲーム」をプレイしているような体験を実現。
+ * パステルティール背景 + CSS背景パターンで
+ * 爽やかで透明感のある体験を実現。
  */
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -97,51 +97,6 @@ const ALL_DIAGNOSES = [
 ];
 
 export default function PortalPage() {
-  // 星空パーティクル（ダーク背景向け）
-  const starsRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!starsRef.current) return;
-    const container = starsRef.current;
-    container.innerHTML = "";
-    // 白い星: 60個
-    for (let i = 0; i < 60; i++) {
-      const star = document.createElement("div");
-      const size = Math.random() * 2.5 + 1;
-      Object.assign(star.style, {
-        position: "absolute",
-        width: `${size}px`,
-        height: `${size}px`,
-        background: "#fff",
-        borderRadius: "50%",
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        animation: `twinkle ${3 + Math.random() * 4}s ease-in-out infinite`,
-        animationDelay: `${Math.random() * 5}s`,
-        opacity: "0.15",
-      });
-      container.appendChild(star);
-    }
-
-    // 流れ星: 3個（時間差で出現）
-    for (let i = 0; i < 3; i++) {
-      const shooting = document.createElement("div");
-      Object.assign(shooting.style, {
-        position: "absolute",
-        top: `${5 + Math.random() * 30}%`,
-        left: `${Math.random() * 60}%`,
-        width: "0px",
-        height: "1px",
-        background: "linear-gradient(90deg, rgba(255,255,255,0.8), transparent)",
-        borderRadius: "1px",
-        animation: `shootingStar ${1.5 + Math.random()}s ease-in-out infinite`,
-        animationDelay: `${5 + i * 8 + Math.random() * 4}s`,
-        opacity: "0.7",
-        transformOrigin: "left center",
-      });
-      container.appendChild(shooting);
-    }
-  }, []);
-
   // カードのフェードアップ
   const gridRef = useRef<HTMLDivElement>(null);
   const [cardsVisible, setCardsVisible] = useState(false);
@@ -199,7 +154,7 @@ export default function PortalPage() {
       width: `${size}px`,
       height: `${size}px`,
       borderRadius: "50%",
-      background: "rgba(99, 102, 241, 0.15)",
+      background: "rgba(45, 212, 191, 0.15)",
       left: `${e.clientX - rect.left - size / 2}px`,
       top: `${e.clientY - rect.top - size / 2}px`,
       animation: "rippleEffect 0.6s ease-out",
@@ -239,78 +194,6 @@ export default function PortalPage() {
 
   return (
     <>
-      {/* ===== 背景レイヤー群 ===== */}
-
-      {/* 星空パーティクル + 流れ星 */}
-      <div
-        ref={starsRef}
-        style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}
-        aria-hidden="true"
-      />
-
-      {/* SFグリッドライン */}
-      <div
-        style={{
-          position: "fixed", inset: 0,
-          backgroundImage: "linear-gradient(rgba(99,102,241,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,.03) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          pointerEvents: "none", zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* オーロラレイヤー1: 大きなインディゴブロブ */}
-      <div
-        style={{
-          position: "fixed", top: "-20%", left: "-10%",
-          width: "120vw", height: "50vh",
-          background: "radial-gradient(ellipse at 30% 50%, rgba(99,102,241,.18) 0%, transparent 60%)",
-          filter: "blur(80px)",
-          animation: "auroraWave1 20s ease-in-out infinite",
-          pointerEvents: "none", zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* オーロラレイヤー2: ティールの光 */}
-      <div
-        style={{
-          position: "fixed", top: "10%", left: "20%",
-          width: "60vw", height: "40vh",
-          background: "radial-gradient(ellipse at 50% 50%, rgba(20,184,166,.12) 0%, transparent 70%)",
-          filter: "blur(100px)",
-          animation: "auroraWave2 25s ease-in-out infinite",
-          pointerEvents: "none", zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* オーロラレイヤー3: マゼンタのアクセント */}
-      <div
-        style={{
-          position: "fixed", top: "30%", right: "-10%",
-          width: "50vw", height: "50vh",
-          background: "radial-gradient(ellipse at 60% 50%, rgba(236,72,153,.1) 0%, transparent 65%)",
-          filter: "blur(90px)",
-          animation: "auroraWave3 18s ease-in-out infinite",
-          pointerEvents: "none", zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* オーロラレイヤー4: 底部のディープパープル */}
-      <div
-        style={{
-          position: "fixed", bottom: "-10%", left: "30%",
-          width: "70vw", height: "40vh",
-          background: "radial-gradient(ellipse at 50% 70%, rgba(139,92,246,.12) 0%, transparent 60%)",
-          filter: "blur(120px)",
-          animation: "auroraWave4 22s ease-in-out infinite",
-          pointerEvents: "none", zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-
       {/* ===== ティッカー（最上部固定） ===== */}
       <div
         style={{
@@ -318,7 +201,7 @@ export default function PortalPage() {
           overflow: "hidden", whiteSpace: "nowrap",
           padding: "4px 0", fontSize: "12px", fontWeight: 700,
           color: "#fff", letterSpacing: "0.04em",
-          background: "linear-gradient(135deg, rgba(99,102,241,.9), rgba(129,140,248,.9), rgba(99,102,241,.9))",
+          background: "linear-gradient(135deg, rgba(45,212,191,.9), rgba(56,189,248,.9), rgba(45,212,191,.9))",
           backdropFilter: "blur(8px)",
         }}
       >
@@ -327,24 +210,20 @@ export default function PortalPage() {
         </span>
       </div>
 
-      {/* ===== ナビバー（ダーク半透明ガラス） ===== */}
+      {/* ===== ナビバー（白い半透明ガラス） ===== */}
       <nav
         style={{
           position: "fixed", top: 24, left: 0, right: 0, zIndex: 100,
           display: "flex", alignItems: "center", justifyContent: "space-between",
           padding: "12px 24px",
-          background: "rgba(7,11,26,.8)",
-          backdropFilter: "blur(20px)",
-          borderBottom: "1px solid transparent",
-          borderImage: "linear-gradient(90deg, transparent, #6366F1, #EC4899, #14B8A6, transparent) 1",
-          boxShadow: "0 4px 20px rgba(0,0,0,.3)",
+          background: "rgba(255,255,255,0.8)",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid rgba(45,212,191,0.15)",
+          boxShadow: "0 2px 12px rgba(0,0,0,.04)",
         }}
       >
         <span className="font-stick" style={{
-          background: "linear-gradient(135deg, #818CF8, #EC4899, #14B8A6)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
+          color: "#2dd4bf",
           fontSize: "1.2rem",
         }}>
           ときめきラボ
@@ -353,14 +232,14 @@ export default function PortalPage() {
           href="/persona"
           style={{
             padding: "6px 14px",
-            background: completedCount > 0 ? "linear-gradient(135deg, #6366F1, #818CF8)" : "rgba(99,102,241,.15)",
+            background: completedCount > 0 ? "linear-gradient(135deg, #2dd4bf, #38bdf8)" : "rgba(45,212,191,.1)",
             borderRadius: 20,
-            color: completedCount > 0 ? "#fff" : "rgba(255,255,255,.5)",
+            color: completedCount > 0 ? "#fff" : "#2dd4bf",
             fontSize: 11,
             fontWeight: 700,
             textDecoration: "none",
             letterSpacing: "0.03em",
-            border: completedCount > 0 ? "none" : "1px solid rgba(99,102,241,.2)",
+            border: completedCount > 0 ? "none" : "1px solid rgba(45,212,191,.2)",
           }}
         >
           {completedCount > 0 ? `PERSONA (${completedCount})` : "PERSONA CARD"}
@@ -375,7 +254,7 @@ export default function PortalPage() {
           padding: "100px 20px 24px", position: "relative", zIndex: 1,
         }}
       >
-        {/* メインタイトル（オーロラテキストグラデーション） */}
+        {/* メインタイトル */}
         <h1
           style={{
             lineHeight: 1.1, marginBottom: 12,
@@ -386,13 +265,7 @@ export default function PortalPage() {
         >
           <span className="font-stick" style={{
             display: "block", fontSize: "clamp(36px, 10vw, 64px)",
-            background: "linear-gradient(135deg, #818CF8, #EC4899, #14B8A6, #A78BFA, #F472B6)",
-            backgroundSize: "300% 300%",
-            animation: "textAuroraShift 8s ease-in-out infinite",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            filter: "drop-shadow(0 0 30px rgba(99,102,241,.3))",
+            color: "#1a2e3b",
           }}>
             ときめきラボ
           </span>
@@ -402,7 +275,7 @@ export default function PortalPage() {
         <p
           className="font-zen"
           style={{
-            fontSize: "1.1rem", fontWeight: 700, color: "rgba(255,255,255,.85)",
+            fontSize: "1.1rem", fontWeight: 700, color: "#4a6572",
             marginBottom: 16,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
@@ -431,9 +304,9 @@ export default function PortalPage() {
               key={badge.label}
               style={{
                 padding: "4px 12px", borderRadius: 20,
-                background: "rgba(99,102,241,.1)",
-                border: "1px solid rgba(99,102,241,.2)",
-                fontSize: 11, color: "rgba(255,255,255,.7)",
+                background: "rgba(45,212,191,.1)",
+                border: "1px solid rgba(45,212,191,.2)",
+                fontSize: 11, color: "#4a6572",
                 letterSpacing: "0.03em",
                 backdropFilter: "blur(8px)",
               }}
@@ -452,16 +325,16 @@ export default function PortalPage() {
           position: "relative", zIndex: 1,
         }}
       >
-        {/* グローバルプロフィール設定（ダークガラスカード） */}
+        {/* グローバルプロフィール設定（白い半透明カード） */}
         <div
           style={{
             marginBottom: 24,
-            background: "rgba(255,255,255,0.04)",
+            background: "rgba(255,255,255,0.7)",
             backdropFilter: "blur(12px)",
-            border: "1px solid rgba(255,255,255,.06)",
+            border: "1px solid rgba(45,212,191,.12)",
             borderRadius: 16,
             padding: "14px 20px",
-            boxShadow: "0 4px 20px rgba(0,0,0,.2)",
+            boxShadow: "0 2px 12px rgba(0,0,0,.04)",
           }}
         >
           {globalProfile.gender && globalProfile.age ? (
@@ -471,12 +344,12 @@ export default function PortalPage() {
                 <span style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center",
                   width: 28, height: 28, borderRadius: "50%",
-                  background: "rgba(20,184,166,.15)", fontSize: 14, color: "#14B8A6",
+                  background: "rgba(45,212,191,.15)", fontSize: 14, color: "#2dd4bf",
                 }}>
                   ✓
                 </span>
-                <span style={{ fontSize: 13, color: "rgba(255,255,255,.6)" }}>
-                  <strong style={{ color: "#14B8A6" }}>{globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で診断中
+                <span style={{ fontSize: 13, color: "#4a6572" }}>
+                  <strong style={{ color: "#2dd4bf" }}>{globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で診断中
                 </span>
               </div>
               <button
@@ -488,8 +361,8 @@ export default function PortalPage() {
                 }}
                 style={{
                   padding: "4px 12px", borderRadius: 12,
-                  background: "rgba(99,102,241,.12)", border: "1px solid rgba(99,102,241,.2)",
-                  color: "#818CF8", fontSize: 11, fontWeight: 700, cursor: "pointer",
+                  background: "rgba(45,212,191,.1)", border: "1px solid rgba(45,212,191,.2)",
+                  color: "#2dd4bf", fontSize: 11, fontWeight: 700, cursor: "pointer",
                 }}
               >
                 変更
@@ -498,14 +371,14 @@ export default function PortalPage() {
           ) : (
             // 未設定表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <span style={{ fontSize: 13, color: "rgba(255,255,255,.5)" }}>
+              <span style={{ fontSize: 13, color: "#6b8a99" }}>
                 🧪 名前・年齢・性別を設定すると、診断がスムーズに！
               </span>
               <button
                 onClick={() => setShowProfileSetup(true)}
                 style={{
                   padding: "6px 16px", borderRadius: 12,
-                  background: "linear-gradient(135deg, #6366F1, #818CF8)",
+                  background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
                   border: "none", color: "#fff", fontSize: 12, fontWeight: 700,
                   cursor: "pointer",
                 }}
@@ -520,13 +393,13 @@ export default function PortalPage() {
             <div
               style={{
                 marginTop: 16, paddingTop: 16,
-                borderTop: "1px solid rgba(255,255,255,.06)",
+                borderTop: "1px solid rgba(45,212,191,.1)",
                 animation: "slideDown 0.3s ease-out",
               }}
             >
               {/* 名前入力 */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,.4)", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
+                <p style={{ fontSize: 12, color: "#6b8a99", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
                 <input
                   type="text"
                   value={tempName}
@@ -535,20 +408,20 @@ export default function PortalPage() {
                   maxLength={20}
                   style={{
                     width: "100%", padding: "10px 14px", borderRadius: 10,
-                    background: "rgba(255,255,255,.06)",
-                    border: "1px solid rgba(255,255,255,.1)",
-                    color: "#fff", fontSize: 14, outline: "none",
+                    background: "rgba(255,255,255,.8)",
+                    border: "1px solid rgba(45,212,191,.2)",
+                    color: "#1a2e3b", fontSize: 14, outline: "none",
                     fontFamily: "'Zen Maru Gothic', sans-serif",
                     transition: "border-color 0.2s ease",
                   }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "#6366F1"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,.1)"; }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "#2dd4bf"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(45,212,191,.2)"; }}
                 />
               </div>
 
               {/* 性別選択 */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,.4)", marginBottom: 8 }}>性別</p>
+                <p style={{ fontSize: 12, color: "#6b8a99", marginBottom: 8 }}>性別</p>
                 <div style={{ display: "flex", gap: 8 }}>
                   {[
                     { value: "male", label: "男性", emoji: "♂" },
@@ -560,9 +433,9 @@ export default function PortalPage() {
                       onClick={() => setTempGender(g.value)}
                       style={{
                         flex: 1, padding: "8px 0", borderRadius: 10,
-                        background: tempGender === g.value ? "rgba(99,102,241,.2)" : "rgba(255,255,255,.04)",
-                        border: tempGender === g.value ? "1.5px solid #6366F1" : "1px solid rgba(255,255,255,.08)",
-                        color: tempGender === g.value ? "#818CF8" : "rgba(255,255,255,.5)",
+                        background: tempGender === g.value ? "rgba(45,212,191,.15)" : "rgba(255,255,255,.6)",
+                        border: tempGender === g.value ? "1.5px solid #2dd4bf" : "1px solid rgba(45,212,191,.15)",
+                        color: tempGender === g.value ? "#2dd4bf" : "#6b8a99",
                         fontSize: 13, fontWeight: 600, cursor: "pointer",
                         transition: "all 0.2s ease",
                       }}
@@ -575,8 +448,8 @@ export default function PortalPage() {
 
               {/* 年齢スライダー */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,.4)", marginBottom: 8 }}>
-                  年齢: <strong style={{ color: "#818CF8", fontSize: 16 }}>{tempAge}</strong>歳
+                <p style={{ fontSize: 12, color: "#6b8a99", marginBottom: 8 }}>
+                  年齢: <strong style={{ color: "#2dd4bf", fontSize: 16 }}>{tempAge}</strong>歳
                 </p>
                 <input
                   type="range"
@@ -588,7 +461,7 @@ export default function PortalPage() {
                   style={{
                     width: "100%", height: 6,
                     WebkitAppearance: "none", appearance: "none",
-                    background: `linear-gradient(to right, #6366F1 ${((tempAge - 10) / 50) * 100}%, rgba(255,255,255,.08) ${((tempAge - 10) / 50) * 100}%)`,
+                    background: `linear-gradient(to right, #2dd4bf ${((tempAge - 10) / 50) * 100}%, rgba(45,212,191,.15) ${((tempAge - 10) / 50) * 100}%)`,
                     borderRadius: 3, outline: "none", cursor: "pointer",
                   }}
                 />
@@ -601,10 +474,10 @@ export default function PortalPage() {
                 style={{
                   width: "100%", padding: "10px 0", borderRadius: 12,
                   background: tempGender
-                    ? "linear-gradient(135deg, #6366F1, #818CF8)"
-                    : "rgba(255,255,255,.06)",
+                    ? "linear-gradient(135deg, #2dd4bf, #38bdf8)"
+                    : "rgba(45,212,191,.1)",
                   border: "none",
-                  color: tempGender ? "#fff" : "rgba(255,255,255,.2)",
+                  color: tempGender ? "#fff" : "#6b8a99",
                   fontSize: 13, fontWeight: 700, cursor: tempGender ? "pointer" : "default",
                   transition: "all 0.2s ease",
                 }}
@@ -617,15 +490,15 @@ export default function PortalPage() {
 
         {/* セクションタイトル */}
         <div style={{ textAlign: "left", marginBottom: 20 }}>
-          <span style={{ fontSize: "0.75rem", letterSpacing: "0.15em", color: "#818CF8", display: "block", marginBottom: 6 }}>
+          <span style={{ fontSize: "0.75rem", letterSpacing: "0.15em", color: "#2dd4bf", display: "block", marginBottom: 6 }}>
             ALL DIAGNOSES
           </span>
-          <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)", color: "#fff" }}>
+          <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)", color: "#1a2e3b" }}>
             診断を選ぶ
           </h2>
         </div>
 
-        {/* カテゴリタブ（ダーク対応） */}
+        {/* カテゴリタブ */}
         <div
           style={{
             display: "flex", gap: 8, marginBottom: 20,
@@ -640,12 +513,12 @@ export default function PortalPage() {
               style={{
                 padding: "8px 16px", borderRadius: 20,
                 background: activeCategory === cat.key
-                  ? "linear-gradient(135deg, #6366F1, #818CF8)"
-                  : "rgba(255,255,255,.04)",
+                  ? "#2dd4bf"
+                  : "rgba(255,255,255,0.6)",
                 border: activeCategory === cat.key
                   ? "none"
-                  : "1px solid rgba(255,255,255,.08)",
-                color: activeCategory === cat.key ? "#fff" : "rgba(255,255,255,.5)",
+                  : "1px solid rgba(45,212,191,.15)",
+                color: activeCategory === cat.key ? "#fff" : "#4a6572",
                 fontSize: 12, fontWeight: 700, cursor: "pointer",
                 whiteSpace: "nowrap",
                 transition: "all 0.25s ease",
@@ -681,32 +554,32 @@ export default function PortalPage() {
                   alignItems: "flex-start",
                   gap: 16,
                   textDecoration: "none",
-                  background: "rgba(255,255,255,.03)",
+                  background: "rgba(255,255,255,0.7)",
                   backdropFilter: "blur(12px)",
                   borderRadius: 16,
                   padding: "18px 18px",
-                  border: "1px solid rgba(255,255,255,.06)",
-                  borderTop: "1px solid rgba(255,255,255,.06)",
+                  border: "1px solid rgba(45,212,191,.12)",
+                  borderTop: "1px solid rgba(45,212,191,.12)",
                   position: "relative",
                   overflow: "hidden",
                   opacity: cardsVisible ? 1 : 0,
                   transform: cardsVisible ? "translateY(0) scale(1)" : "translateY(24px) scale(0.96)",
                   transition: `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, transform 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, border-color 0.3s, box-shadow 0.3s, border-top 0.3s`,
-                  boxShadow: "0 2px 8px rgba(0,0,0,.2)",
+                  boxShadow: "0 2px 12px rgba(0,0,0,.04)",
                 }}
                 onMouseEnter={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
                   el.style.transform = "translateY(-3px) scale(1.01)";
                   el.style.borderColor = diag.themeColor + "40";
                   el.style.borderTop = `2px solid ${diag.themeColor}`;
-                  el.style.boxShadow = `0 0 25px ${diag.themeColor}20, 0 8px 30px rgba(0,0,0,.3)`;
+                  el.style.boxShadow = `0 0 25px ${diag.themeColor}15, 0 8px 30px rgba(0,0,0,.06)`;
                 }}
                 onMouseLeave={(e) => {
                   const el = e.currentTarget as HTMLAnchorElement;
                   el.style.transform = "none";
-                  el.style.borderColor = "rgba(255,255,255,.06)";
-                  el.style.borderTop = "1px solid rgba(255,255,255,.06)";
-                  el.style.boxShadow = "0 2px 8px rgba(0,0,0,.2)";
+                  el.style.borderColor = "rgba(45,212,191,.12)";
+                  el.style.borderTop = "1px solid rgba(45,212,191,.12)";
+                  el.style.boxShadow = "0 2px 12px rgba(0,0,0,.04)";
                 }}
               >
                 {/* 左側: 大きな絵文字アイコン */}
@@ -734,7 +607,7 @@ export default function PortalPage() {
                       className="font-zen"
                       style={{
                         fontSize: "0.95rem", fontWeight: 700,
-                        color: "#fff",
+                        color: "#1a2e3b",
                         margin: 0,
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                       }}
@@ -745,7 +618,7 @@ export default function PortalPage() {
                       <span style={{
                         display: "inline-flex", alignItems: "center", justifyContent: "center",
                         width: 18, height: 18, borderRadius: "50%",
-                        background: "rgba(20,184,166,.15)", fontSize: 10, color: "#14B8A6",
+                        background: "rgba(45,212,191,.15)", fontSize: 10, color: "#2dd4bf",
                         flexShrink: 0,
                       }}>
                         ✓
@@ -755,7 +628,7 @@ export default function PortalPage() {
 
                   {/* 説明文 */}
                   <p style={{
-                    fontSize: "0.75rem", lineHeight: 1.5, color: "rgba(255,255,255,.5)",
+                    fontSize: "0.75rem", lineHeight: 1.5, color: "#4a6572",
                     marginBottom: 8,
                     display: "-webkit-box",
                     WebkitLineClamp: 2,
@@ -769,23 +642,23 @@ export default function PortalPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                     <span style={{
                       padding: "2px 8px", borderRadius: 8,
-                      background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.2)",
-                      fontSize: 10, color: "rgba(255,255,255,.5)",
+                      background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.15)",
+                      fontSize: 10, color: "#4a6572",
                     }}>
                       {diag.questionCount}問
                     </span>
                     <span style={{
                       padding: "2px 8px", borderRadius: 8,
-                      background: "rgba(99,102,241,.1)", border: "1px solid rgba(99,102,241,.2)",
-                      fontSize: 10, color: "rgba(255,255,255,.5)",
+                      background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.15)",
+                      fontSize: 10, color: "#4a6572",
                     }}>
                       約{diag.estimatedMinutes}分
                     </span>
                     {isCompleted && result && (
                       <span style={{
                         padding: "2px 8px", borderRadius: 8,
-                        background: "rgba(20,184,166,.1)", border: "1px solid rgba(20,184,166,.2)",
-                        fontSize: 10, color: "#14B8A6", fontWeight: 600,
+                        background: "rgba(45,212,191,.1)", border: "1px solid rgba(45,212,191,.2)",
+                        fontSize: 10, color: "#2dd4bf", fontWeight: 600,
                       }}>
                         {result.typeName}
                       </span>
@@ -793,9 +666,9 @@ export default function PortalPage() {
                     {diag.isFeatured && (
                       <span style={{
                         padding: "2px 8px", borderRadius: 8,
-                        background: "linear-gradient(135deg, rgba(236,72,153,.15), rgba(99,102,241,.15))",
-                        border: "1px solid rgba(236,72,153,.25)",
-                        fontSize: 10, color: "#F472B6", fontWeight: 700,
+                        background: "linear-gradient(135deg, rgba(45,212,191,.12), rgba(56,189,248,.12))",
+                        border: "1px solid rgba(45,212,191,.2)",
+                        fontSize: 10, color: "#2dd4bf", fontWeight: 700,
                         letterSpacing: "0.04em",
                       }}>
                         イチオシ
@@ -832,12 +705,12 @@ export default function PortalPage() {
       >
         <div
           style={{
-            background: "rgba(255,255,255,.04)",
+            background: "rgba(255,255,255,0.7)",
             backdropFilter: "blur(12px)",
-            border: "1px solid rgba(255,255,255,.06)",
+            border: "1px solid rgba(45,212,191,.12)",
             borderRadius: 20,
             padding: "32px 24px",
-            boxShadow: "0 4px 30px rgba(0,0,0,.2)",
+            boxShadow: "0 2px 12px rgba(0,0,0,.04)",
           }}
         >
           <div style={{ fontSize: 40, marginBottom: 12 }}>🃏</div>
@@ -845,10 +718,7 @@ export default function PortalPage() {
             className="font-stick"
             style={{
               fontSize: "clamp(1.2rem, 4vw, 1.6rem)",
-              background: "linear-gradient(135deg, #818CF8, #EC4899, #14B8A6)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              color: "#1a2e3b",
               marginBottom: 10,
             }}
           >
@@ -856,7 +726,7 @@ export default function PortalPage() {
           </h2>
           <p
             style={{
-              fontSize: 13, color: "rgba(255,255,255,.5)", lineHeight: 1.8,
+              fontSize: 13, color: "#4a6572", lineHeight: 1.8,
               marginBottom: 20, maxWidth: 400, margin: "0 auto 20px",
             }}
           >
@@ -870,12 +740,12 @@ export default function PortalPage() {
               fontSize: 14,
               textDecoration: "none",
               display: "inline-block",
-              background: "linear-gradient(135deg, #6366F1, #818CF8)",
+              background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
               color: "#fff",
               borderRadius: 50,
               fontWeight: 700,
               fontFamily: "'Zen Maru Gothic', sans-serif",
-              boxShadow: "0 4px 20px rgba(99,102,241,.3)",
+              boxShadow: "0 4px 20px rgba(45,212,191,.2)",
               transition: "all 0.3s ease",
             }}
           >
@@ -890,23 +760,20 @@ export default function PortalPage() {
       <footer
         style={{
           padding: "40px 20px 30px", textAlign: "center",
-          borderTop: "1px solid rgba(255,255,255,.06)",
+          borderTop: "1px solid rgba(45,212,191,.1)",
           position: "relative", zIndex: 1,
         }}
       >
         <div className="font-stick" style={{
           fontSize: "1.2rem", marginBottom: 8,
-          background: "linear-gradient(135deg, #818CF8, #EC4899)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
+          color: "#2dd4bf",
         }}>
           ときめきラボ
         </div>
-        <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,.4)", marginBottom: 8 }}>
+        <p style={{ fontSize: "0.8rem", color: "#6b8a99", marginBottom: 8 }}>
           22の診断で自分を完全解析。
         </p>
-        <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,.2)" }}>
+        <p style={{ fontSize: "0.65rem", color: "#9cb3bf" }}>
           &copy; 2026 ときめきラボ
         </p>
       </footer>
@@ -919,26 +786,26 @@ export default function PortalPage() {
           }
         }
 
-        /* スライダーのサム（つまみ）スタイル（ダーク版） */
+        /* スライダーのサム（つまみ）スタイル */
         input[type="range"]::-webkit-slider-thumb {
           -webkit-appearance: none;
           appearance: none;
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: #6366F1;
+          background: #2dd4bf;
           cursor: pointer;
-          box-shadow: 0 0 12px rgba(99,102,241,.5);
-          border: 2px solid rgba(255,255,255,.2);
+          box-shadow: 0 0 12px rgba(45,212,191,.4);
+          border: 2px solid rgba(255,255,255,.8);
         }
         input[type="range"]::-moz-range-thumb {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: #6366F1;
+          background: #2dd4bf;
           cursor: pointer;
-          box-shadow: 0 0 12px rgba(99,102,241,.5);
-          border: 2px solid rgba(255,255,255,.2);
+          box-shadow: 0 0 12px rgba(45,212,191,.4);
+          border: 2px solid rgba(255,255,255,.8);
         }
       `}</style>
     </>

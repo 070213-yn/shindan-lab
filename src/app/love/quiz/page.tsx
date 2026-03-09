@@ -1,7 +1,8 @@
 "use client";
 
 /**
- * 診断ページ（/quiz）
+ * 診断ページ（/love/quiz）
+ * 青春 x 爽やか x 透明感スタイル
  *
  * 診断フロー全体を管理するページ。
  * currentStep に応じて profile → quiz → name → loading → result と画面を切り替える。
@@ -25,21 +26,6 @@ export default function QuizPage() {
     setCurrentStep("profile");
   }, []);
 
-  // ---------- 星空パーティクル（クライアント側のみで生成してハイドレーションエラーを防ぐ） ----------
-  const [stars, setStars] = useState<{ id: number; top: string; left: string; size: number; delay: string; duration: string }[]>([]);
-  useEffect(() => {
-    setStars(
-      Array.from({ length: 100 }, (_, i) => ({
-        id: i,
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        size: Math.random() * 2.5 + 0.5,
-        delay: `${Math.random() * 4}s`,
-        duration: `${2 + Math.random() * 3}s`,
-      }))
-    );
-  }, []);
-
   // ---------- 名前送信ハンドラ ----------
   const handleNameSubmit = () => {
     setCrushName(nameInput.trim());
@@ -47,63 +33,7 @@ export default function QuizPage() {
   };
 
   return (
-    <div style={{ background: "#0D0118", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
-      {/* ===== 背景エフェクト：星空パーティクル ===== */}
-      <div
-        style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }}
-        aria-hidden="true"
-      >
-        {stars.map((star) => (
-          <div
-            key={star.id}
-            style={{
-              position: "absolute",
-              top: star.top,
-              left: star.left,
-              width: star.size,
-              height: star.size,
-              borderRadius: "50%",
-              background: "#fff",
-              animation: `twinkle ${star.duration} ${star.delay} infinite`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* ===== 背景エフェクト：ブロブ2つ ===== */}
-      <div
-        style={{
-          position: "fixed",
-          top: "15%",
-          left: "-10%",
-          width: 340,
-          height: 340,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(196,90,255,.25), transparent 70%)",
-          filter: "blur(60px)",
-          animation: "blobFloat 8s ease-in-out infinite",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-      <div
-        style={{
-          position: "fixed",
-          bottom: "10%",
-          right: "-8%",
-          width: 300,
-          height: 300,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,107,232,.2), transparent 70%)",
-          filter: "blur(60px)",
-          animation: "blobFloat 10s 2s ease-in-out infinite",
-          pointerEvents: "none",
-          zIndex: 0,
-        }}
-        aria-hidden="true"
-      />
-
+    <div className="bg-fresh-pattern" style={{ background: "#F0FAFA", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
       {/* ===== メインコンテンツ ===== */}
       <div style={{ position: "relative", zIndex: 1 }}>
         {/* ステップ1: プロフィール設定 */}
@@ -118,7 +48,7 @@ export default function QuizPage() {
             style={{
               position: "fixed",
               inset: 0,
-              background: "#0D0118",
+              background: "#F0FAFA",
               zIndex: 300,
               display: "flex",
               alignItems: "center",
@@ -139,7 +69,7 @@ export default function QuizPage() {
               {/* 見出し */}
               <h2
                 className="font-stick"
-                style={{ fontSize: 26, color: "#FF6BE8", marginBottom: 12 }}
+                style={{ fontSize: 26, color: "#2dd4bf", marginBottom: 12 }}
               >
                 最後に一つだけ
               </h2>
@@ -147,7 +77,7 @@ export default function QuizPage() {
               {/* 説明テキスト */}
               <p
                 style={{
-                  color: "rgba(255,255,255,.7)",
+                  color: "#4a6572",
                   fontSize: 14,
                   lineHeight: 1.7,
                   marginBottom: 28,
@@ -168,10 +98,10 @@ export default function QuizPage() {
                 style={{
                   width: "100%",
                   padding: "14px 18px",
-                  background: "rgba(255,255,255,.06)",
-                  border: "1px solid rgba(255,107,232,.3)",
+                  background: "rgba(255,255,255,.8)",
+                  border: "1px solid rgba(45,212,191,.3)",
                   borderRadius: 14,
-                  color: "#fff",
+                  color: "#1a2e3b",
                   fontSize: 16,
                   outline: "none",
                   marginBottom: 24,
@@ -198,7 +128,7 @@ export default function QuizPage() {
               {/* 注記 */}
               <p
                 style={{
-                  color: "rgba(255,255,255,.4)",
+                  color: "#6b8a99",
                   fontSize: 12,
                   marginTop: 14,
                 }}

@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body className="bg-fresh-pattern" style={{ background: "#F0FAFA" }}>{children}</body>
     </html>
   );
 }

@@ -2,6 +2,7 @@
 
 /**
  * 汎用診断ページ（/shindan/[id]）
+ * 青春 x 爽やか x 透明感スタイル
  *
  * URLパラメータのIDに応じた診断設定を読み込み、
  * DiagnosticEngineに渡して診断フローを実行する。
@@ -20,9 +21,10 @@ export default function ShindanPage({ params }: { params: Promise<{ id: string }
   if (!config) {
     return (
       <div
+        className="bg-fresh-pattern"
         style={{
           minHeight: "100vh",
-          background: "#0D0118",
+          background: "#F0FAFA",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -34,11 +36,11 @@ export default function ShindanPage({ params }: { params: Promise<{ id: string }
         <div style={{ fontSize: 64, marginBottom: 20 }}>🔍</div>
         <h1
           className="font-stick"
-          style={{ fontSize: 24, color: "#FF6BE8", marginBottom: 12 }}
+          style={{ fontSize: 24, color: "#2dd4bf", marginBottom: 12 }}
         >
           診断が見つかりません
         </h1>
-        <p style={{ color: "rgba(255,255,255,.6)", marginBottom: 24 }}>
+        <p style={{ color: "#4a6572", marginBottom: 24 }}>
           指定された診断ID「{id}」は存在しません。
         </p>
         <Link

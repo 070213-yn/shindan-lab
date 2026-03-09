@@ -45,7 +45,7 @@ export interface DiagnosticTheme {
   accentEmoji: string;
 }
 
-/** 全22診断のテーマ定義（爽やかライトテーマ） */
+/** 全12診断のテーマ定義（爽やかライトテーマ） */
 const FULL_THEMES: Record<string, DiagnosticTheme> = {
   // ── mbti128: 淡いラベンダー ──
   mbti128: {
@@ -152,69 +152,6 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     accentEmoji: '🛡️',
   },
 
-  // ── commu: 淡いオレンジ ──
-  commu: {
-    bgColor: '#FFF5E8',
-    bgGradient: 'linear-gradient(135deg, #FFF5E8 0%, #FFF8EE 50%, #FFF3E5 100%)',
-    bgPattern: 'social',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 40% 40%, rgba(251,146,60,0.07) 0%, transparent 40%), radial-gradient(circle at 60% 60%, rgba(253,186,116,0.05) 0%, transparent 40%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(251,146,60,0.12)',
-    blob2Color: 'rgba(253,186,116,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(251,146,60,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '💬',
-  },
-
-  // ── oshi: 淡いピンク ──
-  oshi: {
-    bgColor: '#FFE8F5',
-    bgGradient: 'linear-gradient(135deg, #FFE8F5 0%, #FFECF8 50%, #FFE5F0 100%)',
-    bgPattern: 'concert',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 30% 70%, rgba(236,72,153,0.07) 0%, transparent 40%), radial-gradient(circle at 70% 30%, rgba(168,85,247,0.05) 0%, transparent 40%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(236,72,153,0.12)',
-    blob2Color: 'rgba(168,85,247,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(236,72,153,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🎪',
-  },
-
-  // ── career: 淡いネイビー ──
-  career: {
-    bgColor: '#E8EEFF',
-    bgGradient: 'linear-gradient(135deg, #E8EEFF 0%, #EDF2FF 50%, #E8ECFF 100%)',
-    bgPattern: 'tech',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(99,102,241,0.06) 0%, transparent 50%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(99,102,241,0.12)',
-    blob2Color: 'rgba(165,180,252,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(99,102,241,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🚀',
-  },
-
   // ── shadow: 淡いレッド ──
   shadow: {
     bgColor: '#F5E8E8',
@@ -234,27 +171,6 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     textPrimary: '#1a2e3b',
     textSecondary: '#4a6572',
     accentEmoji: '🎭',
-  },
-
-  // ── sns: 淡いミント ──
-  sns: {
-    bgColor: '#E8FFF5',
-    bgGradient: 'linear-gradient(135deg, #E8FFF5 0%, #ECFFF8 50%, #E8FFF2 100%)',
-    bgPattern: 'digital',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 40% 40%, rgba(34,211,238,0.06) 0%, transparent 40%), radial-gradient(circle at 60% 60%, rgba(52,211,153,0.05) 0%, transparent 40%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(34,211,238,0.12)',
-    blob2Color: 'rgba(52,211,153,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(34,211,238,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '📱',
   },
 
   // ── pastlife: 淡いセピア ──
@@ -278,48 +194,6 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     accentEmoji: '⏳',
   },
 
-  // ── leadership: 淡いロイヤルブルー ──
-  leadership: {
-    bgColor: '#ECEDFF',
-    bgGradient: 'linear-gradient(135deg, #ECEDFF 0%, #F0F1FF 50%, #ECEEFF 100%)',
-    bgPattern: 'grid',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 30% 30%, rgba(59,130,246,0.06) 0%, transparent 40%), radial-gradient(circle at 70% 70%, rgba(255,215,0,0.04) 0%, transparent 40%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(59,130,246,0.12)',
-    blob2Color: 'rgba(255,215,0,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(59,130,246,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '👑',
-  },
-
-  // ── creative: 淡いレインボー ──
-  creative: {
-    bgColor: '#FFF0F8',
-    bgGradient: 'linear-gradient(135deg, #FFF0F8 0%, #F0F0FF 30%, #F0FFF8 60%, #FFF8F0 100%)',
-    bgPattern: 'paint',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 15% 50%, rgba(236,72,153,0.06) 0%, transparent 35%), radial-gradient(circle at 85% 30%, rgba(59,130,246,0.06) 0%, transparent 35%), radial-gradient(circle at 50% 80%, rgba(234,179,8,0.05) 0%, transparent 35%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(236,72,153,0.1)',
-    blob2Color: 'rgba(59,130,246,0.08)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(168,85,247,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🎨',
-  },
-
   // ── stress: 淡いグリーン ──
   stress: {
     bgColor: '#EEFFF0',
@@ -341,48 +215,6 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     accentEmoji: '🌿',
   },
 
-  // ── friendship: 淡いピーチ ──
-  friendship: {
-    bgColor: '#FFF0E8',
-    bgGradient: 'linear-gradient(135deg, #FFF0E8 0%, #FFF5EE 50%, #FFEDE5 100%)',
-    bgPattern: 'warm',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(251,146,60,0.06) 0%, transparent 60%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(251,146,60,0.12)',
-    blob2Color: 'rgba(253,186,116,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(251,146,60,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🤝',
-  },
-
-  // ── chrono: 淡い紺 ──
-  chrono: {
-    bgColor: '#ECF0FF',
-    bgGradient: 'linear-gradient(180deg, #ECF0FF 0%, #F0F3FF 50%, #ECF0FF 100%)',
-    bgPattern: 'night',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 30% 20%, rgba(99,102,241,0.06) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(67,56,202,0.05) 0%, transparent 40%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(99,102,241,0.12)',
-    blob2Color: 'rgba(67,56,202,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(99,102,241,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🌙',
-  },
-
   // ── money: 淡いマネーグリーン ──
   money: {
     bgColor: '#F0FFE8',
@@ -402,48 +234,6 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     textPrimary: '#1a2e3b',
     textSecondary: '#4a6572',
     accentEmoji: '💰',
-  },
-
-  // ── impression: 淡いローズ ──
-  impression: {
-    bgColor: '#FFF0EC',
-    bgGradient: 'linear-gradient(135deg, #FFF0EC 0%, #FFF5F2 50%, #FFEDE8 100%)',
-    bgPattern: 'mirror',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 50% 50%, rgba(244,143,177,0.06) 0%, transparent 50%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(244,143,177,0.12)',
-    blob2Color: 'rgba(248,187,208,0.1)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(244,143,177,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🪞',
-  },
-
-  // ── brain: 淡いマトリックスグリーン ──
-  brain: {
-    bgColor: '#EEFFEE',
-    bgGradient: 'linear-gradient(180deg, #EEFFEE 0%, #F2FFF2 50%, #EEFFEE 100%)',
-    bgPattern: 'neural',
-    bgStyle: {
-      backgroundImage:
-        'radial-gradient(circle at 30% 40%, rgba(34,197,94,0.06) 0%, transparent 30%), radial-gradient(circle at 70% 60%, rgba(74,222,128,0.05) 0%, transparent 30%)',
-    },
-    particleColors: [],
-    particleCount: 0,
-    particleType: 'none',
-    blob1Color: 'rgba(34,197,94,0.1)',
-    blob2Color: 'rgba(74,222,128,0.08)',
-    cardBg: 'rgba(255,255,255,0.7)',
-    cardBorder: 'rgba(34,197,94,0.2)',
-    textPrimary: '#1a2e3b',
-    textSecondary: '#4a6572',
-    accentEmoji: '🧠',
   },
 
   // ── job: 淡いティール ──
@@ -564,13 +354,6 @@ export function getLoadingSteps(id: string): { label: string; delay: number }[] 
       { label: 'あなたのタイプを判定中...', delay: 2800 },
       { label: '結果をまとめています...', delay: 3800 },
     ],
-    career: [
-      { label: '適性データを収集中...', delay: 0 },
-      { label: 'スキル傾向を分析中...', delay: 800 },
-      { label: 'キャリアパスを計算中...', delay: 1800 },
-      { label: '最適な道を判定中...', delay: 2800 },
-      { label: '結果を生成中...', delay: 3800 },
-    ],
     isekai: [
       { label: '異世界を探索中...', delay: 0 },
       { label: '魔力適性を測定中...', delay: 800 },
@@ -597,20 +380,6 @@ export function getLoadingSteps(id: string): { label: string; delay: number }[] 
       { label: '影の人格を分析中...', delay: 800 },
       { label: '無意識パターンを解読中...', delay: 1800 },
       { label: 'シャドウタイプを判定中...', delay: 2800 },
-      { label: '結果を生成中...', delay: 3800 },
-    ],
-    creative: [
-      { label: '創造性データを収集中...', delay: 0 },
-      { label: 'アート適性を測定中...', delay: 800 },
-      { label: 'インスピレーション源を分析中...', delay: 1800 },
-      { label: 'クリエイタータイプを判定中...', delay: 2800 },
-      { label: '結果をまとめています...', delay: 3800 },
-    ],
-    brain: [
-      { label: '脳波パターンを分析中...', delay: 0 },
-      { label: '思考回路をマッピング中...', delay: 800 },
-      { label: '認知スタイルを解析中...', delay: 1800 },
-      { label: '脳タイプを判定中...', delay: 2800 },
       { label: '結果を生成中...', delay: 3800 },
     ],
     mbti128: [

@@ -12,20 +12,10 @@ import { talentDiagnosis } from './talent';
 import { spiritDiagnosis } from './spirit';
 import { isekaiDiagnosis } from './isekai';
 import { mentalDiagnosis } from './mental';
-import { commuDiagnosis } from './commu';
-import { oshiDiagnosis } from './oshi';
-import { careerDiagnosis } from './career';
 import { shadowDiagnosis } from './shadow';
-import { snsDiagnosis } from './sns';
 import { pastlifeDiagnosis } from './pastlife';
-import { leadershipDiagnosis } from './leadership';
-import { creativeDiagnosis } from './creative';
 import { stressDiagnosis } from './stress';
-import { friendshipDiagnosis } from './friendship';
-import { chronoDiagnosis } from './chrono';
 import { moneyDiagnosis } from './money';
-import { impressionDiagnosis } from './impression';
-import { brainDiagnosis } from './brain';
 import { jobDiagnosis } from './job';
 import { learningDiagnosis } from './learning';
 import { mbti128Diagnosis } from './mbti128';
@@ -36,20 +26,10 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   spirit: spiritDiagnosis,
   isekai: isekaiDiagnosis,
   mental: mentalDiagnosis,
-  commu: commuDiagnosis,
-  oshi: oshiDiagnosis,
-  career: careerDiagnosis,
   shadow: shadowDiagnosis,
-  sns: snsDiagnosis,
   pastlife: pastlifeDiagnosis,
-  leadership: leadershipDiagnosis,
-  creative: creativeDiagnosis,
   stress: stressDiagnosis,
-  friendship: friendshipDiagnosis,
-  chrono: chronoDiagnosis,
   money: moneyDiagnosis,
-  impression: impressionDiagnosis,
-  brain: brainDiagnosis,
   job: jobDiagnosis,
   learning: learningDiagnosis,
   mbti128: mbti128Diagnosis,
@@ -61,20 +41,10 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   spiritDiagnosis,
   isekaiDiagnosis,
   mentalDiagnosis,
-  commuDiagnosis,
-  oshiDiagnosis,
-  careerDiagnosis,
   shadowDiagnosis,
-  snsDiagnosis,
   pastlifeDiagnosis,
-  leadershipDiagnosis,
-  creativeDiagnosis,
   stressDiagnosis,
-  friendshipDiagnosis,
-  chronoDiagnosis,
   moneyDiagnosis,
-  impressionDiagnosis,
-  brainDiagnosis,
   jobDiagnosis,
   learningDiagnosis,
   mbti128Diagnosis,

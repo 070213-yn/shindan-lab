@@ -1,5 +1,5 @@
 /**
- * ストレスコーピング診断
+ * あなたの心のお薬箱診断
  *
  * 理論基盤:
  *   - トランスアクショナルモデル — Lazarus & Folkman (1984)
@@ -14,11 +14,11 @@ import type { DiagnosisConfig } from '../diagnosticTypes';
 
 export const stressDiagnosis: DiagnosisConfig = {
   id: 'stress',
-  title: 'ストレスコーピング診断',
-  subtitle: 'あなたのストレス対処法を科学的に解析！',
-  catchphrase: 'ストレスとの付き合い方、知ってみない？',
+  title: 'あなたの心のお薬箱診断',
+  subtitle: '心がSOSを出したとき、あなたはどう動く？',
+  catchphrase: '心がつらい時、あなただけの処方箋を見つけよう',
   description:
-    'ストレス心理学の理論をベースに、あなたがストレスにどう向き合い、どう乗り越えるかを7つの軸で分析します。28問の質問に正直に答えて、自分だけのコーピングスタイルを発見しよう！',
+    '落ち込んだり、イライラしたり、不安になったり——誰だって心がしんどい時ってあるよね。この診断では、ストレス心理学の研究をもとに、あなたが「心のピンチ」をどう乗り越えるタイプなのかを7つの視点から分析するよ。自分だけの「心のお薬箱」の中身を覗いてみよう！',
   emoji: '🧘',
   themeColor: '#14B8A6',
   gradientFrom: '#14B8A6',
@@ -499,9 +499,9 @@ export const stressDiagnosis: DiagnosisConfig = {
   questionCount: 28,
   estimatedMinutes: 5,
   hashtags: [
-    '#ストレスコーピング診断',
-    '#ストレス対処法診断',
-    '#あなたのコーピングタイプは',
+    '#心のお薬箱診断',
+    '#あなたの心の処方箋',
+    '#ストレス対処タイプ診断',
     '#心理テスト',
     '#ときめきラボ',
   ],

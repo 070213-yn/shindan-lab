@@ -739,8 +739,8 @@ export function generateTotalAnalysis(
   profile: GlobalProfile
 ): TotalAnalysis {
   const completedCount = Object.keys(results).length;
-  // 全診断数: 恋愛(1) + 汎用(20) + 合計21想定
-  const totalDiagnoses = 21;
+  // 全診断数: 恋愛(1) + 汎用(11) + 新規2 = 合計14想定
+  const totalDiagnoses = 14;
   const confidence = calculateConfidence(completedCount, totalDiagnoses);
   const confidenceLabel = getConfidenceLabel(confidence);
 

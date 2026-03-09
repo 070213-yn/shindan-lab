@@ -97,7 +97,7 @@ export default function LoadingOrb() {
       style={{
         position: "fixed",
         inset: 0,
-        background: "#0D0118",
+        background: "#F0FAFA",
         zIndex: 300,
         display: "flex",
         alignItems: "center",
@@ -115,13 +115,13 @@ export default function LoadingOrb() {
         {/* タイトル: 〇〇との相性を分析中… */}
         <p
           className="font-stick"
-          style={{ fontSize: 22, color: "#FF6BE8", marginBottom: 6 }}
+          style={{ fontSize: 22, color: "#2dd4bf", marginBottom: 6 }}
         >
           {displayName}との相性を分析中…
         </p>
 
         {/* サブテキスト */}
-        <p style={{ fontSize: 13, color: "#D4B8F5", marginBottom: 28 }}>
+        <p style={{ fontSize: 13, color: "#4a6572", marginBottom: 28 }}>
           43問・8次元のデータを宇宙が演算中
         </p>
 
@@ -140,7 +140,7 @@ export default function LoadingOrb() {
               position: "absolute",
               inset: 0,
               borderRadius: "50%",
-              border: "1px solid rgba(255,107,232,.3)",
+              border: "1px solid rgba(45,212,191,.3)",
               animation: "glowPulse 2s ease-in-out infinite",
             }}
           />
@@ -150,7 +150,7 @@ export default function LoadingOrb() {
               position: "absolute",
               inset: -6,
               borderRadius: "50%",
-              border: "1px solid rgba(196,90,255,.2)",
+              border: "1px solid rgba(56,189,248,.2)",
               animation: "glowPulse 2.5s 0.5s ease-in-out infinite",
             }}
           />
@@ -162,7 +162,7 @@ export default function LoadingOrb() {
               inset: 22,
               borderRadius: "50%",
               border: "2px solid transparent",
-              borderTopColor: "#FF6BE8",
+              borderTopColor: "#2dd4bf",
               animation: "spin360 1.9s linear infinite",
             }}
           />
@@ -173,7 +173,7 @@ export default function LoadingOrb() {
               inset: 34,
               borderRadius: "50%",
               border: "2px solid transparent",
-              borderTopColor: "#C45AFF",
+              borderTopColor: "#38bdf8",
               animation: "spin360 2.5s linear infinite reverse",
             }}
           />
@@ -184,7 +184,7 @@ export default function LoadingOrb() {
               inset: 46,
               borderRadius: "50%",
               border: "2px solid transparent",
-              borderTopColor: "#7B5CFF",
+              borderTopColor: "#06b6d4",
               animation: "spin360 3.3s linear infinite",
             }}
           />
@@ -196,8 +196,8 @@ export default function LoadingOrb() {
               inset: 42,
               borderRadius: "50%",
               background:
-                "radial-gradient(circle, #FF6BE8 0%, #C45AFF 50%, #7B5CFF 100%)",
-              boxShadow: "0 0 20px rgba(255,107,232,.6)",
+                "radial-gradient(circle, #2dd4bf 0%, #38bdf8 50%, #06b6d4 100%)",
+              boxShadow: "0 0 20px rgba(45,212,191,.6)",
               animation: "coreBeat 1.5s ease-in-out infinite",
             }}
           />
@@ -225,7 +225,7 @@ export default function LoadingOrb() {
                       width: 16,
                       display: "inline-flex",
                       justifyContent: "center",
-                      color: "rgba(255,107,232,.6)",
+                      color: "rgba(45,212,191,.8)",
                       fontSize: 12,
                     }}
                   >
@@ -242,11 +242,11 @@ export default function LoadingOrb() {
                       flexShrink: 0,
                       background:
                         state === "active"
-                          ? "#FF6BE8"
-                          : "rgba(255,255,255,.25)",
+                          ? "#2dd4bf"
+                          : "rgba(26,46,59,.25)",
                       boxShadow:
                         state === "active"
-                          ? "0 0 8px rgba(255,107,232,.6)"
+                          ? "0 0 8px rgba(45,212,191,.6)"
                           : "none",
                       animation:
                         state === "active"
@@ -261,7 +261,7 @@ export default function LoadingOrb() {
                 <span
                   style={{
                     fontSize: 13,
-                    color: state === "active" ? "#fff" : "rgba(255,255,255,.55)",
+                    color: state === "active" ? "#1a2e3b" : "rgba(74,101,114,.55)",
                     fontWeight: state === "active" ? 700 : 400,
                     transition: "all 0.3s",
                   }}
@@ -276,7 +276,7 @@ export default function LoadingOrb() {
         {/* ===== パーセント表示: font-stickのまま、グロー控えめ ===== */}
         <p
           className="font-stick"
-          style={{ fontSize: 50, color: "#FF6BE8", marginBottom: 12 }}
+          style={{ fontSize: 50, color: "#2dd4bf", marginBottom: 12 }}
         >
           {Math.round(percent)}%
         </p>
@@ -286,7 +286,7 @@ export default function LoadingOrb() {
           style={{
             width: "100%",
             height: 6,
-            background: "rgba(255,255,255,.08)",
+            background: "rgba(45,212,191,.12)",
             borderRadius: 3,
             overflow: "hidden",
           }}
@@ -295,7 +295,7 @@ export default function LoadingOrb() {
             style={{
               width: `${percent}%`,
               height: "100%",
-              background: "linear-gradient(90deg, #FF6BE8, #C45AFF, #7B5CFF)",
+              background: "linear-gradient(90deg, #2dd4bf, #38bdf8, #06b6d4)",
               borderRadius: 3,
               transition: "width 0.1s linear",
             }}

@@ -258,16 +258,7 @@ export default function DiagnosticEngine({ config }: Props) {
         aria-hidden="true"
       />
 
-      {/* 背景：パーティクル */}
-      {theme.particleType !== 'none' && (
-        <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0 }} aria-hidden="true">
-          {particles.map((p) => (
-            <div key={p.id} style={getParticleStyle(p, theme.particleType)}>
-              {p.char || null}
-            </div>
-          ))}
-        </div>
-      )}
+      {/* 背景：パーティクルは爽やかテーマでは非表示 */}
 
       {/* 背景：ブロブ（テーマ色で差別化） */}
       <div

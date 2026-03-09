@@ -124,7 +124,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            background: "rgba(13,1,24,.85)",
+            background: "rgba(255,255,255,0.85)",
             backdropFilter: "blur(8px)",
             animation: "sectionOverlayAnim 1.2s cubic-bezier(0.25,1,0.5,1) forwards",
             pointerEvents: "none",
@@ -161,7 +161,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
           left: 0,
           right: 0,
           zIndex: 100,
-          background: "rgba(13,1,24,.95)",
+          background: "rgba(255,255,255,0.95)",
           backdropFilter: "blur(12px)",
           padding: "12px 16px 10px",
         }}
@@ -181,7 +181,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
           >
             {config.emoji} {config.title}
           </span>
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,.5)" }}>
+          <span style={{ fontSize: 12, color: "rgba(74,101,114,.6)" }}>
             {answeredCount} / {questions.length}
           </span>
         </div>
@@ -190,7 +190,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
         <div
           style={{
             height: 4,
-            background: "rgba(255,255,255,.08)",
+            background: "rgba(45,212,191,.1)",
             borderRadius: 2,
             overflow: "hidden",
             position: "relative",
@@ -246,13 +246,13 @@ export default function DiagQuizFeed({ config, store }: Props) {
               data-idx={i}
               className={visibleCards.has(i) ? "quiz-card-visible" : "quiz-card-hidden"}
               style={{
-                background: "rgba(255,255,255,.04)",
+                background: "rgba(255,255,255,0.7)",
                 border: `1px solid ${
-                  answers[i] !== null ? `${config.themeColor}30` : "rgba(255,255,255,.08)"
+                  answers[i] !== null ? `${config.themeColor}30` : "rgba(45,212,191,.15)"
                 }`,
                 borderLeft: answers[i] !== null
                   ? `3px solid ${config.themeColor}60`
-                  : `1px solid rgba(255,255,255,.08)`,
+                  : `1px solid rgba(45,212,191,.15)`,
                 borderRadius: 16,
                 padding: "20px 18px",
                 marginBottom: 14,
@@ -269,7 +269,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
                   marginBottom: 10,
                 }}
               >
-                <span style={{ fontSize: 11, color: "rgba(255,255,255,.35)" }}>
+                <span style={{ fontSize: 11, color: "rgba(74,101,114,.5)" }}>
                   Q{i + 1}
                 </span>
                 {answers[i] !== null && (
@@ -286,7 +286,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
                   fontSize: 14,
                   fontWeight: 700,
                   lineHeight: 1.7,
-                  color: "rgba(255,255,255,.9)",
+                  color: "#1a2e3b",
                   marginBottom: 16,
                 }}
               >
@@ -317,12 +317,12 @@ export default function DiagQuizFeed({ config, store }: Props) {
                         height: size,
                         borderRadius: 14,
                         border: `2px solid ${
-                          isSelected ? config.themeColor : "rgba(255,255,255,.12)"
+                          isSelected ? config.themeColor : "rgba(45,212,191,.2)"
                         }`,
                         background: isSelected
                           ? `linear-gradient(135deg, ${config.gradientFrom}30, ${config.gradientTo}30)`
-                          : "rgba(255,255,255,.03)",
-                        color: isSelected ? "#fff" : "rgba(255,255,255,.6)",
+                          : "rgba(255,255,255,0.5)",
+                        color: isSelected ? "#fff" : "#4a6572",
                         fontSize: 15,
                         fontWeight: 700,
                         cursor: "pointer",
@@ -349,7 +349,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
                   justifyContent: "space-between",
                   marginTop: 6,
                   fontSize: 9,
-                  color: "rgba(255,255,255,.3)",
+                  color: "rgba(74,101,114,.5)",
                   padding: "0 4px",
                 }}
               >
@@ -375,8 +375,8 @@ export default function DiagQuizFeed({ config, store }: Props) {
               padding: "18px 48px",
               background: allAnswered
                 ? `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`
-                : "rgba(255,255,255,.08)",
-              color: allAnswered ? "#fff" : "rgba(255,255,255,.3)",
+                : "rgba(45,212,191,.1)",
+              color: allAnswered ? "#fff" : "rgba(74,101,114,.4)",
               border: "none",
               borderRadius: 50,
               fontSize: 16,

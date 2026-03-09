@@ -65,29 +65,29 @@ function BigFiveRadar({ bigFive }: { bigFive: TotalAnalysisType['bigFive'] }) {
     <svg viewBox={`0 0 ${size} ${size}`} width="100%" style={{ maxWidth: 300, margin: '0 auto', display: 'block' }}>
       {/* ガイド多角形 */}
       {[0.33, 0.66, 1].map((scale) => (
-        <path key={scale} d={guidePath(scale)} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
+        <path key={scale} d={guidePath(scale)} fill="none" stroke="rgba(45,212,191,0.12)" strokeWidth="1" />
       ))}
 
       {/* 軸線 */}
       {labels.map((_, i) => {
         const p = getPoint(i, 1);
-        return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.06)" strokeWidth="1" />;
+        return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke="rgba(45,212,191,0.1)" strokeWidth="1" />;
       })}
 
       {/* データ多角形 */}
-      <path d={dataPath()} fill="rgba(99,102,241,0.2)" stroke="rgba(99,102,241,0.8)" strokeWidth="2" />
+      <path d={dataPath()} fill="rgba(45,212,191,0.2)" stroke="rgba(45,212,191,0.8)" strokeWidth="2" />
 
       {/* データ点 */}
       {values.map((v, i) => {
         const p = getPoint(i, v / 100);
-        return <circle key={i} cx={p.x} cy={p.y} r="4" fill="#6366F1" stroke="#fff" strokeWidth="1" />;
+        return <circle key={i} cx={p.x} cy={p.y} r="4" fill="#2dd4bf" stroke="#fff" strokeWidth="1" />;
       })}
 
       {/* ラベル */}
       {labels.map((l, i) => {
         const p = getPoint(i, 1.25);
         return (
-          <text key={i} x={p.x} y={p.y} textAnchor="middle" dominantBaseline="middle" fill="rgba(255,255,255,0.7)" fontSize="11">
+          <text key={i} x={p.x} y={p.y} textAnchor="middle" dominantBaseline="middle" fill="#4a6572" fontSize="11">
             {l.label}
           </text>
         );
@@ -97,7 +97,7 @@ function BigFiveRadar({ bigFive }: { bigFive: TotalAnalysisType['bigFive'] }) {
       {values.map((v, i) => {
         const p = getPoint(i, v / 100);
         return (
-          <text key={`score-${i}`} x={p.x} y={p.y - 10} textAnchor="middle" fill="#6366F1" fontSize="10" fontWeight="bold">
+          <text key={`score-${i}`} x={p.x} y={p.y - 10} textAnchor="middle" fill="#2dd4bf" fontSize="10" fontWeight="bold">
             {v}
           </text>
         );
@@ -129,8 +129,8 @@ function SectionCard({
   return (
     <div
       style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(99,102,241,0.15)',
+        background: 'rgba(255,255,255,0.7)',
+        border: '1px solid rgba(45,212,191,0.15)',
         borderRadius: 16,
         padding: '24px 20px',
         marginBottom: 16,
@@ -143,7 +143,7 @@ function SectionCard({
         className="font-stick"
         style={{
           fontSize: 16,
-          color: '#6366F1',
+          color: '#2dd4bf',
           marginBottom: 16,
           letterSpacing: '0.05em',
         }}
@@ -163,11 +163,11 @@ function SectionCard({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: 'rgba(13,1,24,0.5)',
+              background: 'rgba(255,255,255,0.5)',
               borderRadius: 8,
             }}
           >
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', textAlign: 'center', padding: '0 16px' }}>
+            <p style={{ fontSize: 13, color: '#4a6572', textAlign: 'center', padding: '0 16px' }}>
               {blurMessage || 'もっと診断を受けると解放されます'}
             </p>
           </div>
@@ -177,7 +177,7 @@ function SectionCard({
       )}
 
       {reference && (
-        <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginTop: 14, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 10, color: 'rgba(74,101,114,0.5)', marginTop: 14, lineHeight: 1.5 }}>
           {reference}
         </p>
       )}
@@ -205,14 +205,14 @@ function ConfidenceMeter({
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-        <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)' }}>
-          分析精度: <strong style={{ color: '#6366F1' }}>{confidence}%</strong>
-          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', marginLeft: 8 }}>
+        <span style={{ fontSize: 13, color: '#4a6572' }}>
+          分析精度: <strong style={{ color: '#2dd4bf' }}>{confidence}%</strong>
+          <span style={{ fontSize: 11, color: 'rgba(74,101,114,0.6)', marginLeft: 8 }}>
             ({confidenceLabel})
           </span>
         </span>
         {remaining > 0 && (
-          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>
+          <span style={{ fontSize: 11, color: 'rgba(74,101,114,0.5)' }}>
             あと{remaining}個で精度UP
           </span>
         )}
@@ -221,7 +221,7 @@ function ConfidenceMeter({
         style={{
           width: '100%',
           height: 8,
-          background: 'rgba(255,255,255,0.06)',
+          background: 'rgba(45,212,191,0.08)',
           borderRadius: 4,
           overflow: 'hidden',
         }}
@@ -230,13 +230,13 @@ function ConfidenceMeter({
           style={{
             width: `${confidence}%`,
             height: '100%',
-            background: 'linear-gradient(90deg, #6366F1, #818CF8)',
+            background: 'linear-gradient(90deg, #2dd4bf, #38bdf8)',
             borderRadius: 4,
             transition: 'width 1s ease-out',
           }}
         />
       </div>
-      <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 6 }}>
+      <p style={{ fontSize: 11, color: 'rgba(74,101,114,0.5)', marginTop: 6 }}>
         {completedCount}個の診断結果を統合中
       </p>
     </div>
@@ -283,11 +283,11 @@ export default function TotalAnalysis() {
         <div style={{ fontSize: 36, marginBottom: 8 }}>{'\u{1F9EC}'}</div>
         <h2
           className="font-stick"
-          style={{ fontSize: 'clamp(18px, 5vw, 24px)', color: '#6366F1', marginBottom: 6 }}
+          style={{ fontSize: 'clamp(18px, 5vw, 24px)', color: '#2dd4bf', marginBottom: 6 }}
         >
           統合パーソナリティ分析
         </h2>
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7 }}>
+        <p style={{ fontSize: 12, color: '#4a6572', lineHeight: 1.7 }}>
           心理学的フレームワークに基づく、あなただけの深層分析
         </p>
       </div>
@@ -308,7 +308,7 @@ export default function TotalAnalysis() {
         delay={0.15}
       >
         <BigFiveRadar bigFive={analysis.bigFive} />
-        <p className="font-zen" style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, marginTop: 12 }}>
+        <p className="font-zen" style={{ fontSize: 13, color: '#4a6572', lineHeight: 1.8, marginTop: 12 }}>
           {analysis.bigFive.interpretation}
         </p>
       </SectionCard>
@@ -321,7 +321,7 @@ export default function TotalAnalysis() {
         blurred={isLowConfidence}
         blurMessage={unlockMessage}
       >
-        <p className="font-zen" style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 2 }}>
+        <p className="font-zen" style={{ fontSize: 13, color: '#4a6572', lineHeight: 2 }}>
           {analysis.personalityProfile}
         </p>
       </SectionCard>
@@ -341,9 +341,9 @@ export default function TotalAnalysis() {
                 alignItems: 'center',
                 gap: 12,
                 padding: '12px 14px',
-                background: 'rgba(99,102,241,0.06)',
+                background: 'rgba(45,212,191,0.06)',
                 borderRadius: 12,
-                border: '1px solid rgba(99,102,241,0.1)',
+                border: '1px solid rgba(45,212,191,0.1)',
               }}
             >
               <div
@@ -351,7 +351,7 @@ export default function TotalAnalysis() {
                   width: 32,
                   height: 32,
                   borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #6366F1, #818CF8)',
+                  background: 'linear-gradient(135deg, #2dd4bf, #38bdf8)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -365,10 +365,10 @@ export default function TotalAnalysis() {
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>{strength.name}</span>
-                  <span style={{ fontSize: 12, color: '#6366F1', fontWeight: 700 }}>{strength.score}</span>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: '#1a2e3b' }}>{strength.name}</span>
+                  <span style={{ fontSize: 12, color: '#2dd4bf', fontWeight: 700 }}>{strength.score}</span>
                 </div>
-                <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)', lineHeight: 1.5 }}>
+                <p style={{ fontSize: 11, color: 'rgba(74,101,114,0.6)', lineHeight: 1.5 }}>
                   {strength.description}
                 </p>
               </div>
@@ -394,17 +394,17 @@ export default function TotalAnalysis() {
               style={{
                 textAlign: 'center',
                 padding: '14px 8px',
-                background: 'rgba(99,102,241,0.06)',
+                background: 'rgba(45,212,191,0.06)',
                 borderRadius: 12,
               }}
             >
               <div style={{ fontSize: 20, marginBottom: 4 }}>{item.emoji}</div>
-              <div style={{ fontSize: 20, fontWeight: 700, color: '#6366F1' }}>{item.value}</div>
-              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginTop: 2 }}>{item.label}</div>
+              <div style={{ fontSize: 20, fontWeight: 700, color: '#2dd4bf' }}>{item.value}</div>
+              <div style={{ fontSize: 10, color: 'rgba(74,101,114,0.6)', marginTop: 2 }}>{item.label}</div>
             </div>
           ))}
         </div>
-        <p className="font-zen" style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.8 }}>
+        <p className="font-zen" style={{ fontSize: 13, color: '#4a6572', lineHeight: 1.8 }}>
           {analysis.selfDetermination.advice}
         </p>
       </SectionCard>
@@ -421,28 +421,28 @@ export default function TotalAnalysis() {
           style={{
             display: 'inline-block',
             padding: '6px 16px',
-            background: 'rgba(99,102,241,0.15)',
+            background: 'rgba(45,212,191,0.15)',
             borderRadius: 20,
             fontSize: 14,
             fontWeight: 700,
-            color: '#818CF8',
+            color: '#38bdf8',
             marginBottom: 12,
           }}
         >
           {analysis.attachmentStyle.type}
         </div>
-        <p className="font-zen" style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.8, marginBottom: 10 }}>
+        <p className="font-zen" style={{ fontSize: 13, color: '#4a6572', lineHeight: 1.8, marginBottom: 10 }}>
           {analysis.attachmentStyle.description}
         </p>
         <div
           style={{
             padding: '12px 14px',
-            background: 'rgba(99,102,241,0.06)',
+            background: 'rgba(45,212,191,0.06)',
             borderRadius: 10,
-            borderLeft: '3px solid #6366F1',
+            borderLeft: '3px solid #2dd4bf',
           }}
         >
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7 }}>
+          <p style={{ fontSize: 12, color: 'rgba(74,101,114,0.7)', lineHeight: 1.7 }}>
             {analysis.attachmentStyle.advice}
           </p>
         </div>
@@ -460,11 +460,11 @@ export default function TotalAnalysis() {
           <span
             style={{
               padding: '6px 14px',
-              background: 'rgba(99,102,241,0.15)',
+              background: 'rgba(45,212,191,0.15)',
               borderRadius: 20,
               fontSize: 13,
               fontWeight: 700,
-              color: '#818CF8',
+              color: '#38bdf8',
             }}
           >
             {analysis.careerAnchor.primary}
@@ -472,16 +472,16 @@ export default function TotalAnalysis() {
           <span
             style={{
               padding: '6px 14px',
-              background: 'rgba(255,255,255,0.04)',
+              background: 'rgba(255,255,255,0.5)',
               borderRadius: 20,
               fontSize: 13,
-              color: 'rgba(255,255,255,0.6)',
+              color: 'rgba(74,101,114,0.7)',
             }}
           >
             {analysis.careerAnchor.secondary}
           </span>
         </div>
-        <p className="font-zen" style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.8 }}>
+        <p className="font-zen" style={{ fontSize: 13, color: '#4a6572', lineHeight: 1.8 }}>
           {analysis.careerAnchor.description}
         </p>
       </SectionCard>
@@ -492,7 +492,7 @@ export default function TotalAnalysis() {
         reference="心理社会的発達段階 - Erikson, 1950"
         delay={0.45}
       >
-        <p className="font-zen" style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1.8 }}>
+        <p className="font-zen" style={{ fontSize: 13, color: '#4a6572', lineHeight: 1.8 }}>
           {analysis.developmentalAdvice}
         </p>
       </SectionCard>
@@ -508,9 +508,9 @@ export default function TotalAnalysis() {
               key={i}
               style={{
                 padding: '16px',
-                background: 'rgba(99,102,241,0.04)',
+                background: 'rgba(45,212,191,0.04)',
                 borderRadius: 12,
-                border: '1px solid rgba(99,102,241,0.08)',
+                border: '1px solid rgba(45,212,191,0.08)',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
@@ -519,8 +519,8 @@ export default function TotalAnalysis() {
                   <span
                     style={{
                       fontSize: 10,
-                      color: '#6366F1',
-                      background: 'rgba(99,102,241,0.1)',
+                      color: '#2dd4bf',
+                      background: 'rgba(45,212,191,0.1)',
                       padding: '2px 8px',
                       borderRadius: 10,
                     }}
@@ -529,13 +529,13 @@ export default function TotalAnalysis() {
                   </span>
                 </div>
               </div>
-              <h4 style={{ fontSize: 14, fontWeight: 700, color: '#fff', marginBottom: 6 }}>
+              <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1a2e3b', marginBottom: 6 }}>
                 {advice.title}
               </h4>
-              <p className="font-zen" style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, marginBottom: 8 }}>
+              <p className="font-zen" style={{ fontSize: 12, color: 'rgba(74,101,114,0.7)', lineHeight: 1.8, marginBottom: 8 }}>
                 {advice.content}
               </p>
-              <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
+              <p style={{ fontSize: 10, color: 'rgba(74,101,114,0.5)', fontStyle: 'italic' }}>
                 {advice.reference}
               </p>
             </div>
@@ -559,17 +559,17 @@ export default function TotalAnalysis() {
                 style={{
                   padding: '12px 14px',
                   background: insight.significance === 'high'
-                    ? 'rgba(99,102,241,0.08)'
+                    ? 'rgba(45,212,191,0.08)'
                     : insight.significance === 'medium'
-                    ? 'rgba(99,102,241,0.04)'
-                    : 'rgba(255,255,255,0.02)',
+                    ? 'rgba(45,212,191,0.04)'
+                    : 'rgba(255,255,255,0.4)',
                   borderRadius: 10,
                   borderLeft: `3px solid ${
                     insight.significance === 'high'
-                      ? '#6366F1'
+                      ? '#2dd4bf'
                       : insight.significance === 'medium'
-                      ? 'rgba(99,102,241,0.5)'
-                      : 'rgba(255,255,255,0.15)'
+                      ? 'rgba(45,212,191,0.5)'
+                      : 'rgba(45,212,191,0.2)'
                   }`,
                 }}
               >
@@ -581,18 +581,18 @@ export default function TotalAnalysis() {
                       borderRadius: 8,
                       background:
                         insight.significance === 'high'
-                          ? 'rgba(99,102,241,0.2)'
-                          : 'rgba(255,255,255,0.06)',
+                          ? 'rgba(45,212,191,0.2)'
+                          : 'rgba(45,212,191,0.08)',
                       color:
                         insight.significance === 'high'
-                          ? '#818CF8'
-                          : 'rgba(255,255,255,0.5)',
+                          ? '#38bdf8'
+                          : 'rgba(74,101,114,0.6)',
                     }}
                   >
                     {insight.significance === 'high' ? '重要' : insight.significance === 'medium' ? '注目' : '参考'}
                   </span>
                 </div>
-                <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', lineHeight: 1.7 }}>
+                <p style={{ fontSize: 12, color: 'rgba(74,101,114,0.7)', lineHeight: 1.7 }}>
                   {insight.insight}
                 </p>
               </div>
@@ -610,7 +610,7 @@ export default function TotalAnalysis() {
             animation: 'staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.6s both',
           }}
         >
-          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginBottom: 12 }}>
+          <p style={{ fontSize: 12, color: 'rgba(74,101,114,0.6)', marginBottom: 12 }}>
             診断を受けるほど分析精度が向上します
           </p>
           <a
@@ -618,10 +618,10 @@ export default function TotalAnalysis() {
             style={{
               display: 'inline-block',
               padding: '12px 28px',
-              background: 'rgba(99,102,241,0.12)',
-              border: '1px solid rgba(99,102,241,0.25)',
+              background: 'rgba(45,212,191,0.12)',
+              border: '1px solid rgba(45,212,191,0.25)',
               borderRadius: 25,
-              color: '#6366F1',
+              color: '#2dd4bf',
               fontSize: 13,
               fontWeight: 700,
               textDecoration: 'none',

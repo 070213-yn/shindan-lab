@@ -59,7 +59,7 @@ export default function DiagLoading({ config, store }: Props) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "var(--diag-bg, #0D0118)",
+        background: "var(--diag-bg, #F0FAFA)",
         zIndex: 300,
         display: "flex",
         flexDirection: "column",
@@ -176,7 +176,7 @@ export default function DiagLoading({ config, store }: Props) {
           width: "100%",
           maxWidth: 280,
           height: 4,
-          background: "rgba(255,255,255,.08)",
+          background: "rgba(45,212,191,.12)",
           borderRadius: 2,
           overflow: "hidden",
           marginBottom: 32,
@@ -225,7 +225,7 @@ export default function DiagLoading({ config, store }: Props) {
                       ? config.themeColor
                       : status === "active"
                       ? config.themeColor
-                      : "rgba(255,255,255,.2)",
+                      : "rgba(26,46,59,.2)",
                   boxShadow:
                     status === "active"
                       ? `0 0 8px ${config.themeColor}, 0 0 16px ${config.themeColor}50`
@@ -244,10 +244,10 @@ export default function DiagLoading({ config, store }: Props) {
                   fontSize: 12,
                   color:
                     status === "done"
-                      ? "rgba(255,255,255,.6)"
+                      ? "rgba(74,101,114,.7)"
                       : status === "active"
-                      ? "#fff"
-                      : "rgba(255,255,255,.3)",
+                      ? "#1a2e3b"
+                      : "rgba(74,101,114,.4)",
                 }}
               >
                 {step.label}

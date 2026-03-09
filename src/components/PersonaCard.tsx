@@ -83,10 +83,10 @@ export default function PersonaCard() {
 
     // 背景グラデーション
     const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-    bgGrad.addColorStop(0, "#0D0118");
-    bgGrad.addColorStop(0.3, "#1A0230");
-    bgGrad.addColorStop(0.7, "#0D0118");
-    bgGrad.addColorStop(1, "#060010");
+    bgGrad.addColorStop(0, "#F0FAFA");
+    bgGrad.addColorStop(0.3, "#E8FFFE");
+    bgGrad.addColorStop(0.7, "#F0FAFA");
+    bgGrad.addColorStop(1, "#E0F7F7");
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
@@ -94,7 +94,7 @@ export default function PersonaCard() {
     for (let i = 0; i < 100; i++) {
       ctx.beginPath();
       ctx.arc(Math.random() * W, Math.random() * H, Math.random() * 1.5 + 0.3, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.5 + 0.1})`;
+      ctx.fillStyle = `rgba(45,212,191,${Math.random() * 0.3 + 0.1})`;
       ctx.fill();
     }
 
@@ -185,7 +185,7 @@ export default function PersonaCard() {
 
     // 称号
     ctx.font = "bold 36px sans-serif";
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#1a2e3b";
     ctx.textAlign = "center";
     ctx.fillText(title, W / 2, y);
     y += 30;
@@ -224,7 +224,7 @@ export default function PersonaCard() {
 
     // 診断結果一覧
     ctx.font = "bold 12px sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,.5)";
+    ctx.fillStyle = "rgba(74,101,114,.6)";
     ctx.textAlign = "left";
     ctx.fillText("DIAGNOSIS RESULTS", 50, y);
     y += 18;
@@ -242,7 +242,7 @@ export default function PersonaCard() {
       ctx.fillText(`${entry.typeEmoji} ${entry.diagnosisTitle}`, rx, ry);
 
       ctx.font = "bold 11px sans-serif";
-      ctx.fillStyle = "#fff";
+      ctx.fillStyle = "#1a2e3b";
       ctx.fillText(entry.typeName, rx + 4, ry + 14);
     });
 
@@ -264,7 +264,7 @@ export default function PersonaCard() {
         ctx.beginPath();
         ctx.moveTo(radarCx, radarCy);
         ctx.lineTo(radarCx + Math.cos(angle) * radarR, radarCy + Math.sin(angle) * radarR);
-        ctx.strokeStyle = "rgba(255,255,255,.1)";
+        ctx.strokeStyle = "rgba(45,212,191,.15)";
         ctx.lineWidth = 1;
         ctx.stroke();
 
@@ -288,7 +288,7 @@ export default function PersonaCard() {
           else ctx.lineTo(px, py);
         }
         ctx.closePath();
-        ctx.strokeStyle = "rgba(255,255,255,.06)";
+        ctx.strokeStyle = "rgba(45,212,191,.1)";
         ctx.stroke();
       });
 
@@ -345,7 +345,7 @@ export default function PersonaCard() {
     ctx.textAlign = "center";
     ctx.fillText("#ときめきラボ #ペルソナカード", W / 2, H - 40);
     ctx.font = "9px sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,.2)";
+    ctx.fillStyle = "rgba(74,101,114,.4)";
     ctx.fillText("tokimeki-lab.com", W / 2, H - 22);
   }
 
@@ -374,19 +374,19 @@ export default function PersonaCard() {
           style={{
             textAlign: "center",
             padding: "60px 20px",
-            background: "rgba(255,255,255,.04)",
+            background: "rgba(255,255,255,0.7)",
             borderRadius: 20,
-            border: "1px solid rgba(255,255,255,.08)",
+            border: "1px solid rgba(45,212,191,.15)",
           }}
         >
           <div style={{ fontSize: 64, marginBottom: 16 }}>🔮</div>
           <h3
             className="font-zen"
-            style={{ fontSize: 18, fontWeight: 700, color: "#FF6BE8", marginBottom: 12 }}
+            style={{ fontSize: 18, fontWeight: 700, color: "#2dd4bf", marginBottom: 12 }}
           >
             まだ診断結果がありません
           </h3>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,.6)", lineHeight: 1.8, marginBottom: 24 }}>
+          <p style={{ fontSize: 13, color: "#4a6572", lineHeight: 1.8, marginBottom: 24 }}>
             診断を受けると、あなただけのペルソナカードが生成されます。
             <br />
             たくさんの診断を受けるほど、カードが豪華になります。
@@ -406,8 +406,8 @@ export default function PersonaCard() {
           <div
             style={{
               textAlign: "center",
-              background: "rgba(255,255,255,.06)",
-              border: "1px solid rgba(255,255,255,.1)",
+              background: "rgba(255,255,255,0.7)",
+              border: "1px solid rgba(45,212,191,.15)",
               borderRadius: 20,
               padding: "32px 24px",
               marginBottom: 16,
@@ -441,7 +441,7 @@ export default function PersonaCard() {
             {/* 称号 */}
             <h2
               className="font-stick"
-              style={{ fontSize: 26, color: "#fff", marginBottom: 6 }}
+              style={{ fontSize: 26, color: "#1a2e3b", marginBottom: 6 }}
             >
               {persona!.title}
             </h2>
@@ -461,7 +461,7 @@ export default function PersonaCard() {
             </div>
 
             {/* 説明文 */}
-            <p style={{ fontSize: 13, color: "rgba(255,255,255,.75)", lineHeight: 1.8 }}>
+            <p style={{ fontSize: 13, color: "#4a6572", lineHeight: 1.8 }}>
               {persona!.description}
             </p>
           </div>
@@ -469,14 +469,14 @@ export default function PersonaCard() {
           {/* 診断結果リスト */}
           <div
             style={{
-              background: "rgba(255,255,255,.04)",
+              background: "rgba(255,255,255,0.7)",
               borderRadius: 16,
               padding: "20px 18px",
               marginBottom: 16,
               animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.1s both",
             }}
           >
-            <h3 style={{ fontSize: 12, color: "#FF6BE8", marginBottom: 14, fontWeight: 700, letterSpacing: 1 }}>
+            <h3 style={{ fontSize: 12, color: "#2dd4bf", marginBottom: 14, fontWeight: 700, letterSpacing: 1 }}>
               DIAGNOSIS RESULTS ({entries.length})
             </h3>
             {entries.map((entry) => (
@@ -488,14 +488,14 @@ export default function PersonaCard() {
                   gap: 10,
                   marginBottom: 10,
                   padding: "8px 10px",
-                  background: "rgba(255,255,255,.03)",
+                  background: "rgba(255,255,255,0.5)",
                   borderRadius: 10,
                   border: `1px solid ${entry.typeColor}15`,
                 }}
               >
                 <span style={{ fontSize: 20, flexShrink: 0 }}>{entry.typeEmoji}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 10, color: "rgba(255,255,255,.45)" }}>
+                  <div style={{ fontSize: 10, color: "rgba(74,101,114,.6)" }}>
                     {entry.diagnosisTitle}
                   </div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: entry.typeColor }}>
@@ -522,7 +522,7 @@ export default function PersonaCard() {
                 style={{
                   textAlign: "center",
                   padding: "12px 8px",
-                  background: "rgba(255,255,255,.04)",
+                  background: "rgba(255,255,255,0.5)",
                   borderRadius: 12,
                   border: `1px solid ${persona!.stats.colors[i]}15`,
                 }}
@@ -530,7 +530,7 @@ export default function PersonaCard() {
                 <div style={{ fontSize: 22, fontWeight: 700, color: persona!.stats.colors[i] }}>
                   {persona!.stats.values[i]}
                 </div>
-                <div style={{ fontSize: 9, color: "rgba(255,255,255,.5)", marginTop: 2 }}>
+                <div style={{ fontSize: 9, color: "rgba(74,101,114,.6)", marginTop: 2 }}>
                   {label}
                 </div>
               </div>
@@ -649,7 +649,7 @@ export default function PersonaCard() {
 
           {/* 他の診断への誘導 */}
           <div style={{ textAlign: "center", marginBottom: 24 }}>
-            <p style={{ fontSize: 12, color: "rgba(255,255,255,.5)", marginBottom: 12 }}>
+            <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 12 }}>
               もっと診断を受けるとカードがパワーアップ！
             </p>
             <a
@@ -657,10 +657,10 @@ export default function PersonaCard() {
               style={{
                 display: "inline-block",
                 padding: "12px 28px",
-                background: "rgba(255,255,255,.06)",
-                border: "1px solid rgba(255,107,232,.2)",
+                background: "rgba(255,255,255,0.7)",
+                border: "1px solid rgba(45,212,191,.3)",
                 borderRadius: 25,
-                color: "#FF6BE8",
+                color: "#2dd4bf",
                 fontSize: 13,
                 fontWeight: 700,
                 textDecoration: "none",

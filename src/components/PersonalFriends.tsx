@@ -105,22 +105,22 @@ function drawMascot(
 
     // タイプ名（小さく下に）
     ctx.font = `bold ${Math.max(size * 0.28, 10)}px 'Zen Maru Gothic', sans-serif`;
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#1a2e3b";
     ctx.textBaseline = "alphabetic";
     ctx.fillText(typeName, x, y + size + size * 0.35);
   } else {
     // 未完了: グレーのシルエット
     ctx.beginPath();
     ctx.arc(x, y, size, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(255,255,255,0.08)";
+    ctx.fillStyle = "rgba(45,212,191,0.1)";
     ctx.fill();
-    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.strokeStyle = "rgba(45,212,191,0.2)";
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // ?マーク
     ctx.font = `${size}px sans-serif`;
-    ctx.fillStyle = "rgba(255,255,255,0.2)";
+    ctx.fillStyle = "rgba(74,101,114,0.3)";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("?", x, y);
@@ -181,9 +181,9 @@ export default function PersonalFriends() {
 
     // 背景グラデーション
     const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-    bgGrad.addColorStop(0, "#0D0118");
-    bgGrad.addColorStop(0.5, "#1a0533");
-    bgGrad.addColorStop(1, "#0D0118");
+    bgGrad.addColorStop(0, "#F0FAFA");
+    bgGrad.addColorStop(0.5, "#E8FFFE");
+    bgGrad.addColorStop(1, "#F0FAFA");
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, W, H);
 
@@ -194,25 +194,25 @@ export default function PersonalFriends() {
       const sy = Math.random() * H;
       const sr = Math.random() * 1.8 + 0.3;
       ctx.arc(sx, sy, sr, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.5 + 0.1})`;
+      ctx.fillStyle = `rgba(45,212,191,${Math.random() * 0.3 + 0.1})`;
       ctx.fill();
     }
 
     // 装飾ブロブ
     const blob1 = ctx.createRadialGradient(W * 0.2, H * 0.12, 0, W * 0.2, H * 0.12, 220);
-    blob1.addColorStop(0, "rgba(255,107,232,0.18)");
+    blob1.addColorStop(0, "rgba(45,212,191,0.15)");
     blob1.addColorStop(1, "transparent");
     ctx.fillStyle = blob1;
     ctx.fillRect(0, 0, W, H * 0.35);
 
     const blob2 = ctx.createRadialGradient(W * 0.8, H * 0.85, 0, W * 0.8, H * 0.85, 200);
-    blob2.addColorStop(0, "rgba(196,90,255,0.12)");
+    blob2.addColorStop(0, "rgba(56,189,248,0.1)");
     blob2.addColorStop(1, "transparent");
     ctx.fillStyle = blob2;
     ctx.fillRect(0, H * 0.6, W, H * 0.4);
 
     // 外枠
-    ctx.strokeStyle = "rgba(255,107,232,0.25)";
+    ctx.strokeStyle = "rgba(45,212,191,0.25)";
     ctx.lineWidth = 2;
     ctx.strokeRect(16, 16, W - 32, H - 32);
 
@@ -220,7 +220,7 @@ export default function PersonalFriends() {
 
     // ヘッダー: ときめきラボ
     ctx.font = "bold 16px sans-serif";
-    ctx.fillStyle = "rgba(255,107,232,0.7)";
+    ctx.fillStyle = "rgba(45,212,191,0.8)";
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
     ctx.fillText("ときめきラボ", W / 2, y);
@@ -228,7 +228,7 @@ export default function PersonalFriends() {
 
     // タイトル: MY PERSONAL FRIENDS
     ctx.font = "bold 38px sans-serif";
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#1a2e3b";
     ctx.fillText("MY PERSONAL", W / 2, y);
     y += 44;
     ctx.fillText("FRIENDS", W / 2, y);
@@ -237,7 +237,7 @@ export default function PersonalFriends() {
     // ユーザーの人格タイトル（結果がある場合）
     if (personaTitle) {
       ctx.font = "bold 20px sans-serif";
-      ctx.fillStyle = "rgba(255,107,232,0.9)";
+      ctx.fillStyle = "rgba(45,212,191,0.9)";
       ctx.fillText(`「${personaTitle}」`, W / 2, y);
       y += 20;
     }
@@ -281,13 +281,13 @@ export default function PersonalFriends() {
 
     // 完了数カウント
     ctx.font = "bold 28px sans-serif";
-    ctx.fillStyle = "#fff";
+    ctx.fillStyle = "#1a2e3b";
     ctx.textAlign = "center";
     ctx.fillText(`${completedCount} / ${totalCount}`, W / 2, footerY);
     footerY += 24;
 
     ctx.font = "14px sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillStyle = "rgba(74,101,114,0.6)";
     ctx.fillText("diagnoses completed", W / 2, footerY);
     footerY += 35;
 
@@ -307,12 +307,12 @@ export default function PersonalFriends() {
 
     // ハッシュタグ
     ctx.font = "13px sans-serif";
-    ctx.fillStyle = "rgba(255,107,232,0.5)";
+    ctx.fillStyle = "rgba(45,212,191,0.6)";
     ctx.fillText("#ときめきラボ  #パーソナルフレンズ  #診断", W / 2, H - 45);
 
     // URL
     ctx.font = "10px sans-serif";
-    ctx.fillStyle = "rgba(255,255,255,0.2)";
+    ctx.fillStyle = "rgba(74,101,114,0.4)";
     ctx.fillText("tokimeki-lab.com", W / 2, H - 24);
   }, [allDiagnosesWithStatus, completedCount, totalCount, personaTitle, rarity]);
 
@@ -352,11 +352,11 @@ export default function PersonalFriends() {
       >
         <h2
           className="font-stick"
-          style={{ fontSize: "clamp(20px, 6vw, 28px)", color: "#FF6BE8", marginBottom: 6 }}
+          style={{ fontSize: "clamp(20px, 6vw, 28px)", color: "#2dd4bf", marginBottom: 6 }}
         >
           パーソナルフレンズ
         </h2>
-        <p style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>
+        <p style={{ fontSize: 13, color: "#4a6572", lineHeight: 1.7 }}>
           診断で出会った仲間たちの集合写真
         </p>
       </div>
@@ -364,8 +364,8 @@ export default function PersonalFriends() {
       {/* HTML版インタラクティブ表示 */}
       <div
         style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(255,255,255,0.7)",
+          border: "1px solid rgba(45,212,191,0.15)",
           borderRadius: 20,
           padding: "28px 20px",
           marginBottom: 16,
@@ -380,7 +380,7 @@ export default function PersonalFriends() {
           >
             {progressTitle}
           </p>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
+          <p style={{ fontSize: 12, color: "rgba(74,101,114,0.5)" }}>
             {completedCount} / {totalCount} 体
           </p>
           {/* プログレスバー */}
@@ -388,7 +388,7 @@ export default function PersonalFriends() {
             style={{
               width: "80%",
               height: 6,
-              background: "rgba(255,255,255,0.08)",
+              background: "rgba(45,212,191,0.1)",
               borderRadius: 3,
               margin: "10px auto 0",
               overflow: "hidden",
@@ -398,7 +398,7 @@ export default function PersonalFriends() {
               style={{
                 width: `${(completedCount / totalCount) * 100}%`,
                 height: "100%",
-                background: "linear-gradient(90deg, #FF6BE8, #C45AFF, #7B5CFF)",
+                background: "linear-gradient(90deg, #2dd4bf, #38bdf8, #06b6d4)",
                 borderRadius: 3,
                 transition: "width 0.5s ease-out",
               }}
@@ -439,10 +439,10 @@ export default function PersonalFriends() {
                   fontSize: d.isCompleted ? 24 : 18,
                   background: d.isCompleted
                     ? `radial-gradient(circle at 35% 35%, ${d.typeColor}CC, ${d.typeColor}55)`
-                    : "rgba(255,255,255,0.06)",
+                    : "rgba(45,212,191,0.08)",
                   border: d.isCompleted
                     ? `2px solid ${d.typeColor}60`
-                    : "2px solid rgba(255,255,255,0.1)",
+                    : "2px solid rgba(45,212,191,0.15)",
                   boxShadow: d.isCompleted
                     ? `0 0 16px ${d.typeColor}30, inset 0 -4px 8px rgba(0,0,0,0.2)`
                     : "none",
@@ -470,14 +470,14 @@ export default function PersonalFriends() {
                     <span>{d.typeEmoji}</span>
                   </>
                 ) : (
-                  <span style={{ color: "rgba(255,255,255,0.2)" }}>?</span>
+                  <span style={{ color: "rgba(74,101,114,0.3)" }}>?</span>
                 )}
               </div>
               {/* タイプ名 or 診断名 */}
               <span
                 style={{
                   fontSize: 9,
-                  color: d.isCompleted ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.25)",
+                  color: d.isCompleted ? "#4a6572" : "rgba(74,101,114,0.4)",
                   textAlign: "center",
                   lineHeight: 1.2,
                   maxWidth: 64,
@@ -518,7 +518,7 @@ export default function PersonalFriends() {
             width: "100%",
             marginTop: 12,
             padding: "14px 0",
-            background: "linear-gradient(135deg, #FF6BE8, #C45AFF)",
+            background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
             border: "none",
             borderRadius: 12,
             color: "#fff",

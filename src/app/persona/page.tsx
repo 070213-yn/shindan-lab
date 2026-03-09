@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import PersonaCard from "@/components/PersonaCard";
+import TotalAnalysis from "@/components/TotalAnalysis";
 import PersonalFriends from "@/components/PersonalFriends";
 import { usePersonaStore } from "@/store/personaStore";
 
@@ -151,6 +152,11 @@ export default function PersonaPage() {
         {/* ペルソナカード本体 */}
         <section style={{ padding: "0 0 40px" }}>
           <PersonaCard />
+        </section>
+
+        {/* 統合パーソナリティ分析 */}
+        <section style={{ padding: "0 0 40px" }}>
+          <TotalAnalysis />
         </section>
 
         {/* パーソナルフレンズ */}

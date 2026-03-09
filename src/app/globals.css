@@ -833,6 +833,87 @@ body {
   100% { transform: scale(1); filter: brightness(1); clip-path: inset(0); }
 }
 
+/* 宝石キラキラ（才能系用） */
+@keyframes gemSparkle {
+  0%, 100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+  25% { transform: scale(1.1) rotate(5deg); filter: brightness(1.3); }
+  50% { transform: scale(0.95) rotate(-3deg); filter: brightness(0.9); }
+  75% { transform: scale(1.08) rotate(2deg); filter: brightness(1.2); }
+}
+
+/* オーラの波紋（スピリチュアル系用） */
+@keyframes auraRipple {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+/* クエスト鼓動（異世界系用） */
+@keyframes questPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px currentColor); }
+  50% { transform: scale(1.05); filter: drop-shadow(0 0 12px currentColor); }
+}
+
+/* 波の揺れ（メンタル系用） */
+@keyframes waveRock {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-5px) rotate(2deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(-3px) rotate(-1.5deg); }
+}
+
+/* 時計の針（前世系用） */
+@keyframes clockSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* そよ風の漂い（ストレス系用） */
+@keyframes breezeFloat {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  20% { transform: translateX(8px) translateY(-5px) rotate(3deg); }
+  40% { transform: translateX(-4px) translateY(-8px) rotate(-2deg); }
+  60% { transform: translateX(6px) translateY(-3px) rotate(2deg); }
+  80% { transform: translateX(-3px) translateY(-6px) rotate(-1deg); }
+}
+
+/* 羅針盤の回転（仕事系用） */
+@keyframes compassRotate {
+  0%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(15deg); }
+  20% { transform: rotate(-10deg); }
+  30% { transform: rotate(8deg); }
+  40% { transform: rotate(-5deg); }
+  50% { transform: rotate(3deg); }
+  60% { transform: rotate(0deg); }
+}
+
+/* ハートビート（恋愛系用） */
+@keyframes heartBeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.15); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.1); }
+  56% { transform: scale(1); }
+}
+
+/* プレゼント開封（トリセツ系用） */
+@keyframes giftOpen {
+  0%, 100% { transform: translateY(0) scale(1); }
+  15% { transform: translateY(-3px) scale(1.02); }
+  30% { transform: translateY(0) scale(1); }
+  60% { transform: translateY(-8px) scale(1.05); }
+  75% { transform: translateY(-2px) scale(1.01); }
+}
+
+/* 幽霊のふわふわ（死因系用） */
+@keyframes ghostFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+  25% { transform: translateY(-12px) scale(1.03); opacity: 0.5; }
+  50% { transform: translateY(-5px) scale(0.98); opacity: 0.8; }
+  75% { transform: translateY(-15px) scale(1.02); opacity: 0.4; }
+}
+
 /* テーマ別アニメーション ユーティリティクラス */
 .animate-labBubble { animation: labBubble 2.5s ease-in-out infinite; }
 .animate-flaskWave { animation: flaskWave 3s ease-in-out infinite; }

@@ -10,6 +10,7 @@
  * - テーマごとに背景色・グラデーション・パーティクル・ブロブを完全差別化
  * - adjustBgColor廃止 → theme.bgColor / theme.bgGradient を直接使用
  * - パーティクルタイプ別の描画ロジック（stars/bubbles/sparkles/snow/hearts/leaves/lightning/orbs/pixels/none）
+ * - テーマ固有のSVGモチーフが背景に浮遊する装飾
  */
 
 import { useEffect, useMemo, useState } from "react";
@@ -39,6 +40,19 @@ interface ParticleData {
   // パーティクルタイプごとに追加データ
   opacity?: number;
   char?: string; // 文字ベースのパーティクル用（hearts, sparkles, leaves）
+}
+
+/** 浮遊SVGモチーフ1つ分のデータ */
+interface FloatingMotifData {
+  id: number;
+  motifIndex: number;
+  top: string;
+  left: string;
+  size: number;
+  delay: number;
+  duration: number;
+  opacity: number;
+  rotation: number;
 }
 
 /**
@@ -123,6 +137,25 @@ function generateParticles(
 
     return base;
   });
+}
+
+/**
+ * 浮遊SVGモチーフのデータ配列を生成する
+ */
+function generateFloatingMotifs(motifCount: number): FloatingMotifData[] {
+  // 5-8個のモチーフを生成
+  const count = Math.min(Math.max(5, Math.floor(Math.random() * 4) + 5), 8);
+  return Array.from({ length: count }, (_, i) => ({
+    id: i,
+    motifIndex: i % motifCount,
+    top: `${10 + Math.random() * 75}%`,
+    left: `${5 + Math.random() * 85}%`,
+    size: 20 + Math.random() * 25,
+    delay: Math.random() * 8,
+    duration: 15 + Math.random() * 15,
+    opacity: 0.08 + Math.random() * 0.1,
+    rotation: Math.random() * 360,
+  }));
 }
 
 /**
@@ -253,6 +286,14 @@ export default function DiagnosticEngine({ config }: Props) {
     );
   }, [theme]);
 
+  // 浮遊SVGモチーフ（ハイドレーション対策でクライアントのみ生成）
+  const [floatingMotifs, setFloatingMotifs] = useState<FloatingMotifData[]>([]);
+  useEffect(() => {
+    if (theme.svgMotifs && theme.svgMotifs.length > 0) {
+      setFloatingMotifs(generateFloatingMotifs(theme.svgMotifs.length));
+    }
+  }, [theme]);
+
   return (
     <div
       style={{
@@ -281,7 +322,64 @@ export default function DiagnosticEngine({ config }: Props) {
         aria-hidden="true"
       />
 
-      {/* 背景：パーティクルは爽やかテーマでは非表示 */}
+      {/* 背景：パーティクル */}
+      {particles.length > 0 && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+          aria-hidden="true"
+        >
+          {particles.map((p) =>
+            p.char ? (
+              <span key={p.id} style={getParticleStyle(p, theme.particleType)}>
+                {p.char}
+              </span>
+            ) : (
+              <div key={p.id} style={getParticleStyle(p, theme.particleType)} />
+            )
+          )}
+        </div>
+      )}
+
+      {/* 背景：テーマ固有の浮遊SVGモチーフ */}
+      {theme.svgMotifs && theme.svgMotifs.length > 0 && floatingMotifs.length > 0 && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 0,
+          }}
+          aria-hidden="true"
+        >
+          {floatingMotifs.map((motif) => (
+            <div
+              key={motif.id}
+              style={{
+                position: "absolute",
+                top: motif.top,
+                left: motif.left,
+                width: motif.size,
+                height: motif.size,
+                opacity: motif.opacity,
+                color: config.themeColor,
+                // GPU加速を使用した軽量アニメーション
+                animation: `motifFloat ${motif.duration}s ${motif.delay}s ease-in-out infinite`,
+                transform: `rotate(${motif.rotation}deg)`,
+                willChange: 'transform',
+                pointerEvents: 'none',
+              }}
+              dangerouslySetInnerHTML={{
+                __html: `<svg viewBox="0 0 20 20" width="${motif.size}" height="${motif.size}" xmlns="http://www.w3.org/2000/svg">${theme.svgMotifs![motif.motifIndex]}</svg>`,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* 背景：ブロブ（テーマ色で差別化） */}
       <div
@@ -335,6 +433,24 @@ export default function DiagnosticEngine({ config }: Props) {
           <DiagResult config={config} store={store} />
         )}
       </div>
+
+      {/* 浮遊モチーフ用のCSSアニメーション定義 */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes motifFloat {
+          0%, 100% {
+            transform: translateY(0px) rotate(0deg) scale(1);
+          }
+          25% {
+            transform: translateY(-12px) rotate(5deg) scale(1.05);
+          }
+          50% {
+            transform: translateY(-6px) rotate(-3deg) scale(0.97);
+          }
+          75% {
+            transform: translateY(-15px) rotate(4deg) scale(1.03);
+          }
+        }
+      `}} />
     </div>
   );
 }

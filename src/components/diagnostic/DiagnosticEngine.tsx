@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import { createDiagnosticStore, type GenericDiagState } from "@/store/createDiagnosticStore";
 import { getDiagnosticTheme, type ParticleType } from "@/lib/diagnosticThemes";
+import { usePersonaStore } from "@/store/personaStore";
 import DiagLanding from "./DiagLanding";
 import DiagProfileSetup from "./DiagProfileSetup";
 import DiagQuizFeed from "./DiagQuizFeed";
@@ -217,10 +218,32 @@ export default function DiagnosticEngine({ config }: Props) {
   // 診断テーマを取得
   const theme = useMemo(() => getDiagnosticTheme(config.id), [config.id]);
 
+  // グローバルプロフィール（プロフィールステップ自動スキップ用）
+  const globalProfile = usePersonaStore((s) => s.globalProfile);
+
   // 初期表示時にlandingステップへ
   useEffect(() => {
     store.setCurrentStep("landing");
   }, []);
+
+  // プロフィールステップ自動スキップ:
+  // globalProfileのgenderとageが設定済みで、profileFieldsがgender/ageのみの場合、
+  // profileステップを飛ばして直接quizへ遷移する（ちらつき防止）
+  useEffect(() => {
+    if (store.currentStep !== "profile") return;
+    if (!globalProfile.gender || globalProfile.age === null) return;
+
+    const fieldIds = config.profileFields.map((f) => f.id);
+    const allCoveredByGlobal = fieldIds.every(
+      (id) => id === "gender" || id === "age"
+    );
+    if (allCoveredByGlobal) {
+      // globalProfileの値をストアにセット
+      store.setProfileField("gender", globalProfile.gender);
+      store.setProfileField("age", globalProfile.age);
+      store.setCurrentStep("quiz");
+    }
+  }, [store.currentStep, globalProfile, config.profileFields]);
 
   // パーティクル（ハイドレーション対策でクライアントのみ生成）
   const [particles, setParticles] = useState<ParticleData[]>([]);

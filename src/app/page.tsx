@@ -115,6 +115,10 @@ export default function PortalPage() {
     return () => observer.disconnect();
   }, []);
 
+  // ハイドレーション対策: マウント前はlocalStorage依存の表示を抑制
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
   // ヒーローフェードアップ
   const [heroMounted, setHeroMounted] = useState(false);
   useEffect(() => {
@@ -337,7 +341,7 @@ export default function PortalPage() {
             boxShadow: "0 2px 12px rgba(0,0,0,.04)",
           }}
         >
-          {globalProfile.gender && globalProfile.age ? (
+          {mounted && globalProfile.gender && globalProfile.age ? (
             // 設定済み表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -773,8 +777,52 @@ export default function PortalPage() {
         <p style={{ fontSize: "0.8rem", color: "#6b8a99", marginBottom: 8 }}>
           22の診断で自分を完全解析。
         </p>
-        <p style={{ fontSize: "0.65rem", color: "#9cb3bf" }}>
-          &copy; 2026 ときめきラボ
+
+        {/* TikTok公式 */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "center",
+          gap: 8, padding: "16px 0",
+        }}>
+          <a
+            href="https://www.tiktok.com/@tokimeki_lab"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "10px 20px", borderRadius: 25,
+              background: "#000", color: "#fff",
+              fontSize: 13, fontWeight: 700,
+              textDecoration: "none",
+              transition: "all 0.2s ease",
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z"/>
+            </svg>
+            公式TikTokはこちら
+          </a>
+        </div>
+
+        {/* 法的ページリンク */}
+        <div style={{
+          display: "flex", flexWrap: "wrap", justifyContent: "center",
+          gap: "4px 16px", padding: "12px 0",
+        }}>
+          {[
+            { label: "プライバシーポリシー", href: "/privacy" },
+            { label: "利用規約", href: "/terms" },
+            { label: "特定商取引法に基づく表記", href: "/tokusho" },
+            { label: "お問い合わせ", href: "/contact" },
+          ].map((link) => (
+            <Link key={link.href} href={link.href} style={{
+              fontSize: 10, color: "#6b8a99", textDecoration: "none",
+            }}>
+              {link.label}
+            </Link>
+          ))}
+        </div>
+        <p style={{ fontSize: 10, color: "#94a8b4", padding: "4px 0 20px", textAlign: "center" }}>
+          &copy; 2026 ときめきラボ All rights reserved.
         </p>
       </footer>
 

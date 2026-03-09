@@ -5,7 +5,7 @@ import Link from "next/link";
 import { TYPES } from "@/lib/types";
 
 // ============================================================
-// ときめきラボ ランディングページ
+// 診断研究所 ランディングページ
 // テーマ: 青春 x 爽やか x 透明感
 // 背景色: #F0FAFA（フレッシュミント）
 // ============================================================
@@ -136,7 +136,7 @@ export default function LandingPage() {
             className="font-stick"
             style={{ color: "#2dd4bf", fontSize: "1.2rem" }}
           >
-            ときめきラボ
+            診断研究所
           </span>
         </div>
         <Link
@@ -211,7 +211,7 @@ export default function LandingPage() {
               color: "#1a2e3b",
             }}
           >
-            ときめきラボ
+            診断研究所
           </span>
         </h1>
 
@@ -548,7 +548,7 @@ export default function LandingPage() {
             marginBottom: 12,
           }}
         >
-          ときめきラボ
+          診断研究所
         </div>
         <p
           style={{
@@ -578,7 +578,7 @@ export default function LandingPage() {
             marginTop: 40,
           }}
         >
-          &copy; 2026 ときめきラボ
+          &copy; 2026 診断研究所
         </p>
       </footer>
 

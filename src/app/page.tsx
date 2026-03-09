@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ときめきラボ ポータルページ（青春 x 爽やか x 透明感スタイル）
+ * 診断研究所 ポータルページ（青春 x 爽やか x 透明感スタイル）
  *
  * パステルティール背景 + CSS背景パターンで
  * 爽やかで透明感のある体験を実現。
@@ -222,7 +222,7 @@ export default function PortalPage() {
           color: "#2dd4bf",
           fontSize: "1.2rem",
         }}>
-          ときめきラボ
+          診断研究所
         </span>
         <Link
           href="/persona"
@@ -263,7 +263,7 @@ export default function PortalPage() {
             display: "block", fontSize: "clamp(36px, 10vw, 64px)",
             color: "#0f1f2b",
           }}>
-            ときめきラボ
+            診断研究所
           </span>
         </h1>
 
@@ -764,7 +764,7 @@ export default function PortalPage() {
           fontSize: "1.2rem", marginBottom: 8,
           color: "#2dd4bf",
         }}>
-          ときめきラボ
+          診断研究所
         </div>
         <p style={{ fontSize: "0.8rem", color: "#4a6572", marginBottom: 8 }}>
           22の診断で自分を完全解析。
@@ -814,7 +814,7 @@ export default function PortalPage() {
           ))}
         </div>
         <p style={{ fontSize: 10, color: "#94a8b4", padding: "4px 0 20px", textAlign: "center" }}>
-          &copy; 2026 ときめきラボ All rights reserved.
+          &copy; 2026 診断研究所 All rights reserved.
         </p>
       </footer>
 

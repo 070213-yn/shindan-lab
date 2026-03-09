@@ -125,11 +125,11 @@ export default function PersonaCard() {
 
     let y = 60;
 
-    // ヘッダー: ときめきラボ
+    // ヘッダー: 診断研究所
     ctx.font = "bold 16px sans-serif";
     ctx.fillStyle = `${colors.primary}B0`;
     ctx.textAlign = "center";
-    ctx.fillText("ときめきラボ PERSONA CARD", W / 2, y);
+    ctx.fillText("診断研究所 PERSONA CARD", W / 2, y);
     y += 50;
 
     // メインエンブレム（円形）
@@ -343,7 +343,7 @@ export default function PersonaCard() {
     ctx.font = "11px sans-serif";
     ctx.fillStyle = `${colors.primary}50`;
     ctx.textAlign = "center";
-    ctx.fillText("#ときめきラボ #ペルソナカード", W / 2, H - 40);
+    ctx.fillText("#診断研究所 #ペルソナカード", W / 2, H - 40);
     ctx.font = "9px sans-serif";
     ctx.fillStyle = "rgba(74,101,114,.4)";
     ctx.fillText("tokimeki-lab.com", W / 2, H - 22);
@@ -362,7 +362,7 @@ export default function PersonaCard() {
   if (!mounted) return null;
 
   const shareText = persona
-    ? `ときめきラボでペルソナカード作ったら「${persona.title}」(${persona.rarity.label})だった！ #ときめきラボ #ペルソナカード`
+    ? `診断研究所でペルソナカード作ったら「${persona.title}」(${persona.rarity.label})だった！ #診断研究所 #ペルソナカード`
     : "";
   const shareUrl = "https://tokimeki-lab.com/persona";
 

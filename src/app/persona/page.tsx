@@ -52,7 +52,7 @@ export default function PersonaPage() {
               &#8592;
             </span>
             <span className="font-stick" style={{ color: "#2dd4bf", fontSize: "1.2rem" }}>
-              ときめきラボ
+              診断研究所
             </span>
           </Link>
           <span style={{ fontSize: 11, color: "#4a6572", letterSpacing: "0.08em" }}>

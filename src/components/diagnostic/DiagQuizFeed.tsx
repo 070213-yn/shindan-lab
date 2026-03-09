@@ -309,7 +309,7 @@ export default function DiagQuizFeed({ config, store }: Props) {
                   fontSize: 14,
                   fontWeight: 700,
                   lineHeight: 1.7,
-                  color: "#1a2e3b",
+                  color: "#0f1f2b",
                   marginBottom: 16,
                 }}
               >

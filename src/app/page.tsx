@@ -261,7 +261,7 @@ export default function PortalPage() {
         >
           <span className="font-stick" style={{
             display: "block", fontSize: "clamp(36px, 10vw, 64px)",
-            color: "#1a2e3b",
+            color: "#0f1f2b",
           }}>
             ときめきラボ
           </span>
@@ -271,7 +271,7 @@ export default function PortalPage() {
         <p
           className="font-zen"
           style={{
-            fontSize: "1.1rem", fontWeight: 700, color: "#4a6572",
+            fontSize: "1.1rem", fontWeight: 700, color: "#2d4a57",
             marginBottom: 16,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
@@ -302,7 +302,7 @@ export default function PortalPage() {
                 padding: "4px 12px", borderRadius: 20,
                 background: "rgba(45,212,191,.1)",
                 border: "1px solid rgba(45,212,191,.2)",
-                fontSize: 11, color: "#4a6572",
+                fontSize: 11, color: "#2d4a57",
                 letterSpacing: "0.03em",
                 backdropFilter: "blur(8px)",
               }}
@@ -344,7 +344,7 @@ export default function PortalPage() {
                 }}>
                   ✓
                 </span>
-                <span style={{ fontSize: 13, color: "#4a6572" }}>
+                <span style={{ fontSize: 13, color: "#2d4a57" }}>
                   <strong style={{ color: "#2dd4bf" }}>{globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で診断中
                 </span>
               </div>
@@ -367,7 +367,7 @@ export default function PortalPage() {
           ) : (
             // 未設定表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <span style={{ fontSize: 13, color: "#6b8a99" }}>
+              <span style={{ fontSize: 13, color: "#4a6572" }}>
                 🧪 名前・年齢・性別を設定すると、診断がスムーズに！
               </span>
               <button
@@ -395,7 +395,7 @@ export default function PortalPage() {
             >
               {/* 名前入力 */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "#6b8a99", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
+                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>名前（ニックネームでもOK）</p>
                 <input
                   type="text"
                   value={tempName}
@@ -406,7 +406,7 @@ export default function PortalPage() {
                     width: "100%", padding: "10px 14px", borderRadius: 10,
                     background: "rgba(255,255,255,.8)",
                     border: "1px solid rgba(45,212,191,.2)",
-                    color: "#1a2e3b", fontSize: 14, outline: "none",
+                    color: "#0f1f2b", fontSize: 14, outline: "none",
                     fontFamily: "'Zen Maru Gothic', sans-serif",
                     transition: "border-color 0.2s ease",
                   }}
@@ -417,7 +417,7 @@ export default function PortalPage() {
 
               {/* 性別選択 */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "#6b8a99", marginBottom: 8 }}>性別</p>
+                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>性別</p>
                 <div style={{ display: "flex", gap: 8 }}>
                   {[
                     { value: "male", label: "男性", emoji: "♂" },
@@ -431,7 +431,7 @@ export default function PortalPage() {
                         flex: 1, padding: "8px 0", borderRadius: 10,
                         background: tempGender === g.value ? "rgba(45,212,191,.15)" : "rgba(255,255,255,.6)",
                         border: tempGender === g.value ? "1.5px solid #2dd4bf" : "1px solid rgba(45,212,191,.15)",
-                        color: tempGender === g.value ? "#2dd4bf" : "#6b8a99",
+                        color: tempGender === g.value ? "#2dd4bf" : "#4a6572",
                         fontSize: 13, fontWeight: 600, cursor: "pointer",
                         transition: "all 0.2s ease",
                       }}
@@ -444,7 +444,7 @@ export default function PortalPage() {
 
               {/* 年齢スライダー */}
               <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "#6b8a99", marginBottom: 8 }}>
+                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>
                   年齢: <strong style={{ color: "#2dd4bf", fontSize: 16 }}>{tempAge}</strong>歳
                 </p>
                 <input
@@ -473,7 +473,7 @@ export default function PortalPage() {
                     ? "linear-gradient(135deg, #2dd4bf, #38bdf8)"
                     : "rgba(45,212,191,.1)",
                   border: "none",
-                  color: tempGender ? "#fff" : "#6b8a99",
+                  color: tempGender ? "#fff" : "#4a6572",
                   fontSize: 13, fontWeight: 700, cursor: tempGender ? "pointer" : "default",
                   transition: "all 0.2s ease",
                 }}
@@ -489,7 +489,7 @@ export default function PortalPage() {
           <span style={{ fontSize: "0.75rem", letterSpacing: "0.15em", color: "#2dd4bf", display: "block", marginBottom: 6 }}>
             ALL DIAGNOSES
           </span>
-          <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)", color: "#1a2e3b" }}>
+          <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)", color: "#0f1f2b" }}>
             診断を選ぶ
           </h2>
         </div>
@@ -514,7 +514,7 @@ export default function PortalPage() {
                 border: activeCategory === cat.key
                   ? "none"
                   : "1px solid rgba(45,212,191,.15)",
-                color: activeCategory === cat.key ? "#fff" : "#4a6572",
+                color: activeCategory === cat.key ? "#fff" : "#2d4a57",
                 fontSize: 12, fontWeight: 700, cursor: "pointer",
                 whiteSpace: "nowrap",
                 transition: "all 0.25s ease",
@@ -603,7 +603,7 @@ export default function PortalPage() {
                       className="font-zen"
                       style={{
                         fontSize: "0.95rem", fontWeight: 700,
-                        color: "#1a2e3b",
+                        color: "#0f1f2b",
                         margin: 0,
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                       }}
@@ -624,7 +624,7 @@ export default function PortalPage() {
 
                   {/* 説明文 */}
                   <p style={{
-                    fontSize: "0.75rem", lineHeight: 1.5, color: "#4a6572",
+                    fontSize: "0.75rem", lineHeight: 1.5, color: "#2d4a57",
                     marginBottom: 8,
                     display: "-webkit-box",
                     WebkitLineClamp: 2,
@@ -639,14 +639,14 @@ export default function PortalPage() {
                     <span style={{
                       padding: "2px 8px", borderRadius: 8,
                       background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.15)",
-                      fontSize: 10, color: "#4a6572",
+                      fontSize: 10, color: "#2d4a57",
                     }}>
                       {diag.questionCount}問
                     </span>
                     <span style={{
                       padding: "2px 8px", borderRadius: 8,
                       background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.15)",
-                      fontSize: 10, color: "#4a6572",
+                      fontSize: 10, color: "#2d4a57",
                     }}>
                       約{diag.estimatedMinutes}分
                     </span>
@@ -714,7 +714,7 @@ export default function PortalPage() {
             className="font-stick"
             style={{
               fontSize: "clamp(1.2rem, 4vw, 1.6rem)",
-              color: "#1a2e3b",
+              color: "#0f1f2b",
               marginBottom: 10,
             }}
           >
@@ -722,7 +722,7 @@ export default function PortalPage() {
           </h2>
           <p
             style={{
-              fontSize: 13, color: "#4a6572", lineHeight: 1.8,
+              fontSize: 13, color: "#2d4a57", lineHeight: 1.8,
               marginBottom: 20, maxWidth: 400, margin: "0 auto 20px",
             }}
           >
@@ -766,7 +766,7 @@ export default function PortalPage() {
         }}>
           ときめきラボ
         </div>
-        <p style={{ fontSize: "0.8rem", color: "#6b8a99", marginBottom: 8 }}>
+        <p style={{ fontSize: "0.8rem", color: "#4a6572", marginBottom: 8 }}>
           22の診断で自分を完全解析。
         </p>
 
@@ -807,7 +807,7 @@ export default function PortalPage() {
             { label: "お問い合わせ", href: "/contact" },
           ].map((link) => (
             <Link key={link.href} href={link.href} style={{
-              fontSize: 10, color: "#6b8a99", textDecoration: "none",
+              fontSize: 10, color: "#4a6572", textDecoration: "none",
             }}>
               {link.label}
             </Link>

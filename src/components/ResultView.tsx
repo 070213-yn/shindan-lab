@@ -292,7 +292,7 @@ export default function ResultView() {
           style={{
             display: "inline-block",
             background: "rgba(45,212,191,.12)",
-            color: "#4a6572",
+            color: "#2d4a57",
             fontSize: 11,
             padding: "4px 12px",
             borderRadius: 20,
@@ -305,7 +305,7 @@ export default function ResultView() {
         {/* 説明文 */}
         <p
           style={{
-            color: "#4a6572",
+            color: "#2d4a57",
             fontSize: 14,
             lineHeight: 1.8,
           }}
@@ -431,7 +431,7 @@ export default function ResultView() {
             <span
               style={{
                 fontSize: 12,
-                color: "#1a2e3b",
+                color: "#0f1f2b",
                 width: 80,
                 flexShrink: 0,
               }}
@@ -499,7 +499,7 @@ export default function ResultView() {
         <p
           style={{
             fontSize: 13,
-            color: "#4a6572",
+            color: "#2d4a57",
             lineHeight: 1.8,
           }}
         >
@@ -524,7 +524,7 @@ export default function ResultView() {
           className="font-zen"
           style={{
             fontSize: 17,
-            color: "#1a2e3b",
+            color: "#0f1f2b",
             lineHeight: 1.8,
             marginBottom: 8,
           }}
@@ -534,7 +534,7 @@ export default function ResultView() {
         <p
           style={{
             fontSize: 12,
-            color: "#4a6572",
+            color: "#2d4a57",
             lineHeight: 1.7,
           }}
         >
@@ -671,7 +671,7 @@ export default function ResultView() {
             background: "transparent",
             border: "1px solid rgba(45,212,191,.2)",
             borderRadius: 12,
-            color: "#4a6572",
+            color: "#2d4a57",
             fontSize: 13,
             fontWeight: 700,
             cursor: "pointer",

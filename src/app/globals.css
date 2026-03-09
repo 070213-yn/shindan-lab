@@ -17,15 +17,15 @@
   /* カスタムイージング（smooth deceleration、ease-out-quart相当） */
   --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
   /* テキスト色 */
-  --text-primary: #1a2e3b;
-  --text-secondary: #4a6572;
+  --text-primary: #0f1f2b;
+  --text-secondary: #2d4a57;
 }
 
 /* ===========================
    リセット・ベーススタイル
    =========================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { background: #F0FAFA !important; color: #1a2e3b !important; scroll-behavior: smooth; min-height: 100vh; }
+html, body { background: #F0FAFA !important; color: #0f1f2b !important; scroll-behavior: smooth; min-height: 100vh; }
 body {
   font-family: 'Noto Sans JP', sans-serif;
   overflow-x: hidden;
@@ -42,7 +42,7 @@ body {
 /* テキスト選択時の配色 */
 ::selection {
   background: rgba(45, 212, 191, .3);
-  color: #1a2e3b;
+  color: #0f1f2b;
 }
 
 /* スクロールバー（webkit系ブラウザ向け） */

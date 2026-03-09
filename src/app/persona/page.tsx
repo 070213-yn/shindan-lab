@@ -55,7 +55,7 @@ export default function PersonaPage() {
               ときめきラボ
             </span>
           </Link>
-          <span style={{ fontSize: 11, color: "#6b8a99", letterSpacing: "0.08em" }}>
+          <span style={{ fontSize: 11, color: "#4a6572", letterSpacing: "0.08em" }}>
             PERSONA CARD
           </span>
         </nav>
@@ -79,7 +79,7 @@ export default function PersonaPage() {
           </h1>
           <p
             style={{
-              fontSize: 14, color: "#4a6572", lineHeight: 1.7,
+              fontSize: 14, color: "#2d4a57", lineHeight: 1.7,
               maxWidth: 400, margin: "0 auto 8px",
             }}
           >
@@ -88,7 +88,7 @@ export default function PersonaPage() {
             診断を受けるほどカードが進化します。
           </p>
           {completedCount > 0 && (
-            <p style={{ fontSize: 12, color: "#6b8a99" }}>
+            <p style={{ fontSize: 12, color: "#4a6572" }}>
               {completedCount}個の診断を完了
             </p>
           )}

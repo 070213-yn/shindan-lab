@@ -28,47 +28,56 @@ const LOVE_DIAGNOSIS = {
   catchphrase: "恋は、勇気が9割。",
   href: "/love",
   isNew: false,
-  isFeatured: true,
-  category: "self" as const,
+  isFeatured: false,
+  category: "social" as const,
 };
 
 // カテゴリ定義
-type CategoryKey = "all" | "self" | "future" | "fun";
+type CategoryKey = "all" | "personality" | "mind" | "ability" | "career" | "social" | "mystery";
 const CATEGORIES: { key: CategoryKey; label: string; emoji: string }[] = [
   { key: "all", label: "すべて", emoji: "✦" },
-  { key: "self", label: "自分を知る", emoji: "🔍" },
-  { key: "future", label: "未来を探る", emoji: "🚀" },
-  { key: "fun", label: "楽しむ", emoji: "🎮" },
+  { key: "personality", label: "性格・タイプ", emoji: "🧬" },
+  { key: "mind", label: "メンタル・心理", emoji: "🧠" },
+  { key: "ability", label: "能力・才能", emoji: "⭐" },
+  { key: "career", label: "仕事・将来", emoji: "🚀" },
+  { key: "social", label: "対人・SNS", emoji: "💬" },
+  { key: "mystery", label: "スピ・エンタメ", emoji: "🔮" },
 ];
 
 // 各診断をカテゴリに分類するマップ
 const CATEGORY_MAP: Record<string, CategoryKey> = {
-  love: "self",
-  talent: "self",
-  mental: "self",
-  commu: "self",
-  shadow: "self",
-  brain: "self",
-  impression: "self",
-  learning: "self",
-  mbti128: "self",
-  stress: "self",
-  career: "future",
-  job: "future",
-  leadership: "future",
-  money: "future",
-  creative: "future",
-  chrono: "future",
-  spirit: "fun",
-  isekai: "fun",
-  oshi: "fun",
-  sns: "fun",
-  pastlife: "fun",
-  friendship: "fun",
+  // 性格・タイプ
+  mbti128: "personality",
+  shadow: "personality",
+  impression: "personality",
+  chrono: "personality",
+  // メンタル・心理
+  mental: "mind",
+  stress: "mind",
+  brain: "mind",
+  // 能力・才能
+  talent: "ability",
+  creative: "ability",
+  learning: "ability",
+  // 仕事・将来
+  career: "career",
+  job: "career",
+  leadership: "career",
+  money: "career",
+  // 対人・SNS
+  love: "social",
+  commu: "social",
+  friendship: "social",
+  sns: "social",
+  oshi: "social",
+  // スピ・エンタメ
+  spirit: "mystery",
+  isekai: "mystery",
+  pastlife: "mystery",
 };
 
-// 全カードデータ（恋愛 + 21診断）
-const ALL_DIAGNOSES = [
+// 全カードデータ（MBTI-128を先頭 + 恋愛 + 他の診断）
+const ALL_DIAGNOSES_RAW = [
   LOVE_DIAGNOSIS,
   ...DIAGNOSIS_LIST.map((d) => ({
     id: d.id,
@@ -84,9 +93,14 @@ const ALL_DIAGNOSES = [
     catchphrase: d.catchphrase,
     href: `/shindan/${d.id}`,
     isNew: true,
-    isFeatured: false,
-    category: (CATEGORY_MAP[d.id] || "fun") as CategoryKey,
+    isFeatured: d.id === "mbti128",
+    category: (CATEGORY_MAP[d.id] || "mystery") as CategoryKey,
   })),
+];
+// MBTI-128を先頭に配置（メイン推し診断）
+const ALL_DIAGNOSES = [
+  ...ALL_DIAGNOSES_RAW.filter((d) => d.id === "mbti128"),
+  ...ALL_DIAGNOSES_RAW.filter((d) => d.id !== "mbti128"),
 ];
 
 export default function PortalPage() {
@@ -731,10 +745,12 @@ export default function PortalPage() {
                     {diag.isFeatured && (
                       <span style={{
                         padding: "2px 8px", borderRadius: 8,
-                        background: "rgba(236,72,153,.1)", border: "1px solid rgba(236,72,153,.15)",
-                        fontSize: 10, color: "#EC4899", fontWeight: 700,
+                        background: "linear-gradient(135deg, rgba(236,72,153,.15), rgba(99,102,241,.15))",
+                        border: "1px solid rgba(236,72,153,.25)",
+                        fontSize: 10, color: "#F472B6", fontWeight: 700,
+                        letterSpacing: "0.04em",
                       }}>
-                        POPULAR
+                        イチオシ
                       </span>
                     )}
                   </div>

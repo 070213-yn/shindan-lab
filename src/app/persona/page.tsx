@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import PersonaCard from "@/components/PersonaCard";
+import PersonalFriends from "@/components/PersonalFriends";
 import { usePersonaStore } from "@/store/personaStore";
 
 export default function PersonaPage() {
@@ -137,8 +138,13 @@ export default function PersonaPage() {
         </section>
 
         {/* ペルソナカード本体 */}
-        <section style={{ padding: "0 0 60px" }}>
+        <section style={{ padding: "0 0 40px" }}>
           <PersonaCard />
+        </section>
+
+        {/* パーソナルフレンズ */}
+        <section style={{ padding: "0 0 60px" }}>
+          <PersonalFriends />
         </section>
       </div>
     </div>

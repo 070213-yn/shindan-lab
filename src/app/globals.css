@@ -519,3 +519,13 @@ body {
   pointer-events: none;
   animation: sparkBurst 0.5s ease-out forwards;
 }
+
+/* パーソナルフレンズ: マスコットのホバー揺れアニメーション */
+@keyframes mascotWobble {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-4deg) scale(1.05); }
+  75% { transform: rotate(4deg) scale(1.05); }
+}
+.mascot-bounce:hover {
+  animation: mascotWobble 0.5s ease-in-out;
+}

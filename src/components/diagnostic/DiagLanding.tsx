@@ -89,29 +89,135 @@ export default function DiagLanding({ config, store }: Props) {
   const buttonLabel = getButtonLabel(theme.buttonStyle);
   const buttonIconHtml = getButtonIcon(theme.buttonStyle);
 
+  // シマーアニメーションとパルスアニメーションのスタイルタグ（コンポーネント内で完結）
+  const dynamicStyles = useMemo(() => `
+    @keyframes diagLandingShimmer {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+    @keyframes diagLandingPulse {
+      0%, 100% {
+        box-shadow: 0 4px 24px ${config.themeColor}40;
+      }
+      50% {
+        box-shadow: 0 6px 32px ${config.themeColor}60, 0 0 48px ${config.themeColor}20;
+      }
+    }
+    @keyframes diagLandingRingSpin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    @keyframes diagLandingDotOrbit {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(-360deg); }
+    }
+    @keyframes diagLandingIconBounce {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-2px); }
+    }
+    .diag-landing-btn:hover {
+      transform: scale(1.03) !important;
+      box-shadow: 0 8px 40px ${config.themeColor}50, 0 0 60px ${config.themeColor}25 !important;
+    }
+    .diag-landing-btn:active {
+      transform: scale(0.97) !important;
+    }
+    .diag-landing-back:hover {
+      background: ${config.themeColor}15 !important;
+      border-color: ${config.themeColor}40 !important;
+      color: ${config.themeColor} !important;
+    }
+  `, [config.themeColor]);
+
   return (
     <div
       style={{
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        padding: "0 20px 40px",
+        padding: "0 16px 40px",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* 動的スタイル */}
+      <style dangerouslySetInnerHTML={{ __html: dynamicStyles }} />
+
+      {/* 背景装飾: 上部のアーチSVG */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "100%",
+          maxWidth: 520,
+          height: 200,
+          pointerEvents: "none",
+          opacity: 0.5,
+          animation: "staggeredFadeUp 0.8s cubic-bezier(0.25,1,0.5,1) 0s both",
+        }}
+      >
+        <svg viewBox="0 0 520 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%" }}>
+          {/* 装飾アーチ */}
+          <path
+            d="M0 200 Q260 -20 520 200"
+            stroke={config.themeColor}
+            strokeWidth="1"
+            strokeOpacity="0.15"
+            fill="none"
+          />
+          <path
+            d="M40 200 Q260 20 480 200"
+            stroke={config.themeColor}
+            strokeWidth="0.8"
+            strokeOpacity="0.1"
+            fill="none"
+          />
+          {/* リボン装飾 */}
+          <path
+            d="M160 30 Q200 15 240 25 Q260 28 260 28 Q260 28 280 25 Q320 15 360 30"
+            stroke={`url(#ribbonGrad-${config.id})`}
+            strokeWidth="2"
+            strokeLinecap="round"
+            fill="none"
+            strokeOpacity="0.4"
+          />
+          {/* 小さな装飾ドット */}
+          <circle cx="180" cy="50" r="2" fill={config.themeColor} opacity="0.15" />
+          <circle cx="340" cy="50" r="2" fill={config.themeColor} opacity="0.15" />
+          <circle cx="260" cy="12" r="3" fill={config.themeColor} opacity="0.12" />
+          <circle cx="130" cy="80" r="1.5" fill={config.themeColor} opacity="0.1" />
+          <circle cx="390" cy="80" r="1.5" fill={config.themeColor} opacity="0.1" />
+          <defs>
+            <linearGradient id={`ribbonGrad-${config.id}`} x1="160" y1="30" x2="360" y2="30" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor={config.gradientFrom} />
+              <stop offset="100%" stopColor={config.gradientTo} />
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+
       {/* ホームに戻るリンク */}
       <div
         style={{
           padding: "16px 0 0",
+          maxWidth: 480,
+          width: "100%",
+          margin: "0 auto",
           animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0s both",
+          position: "relative",
+          zIndex: 2,
         }}
       >
         <Link
           href="/"
+          className="diag-landing-back"
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: 6,
-            padding: "8px 14px",
+            padding: "8px 16px",
             borderRadius: 20,
             background: theme.cardBg,
             border: `1px solid ${theme.cardBorder}`,
@@ -119,10 +225,11 @@ export default function DiagLanding({ config, store }: Props) {
             fontSize: 12,
             fontWeight: 600,
             textDecoration: "none",
-            transition: "all 0.2s ease",
+            transition: "all 0.25s ease",
+            backdropFilter: "blur(8px)",
           }}
         >
-          <span style={{ fontSize: 14 }}>&#8592;</span>
+          <span style={{ fontSize: 14, lineHeight: 1 }}>&#8592;</span>
           ホームに戻る
         </Link>
       </div>
@@ -133,23 +240,86 @@ export default function DiagLanding({ config, store }: Props) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          position: "relative",
+          zIndex: 2,
         }}
       >
       <div
         style={{
-          maxWidth: 420,
+          maxWidth: 480,
           width: "100%",
           textAlign: "center",
         }}
       >
-        {/* 診断の絵文字＋テーマ装飾SVG */}
+        {/* ====== 診断の絵文字＋二重リング装飾 ====== */}
         <div
           style={{
             position: "relative",
-            marginBottom: 14,
+            marginBottom: 20,
             animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.05s both",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: 160,
           }}
         >
+          {/* 外側リング（ゆっくり回転） */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: 140,
+              height: 140,
+              borderRadius: "50%",
+              border: `2px dashed ${config.themeColor}20`,
+              animation: "diagLandingRingSpin 25s linear infinite",
+              pointerEvents: "none",
+            }}
+          >
+            {/* 外側リング上の装飾ドット */}
+            <div style={{
+              position: "absolute", top: -4, left: "50%", transform: "translateX(-50%)",
+              width: 8, height: 8, borderRadius: "50%",
+              background: `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`,
+              opacity: 0.5,
+            }} />
+            <div style={{
+              position: "absolute", bottom: -4, left: "50%", transform: "translateX(-50%)",
+              width: 6, height: 6, borderRadius: "50%",
+              background: config.themeColor,
+              opacity: 0.3,
+            }} />
+            <div style={{
+              position: "absolute", left: -4, top: "50%", transform: "translateY(-50%)",
+              width: 6, height: 6, borderRadius: "50%",
+              background: config.themeColor,
+              opacity: 0.3,
+            }} />
+            <div style={{
+              position: "absolute", right: -4, top: "50%", transform: "translateY(-50%)",
+              width: 6, height: 6, borderRadius: "50%",
+              background: config.themeColor,
+              opacity: 0.3,
+            }} />
+          </div>
+
+          {/* 内側リング */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 110,
+              height: 110,
+              borderRadius: "50%",
+              border: `2.5px solid ${config.themeColor}18`,
+              background: `radial-gradient(circle, ${config.themeColor}06 0%, transparent 70%)`,
+              pointerEvents: "none",
+            }}
+          />
+
           {/* テーマ固有の背景装飾SVG（絵文字の後ろに表示） */}
           {theme.landingSvg && (
             <div
@@ -161,19 +331,21 @@ export default function DiagLanding({ config, store }: Props) {
                 width: 140,
                 height: 140,
                 color: config.themeColor,
-                opacity: 0.5,
+                opacity: 0.35,
                 animation: `${theme.uniqueAnimation || 'floatDiagonal'} 8s ease-in-out infinite`,
                 pointerEvents: "none",
               }}
               dangerouslySetInnerHTML={{ __html: theme.landingSvg }}
             />
           )}
-          {/* メイン絵文字 */}
+
+          {/* メイン絵文字（72pxに拡大） */}
           <div
             style={{
               position: "relative",
-              fontSize: 52,
-              filter: `drop-shadow(0 0 16px ${config.themeColor}40)`,
+              fontSize: 72,
+              lineHeight: 1,
+              filter: `drop-shadow(0 0 20px ${config.themeColor}35)`,
               animation: "floatDiagonal 5s ease-in-out infinite",
               zIndex: 1,
             }}
@@ -182,13 +354,14 @@ export default function DiagLanding({ config, store }: Props) {
           </div>
         </div>
 
-        {/* 診断タイトル */}
+        {/* ====== 診断タイトル ====== */}
         <h1
           className="font-stick"
           style={{
-            fontSize: 24,
+            fontSize: 26,
             color: theme.textPrimary,
-            marginBottom: 6,
+            marginBottom: 8,
+            letterSpacing: "0.02em",
             animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.1s both",
           }}
         >
@@ -199,50 +372,65 @@ export default function DiagLanding({ config, store }: Props) {
         <p
           className="font-zen"
           style={{
-            fontSize: 13,
+            fontSize: 13.5,
             color: config.themeColor,
             fontWeight: 700,
-            marginBottom: 20,
-            lineHeight: 1.6,
-            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.2s both",
+            marginBottom: 24,
+            lineHeight: 1.7,
+            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.18s both",
           }}
         >
           {config.catchphrase}
         </p>
 
-        {/* 説明カード（テーマ色のグラデーションボーダー） */}
+        {/* ====== 説明カード（グラスモーフィズム + アクセントバー） ====== */}
         <div
           style={{
             position: "relative",
-            borderRadius: 18,
+            borderRadius: 20,
             padding: 2,
-            marginBottom: 20,
-            // テーマカラーのグラデーションボーダー
-            background: `linear-gradient(135deg, ${config.gradientFrom}40, ${config.gradientTo}20, ${config.gradientFrom}30)`,
-            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.3s both",
+            marginBottom: 24,
+            background: `linear-gradient(135deg, ${config.gradientFrom}45, ${config.gradientTo}20, ${config.gradientFrom}35)`,
+            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.26s both",
           }}
         >
           <div
             style={{
-              background: theme.cardBg,
-              backdropFilter: "blur(10px)",
-              borderRadius: 16,
-              padding: "16px 16px",
+              position: "relative",
+              background: `${theme.cardBg}`,
+              backdropFilter: "blur(16px) saturate(1.4)",
+              WebkitBackdropFilter: "blur(16px) saturate(1.4)",
+              borderRadius: 18,
+              padding: "20px 20px 20px 24px",
               textAlign: "left",
+              overflow: "hidden",
             }}
           >
+            {/* 左端のアクセントバー（グラデーション） */}
+            <div
+              style={{
+                position: "absolute",
+                left: 0,
+                top: 12,
+                bottom: 12,
+                width: 4,
+                borderRadius: 4,
+                background: `linear-gradient(180deg, ${config.gradientFrom}, ${config.gradientTo})`,
+              }}
+            />
+
             {/* この診断でわかること */}
-            <div style={{ marginBottom: 14 }}>
+            <div style={{ marginBottom: 16 }}>
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 6,
-                  fontSize: 10,
+                  fontSize: 11,
                   color: config.themeColor,
                   fontWeight: 700,
                   letterSpacing: "0.08em",
-                  marginBottom: 6,
+                  marginBottom: 4,
                   textTransform: "uppercase",
                 }}
               >
@@ -261,11 +449,21 @@ export default function DiagLanding({ config, store }: Props) {
                 />
                 この診断でわかること
               </div>
+              {/* アンダーラインアクセント */}
+              <div
+                style={{
+                  width: 40,
+                  height: 2,
+                  borderRadius: 2,
+                  background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo}80)`,
+                  marginBottom: 10,
+                }}
+              />
               <p
                 style={{
-                  fontSize: 13,
+                  fontSize: 13.5,
                   color: theme.textSecondary,
-                  lineHeight: 1.7,
+                  lineHeight: 1.75,
                 }}
               >
                 {config.description}
@@ -277,123 +475,191 @@ export default function DiagLanding({ config, store }: Props) {
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr 1fr",
-                gap: 8,
+                gap: 10,
               }}
             >
               {/* 質問数 */}
               <div
                 style={{
-                  background: `linear-gradient(135deg, ${config.themeColor}08, ${config.themeColor}15)`,
-                  borderRadius: 10,
-                  padding: "10px 8px",
+                  background: `linear-gradient(145deg, ${config.themeColor}08, ${config.themeColor}18)`,
+                  borderRadius: 14,
+                  padding: "14px 8px 10px",
                   textAlign: "center",
-                  border: `1px solid ${config.themeColor}10`,
+                  border: `1px solid ${config.themeColor}12`,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
+                {/* セル内の微光 */}
+                <div style={{
+                  position: "absolute", top: 0, right: 0, width: 30, height: 30,
+                  borderRadius: "0 14px 0 30px",
+                  background: `${config.themeColor}08`,
+                }} />
                 <div
                   className="font-stick"
                   style={{
-                    fontSize: 20,
+                    fontSize: 26,
+                    fontWeight: 800,
                     color: config.themeColor,
                     marginBottom: 2,
+                    lineHeight: 1.1,
+                    position: "relative",
                   }}
                 >
                   {config.questionCount}
                 </div>
-                <div style={{ fontSize: 10, color: theme.textSecondary }}>
-                  問
+                <div style={{
+                  fontSize: 9,
+                  color: theme.textSecondary,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  opacity: 0.7,
+                }}>
+                  QUESTIONS
                 </div>
               </div>
 
               {/* 所要時間 */}
               <div
                 style={{
-                  background: `linear-gradient(135deg, ${config.themeColor}08, ${config.themeColor}15)`,
-                  borderRadius: 10,
-                  padding: "10px 8px",
+                  background: `linear-gradient(145deg, ${config.themeColor}08, ${config.themeColor}18)`,
+                  borderRadius: 14,
+                  padding: "14px 8px 10px",
                   textAlign: "center",
-                  border: `1px solid ${config.themeColor}10`,
+                  border: `1px solid ${config.themeColor}12`,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
+                <div style={{
+                  position: "absolute", top: 0, right: 0, width: 30, height: 30,
+                  borderRadius: "0 14px 0 30px",
+                  background: `${config.themeColor}08`,
+                }} />
                 <div
                   className="font-stick"
                   style={{
-                    fontSize: 20,
+                    fontSize: 26,
+                    fontWeight: 800,
                     color: config.themeColor,
                     marginBottom: 2,
+                    lineHeight: 1.1,
+                    position: "relative",
                   }}
                 >
                   {config.estimatedMinutes}
                 </div>
-                <div style={{ fontSize: 10, color: theme.textSecondary }}>
-                  分
+                <div style={{
+                  fontSize: 9,
+                  color: theme.textSecondary,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  opacity: 0.7,
+                }}>
+                  MINUTES
                 </div>
               </div>
 
               {/* 結果タイプ数 */}
               <div
                 style={{
-                  background: `linear-gradient(135deg, ${config.themeColor}08, ${config.themeColor}15)`,
-                  borderRadius: 10,
-                  padding: "10px 8px",
+                  background: `linear-gradient(145deg, ${config.themeColor}08, ${config.themeColor}18)`,
+                  borderRadius: 14,
+                  padding: "14px 8px 10px",
                   textAlign: "center",
-                  border: `1px solid ${config.themeColor}10`,
+                  border: `1px solid ${config.themeColor}12`,
+                  position: "relative",
+                  overflow: "hidden",
                 }}
               >
+                <div style={{
+                  position: "absolute", top: 0, right: 0, width: 30, height: 30,
+                  borderRadius: "0 14px 0 30px",
+                  background: `${config.themeColor}08`,
+                }} />
                 <div
                   className="font-stick"
                   style={{
-                    fontSize: 20,
+                    fontSize: 26,
+                    fontWeight: 800,
                     color: config.themeColor,
                     marginBottom: 2,
+                    lineHeight: 1.1,
+                    position: "relative",
                   }}
                 >
                   {config.resultTypes.length}
                 </div>
-                <div style={{ fontSize: 10, color: theme.textSecondary }}>
-                  タイプ
+                <div style={{
+                  fontSize: 9,
+                  color: theme.textSecondary,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  opacity: 0.7,
+                }}>
+                  TYPES
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 診断をはじめるボタン（テーマ装飾付き） */}
+        {/* ====== 開始ボタン（シマー + パルス + グロー） ====== */}
         <button
           onClick={() => setCurrentStep("profile")}
-          className="btn-glow-active"
+          className="diag-landing-btn"
           style={{
             position: "relative",
             width: "100%",
-            padding: "18px 0",
+            padding: "20px 0",
             background: `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`,
             color: "#fff",
             border: "none",
             borderRadius: 50,
-            fontSize: 17,
+            fontSize: 18,
             fontWeight: 700,
             fontFamily: "'Zen Maru Gothic', sans-serif",
             cursor: "pointer",
             boxShadow: `0 4px 24px ${config.themeColor}40`,
             transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
-            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.45s both",
+            animation: `staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.38s both, diagLandingPulse 2.5s ease-in-out 1.2s infinite`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 8,
+            gap: 10,
             overflow: "hidden",
+            letterSpacing: "0.04em",
           }}
         >
-          {/* 左アイコン */}
+          {/* シマーアニメーション（光が横切る） */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "-100%",
+              width: "60%",
+              height: "100%",
+              background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 60%, transparent 100%)",
+              animation: "diagLandingShimmer 3s ease-in-out 1.5s infinite",
+              pointerEvents: "none",
+            }}
+          />
+          {/* 左アイコン（微妙なバウンス） */}
           <span
             style={{
               display: "inline-flex",
               alignItems: "center",
               opacity: 0.9,
+              animation: "diagLandingIconBounce 2s ease-in-out infinite",
+              position: "relative",
             }}
             dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
           />
-          {buttonLabel}
+          <span style={{ position: "relative" }}>{buttonLabel}</span>
           {/* 右アイコン */}
           <span
             style={{
@@ -401,53 +667,108 @@ export default function DiagLanding({ config, store }: Props) {
               alignItems: "center",
               opacity: 0.9,
               transform: "scaleX(-1)",
+              animation: "diagLandingIconBounce 2s ease-in-out 0.3s infinite",
+              position: "relative",
             }}
             dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
           />
         </button>
 
-        {/* 参考文献のチラ見せ */}
-        {referenceLabel && (
-          <p
-            style={{
-              marginTop: 12,
-              fontSize: 10,
-              color: theme.textSecondary,
-              animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.55s both",
-            }}
-          >
-            {referenceLabel}等の研究に基づいた本格診断
-          </p>
-        )}
-
-        {/* 実験担当者のフレーバーテキスト */}
-        {theme.labDirector && (
-          <div
-            style={{
-              marginTop: 16,
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "8px 16px",
-              borderRadius: 20,
-              background: `${config.themeColor}08`,
-              border: `1px dashed ${config.themeColor}25`,
-              animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.65s both",
-            }}
-          >
-            <span style={{ fontSize: 14 }}>🔬</span>
-            <span
+        {/* ====== 下部情報エリア ====== */}
+        <div
+          style={{
+            marginTop: 20,
+            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.5s both",
+          }}
+        >
+          {/* 参考文献 + 実験担当者をまとめたカード */}
+          {(referenceLabel || theme.labDirector) && (
+            <div
               style={{
-                fontSize: 11,
-                color: theme.textSecondary,
-                fontWeight: 500,
-                letterSpacing: "0.02em",
+                display: "inline-flex",
+                flexDirection: "column",
+                gap: 8,
+                padding: "12px 20px",
+                borderRadius: 16,
+                background: `${theme.cardBg}`,
+                backdropFilter: "blur(8px)",
+                border: `1px solid ${config.themeColor}15`,
               }}
             >
-              {theme.labDirector}
-            </span>
-          </div>
-        )}
+              {/* 参考文献バッジ */}
+              {referenceLabel && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 22,
+                      height: 22,
+                      borderRadius: 6,
+                      background: `linear-gradient(135deg, ${config.gradientFrom}20, ${config.gradientTo}20)`,
+                      fontSize: 11,
+                    }}
+                  >
+                    📚
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: theme.textSecondary,
+                      fontWeight: 500,
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {referenceLabel}等の研究に基づく本格診断
+                  </span>
+                </div>
+              )}
+
+              {/* 実験担当者バッジ */}
+              {theme.labDirector && (
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      width: 22,
+                      height: 22,
+                      borderRadius: 6,
+                      background: `linear-gradient(135deg, ${config.gradientFrom}20, ${config.gradientTo}20)`,
+                      fontSize: 11,
+                    }}
+                  >
+                    🔬
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      color: theme.textSecondary,
+                      fontWeight: 500,
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    {theme.labDirector}
+                  </span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       </div>
     </div>

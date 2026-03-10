@@ -68,6 +68,7 @@ body {
    グラデーションボタン
    =========================== */
 .btn-gradient {
+  position: relative;
   background: linear-gradient(135deg, #2dd4bf, #38bdf8);
   color: #fff;
   border: none;
@@ -76,11 +77,39 @@ body {
   font-family: 'Zen Maru Gothic', sans-serif;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(45, 212, 191, .2);
-  transition: all 0.3s var(--ease-smooth);
+  transition: all 0.4s var(--ease-smooth);
+  overflow: hidden;
+}
+/* ボタン上を光が横切るシマー効果 */
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  transition: none;
+  animation: btnShimmerSweep 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnShimmerSweep {
+  0%, 70%, 100% { left: -100%; opacity: 0; }
+  10% { opacity: 1; }
+  40% { left: 150%; opacity: 0; }
 }
 .btn-gradient:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(45, 212, 191, .3);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 8px 30px rgba(45, 212, 191, .35),
+    0 0 20px rgba(56, 189, 248, .25),
+    0 0 40px rgba(45, 212, 191, .15);
+  background: linear-gradient(135deg, #34d9c4, #45c4f9, #2dd4bf);
 }
 
 /* ===========================
@@ -93,10 +122,14 @@ body {
   50% { opacity: 0.9; transform: scale(1.8); }
 }
 
-/* ブロブ浮遊 */
+/* ブロブ浮遊（複雑軌道 + スケール変化） */
 @keyframes blobFloat {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(20px, -25px); }
+  0% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(15px, -20px) scale(1.08); }
+  40% { transform: translate(-10px, -35px) scale(0.95); }
+  60% { transform: translate(25px, -15px) scale(1.12); }
+  80% { transform: translate(-5px, -30px) scale(0.98); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 
 /* 360度回転 */
@@ -674,7 +707,26 @@ body {
 .bg-fresh-pattern {
   background-color: var(--bg);
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3C!-- 試験管 --%3E%3Cg transform='translate(30,20) rotate(-15,10,30)'%3E%3Crect x='6' y='0' width='8' height='28' rx='1' fill='none' stroke='rgba(196,181,253,0.25)' stroke-width='1.5'/%3E%3Crect x='4' y='0' width='12' height='4' rx='1' fill='none' stroke='rgba(196,181,253,0.25)' stroke-width='1.5'/%3E%3Cellipse cx='10' cy='26' rx='3' ry='2' fill='rgba(249,168,212,0.15)'/%3E%3Ccircle cx='9' cy='18' r='1.2' fill='rgba(249,168,212,0.2)'/%3E%3Ccircle cx='11' cy='21' r='0.8' fill='rgba(196,181,253,0.2)'/%3E%3C/g%3E%3C!-- フラスコ --%3E%3Cg transform='translate(160,30)'%3E%3Cpath d='M12,0 L12,14 L22,30 Q23,32 21,33 L3,33 Q1,32 2,30 L12,14 Z' fill='none' stroke='rgba(110,231,183,0.22)' stroke-width='1.5'/%3E%3Crect x='9' y='0' width='6' height='3' rx='0.5' fill='none' stroke='rgba(110,231,183,0.22)' stroke-width='1.5'/%3E%3Cellipse cx='12' cy='28' rx='7' ry='3' fill='rgba(147,197,253,0.12)'/%3E%3Ccircle cx='10' cy='25' r='1' fill='rgba(110,231,183,0.18)'/%3E%3Ccircle cx='14' cy='23' r='0.7' fill='rgba(110,231,183,0.15)'/%3E%3C/g%3E%3C!-- ビーカー --%3E%3Cg transform='translate(310,60)'%3E%3Cpath d='M2,4 L2,28 Q2,30 4,30 L22,30 Q24,30 24,28 L24,4 Z' fill='none' stroke='rgba(249,168,212,0.2)' stroke-width='1.5'/%3E%3Cpath d='M24,10 L30,8' fill='none' stroke='rgba(249,168,212,0.2)' stroke-width='1.5'/%3E%3Crect x='4' y='18' width='18' height='11' rx='0' fill='rgba(196,181,253,0.08)'/%3E%3Cline x1='4' y1='12' x2='8' y2='12' stroke='rgba(249,168,212,0.15)' stroke-width='1'/%3E%3Cline x1='4' y1='18' x2='8' y2='18' stroke='rgba(249,168,212,0.15)' stroke-width='1'/%3E%3Cline x1='4' y1='24' x2='8' y2='24' stroke='rgba(249,168,212,0.15)' stroke-width='1'/%3E%3C/g%3E%3C!-- DNA螺旋 --%3E%3Cg transform='translate(80,130)'%3E%3Cpath d='M0,0 Q8,5 16,0 Q8,5 0,10 Q8,15 16,10 Q8,15 0,20 Q8,25 16,20 Q8,25 0,30 Q8,35 16,30 Q8,35 0,40' fill='none' stroke='rgba(196,181,253,0.22)' stroke-width='1.5'/%3E%3Cpath d='M16,0 Q8,5 0,0 Q8,5 16,10 Q8,15 0,10 Q8,15 16,20 Q8,25 0,20 Q8,25 16,30 Q8,35 0,30 Q8,35 16,40' fill='none' stroke='rgba(249,168,212,0.18)' stroke-width='1.5'/%3E%3Cline x1='4' y1='5' x2='12' y2='5' stroke='rgba(110,231,183,0.15)' stroke-width='1'/%3E%3Cline x1='4' y1='15' x2='12' y2='15' stroke='rgba(110,231,183,0.15)' stroke-width='1'/%3E%3Cline x1='4' y1='25' x2='12' y2='25' stroke='rgba(110,231,183,0.15)' stroke-width='1'/%3E%3Cline x1='4' y1='35' x2='12' y2='35' stroke='rgba(110,231,183,0.15)' stroke-width='1'/%3E%3C/g%3E%3C!-- 原子モデル --%3E%3Cg transform='translate(260,140)'%3E%3Ccircle cx='16' cy='16' r='3' fill='rgba(249,168,212,0.2)' stroke='rgba(249,168,212,0.25)' stroke-width='1'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='rgba(196,181,253,0.18)' stroke-width='1'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='rgba(110,231,183,0.15)' stroke-width='1' transform='rotate(60,16,16)'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='rgba(147,197,253,0.18)' stroke-width='1' transform='rotate(120,16,16)'/%3E%3Ccircle cx='30' cy='16' r='1.5' fill='rgba(249,168,212,0.25)'/%3E%3Ccircle cx='9' cy='5' r='1.5' fill='rgba(110,231,183,0.25)'/%3E%3Ccircle cx='9' cy='27' r='1.5' fill='rgba(147,197,253,0.25)'/%3E%3C/g%3E%3C!-- 星（五芒星） --%3E%3Cg transform='translate(200,210)'%3E%3Cpolygon points='10,0 12.4,7.6 20,7.6 13.8,12.4 16.2,20 10,15.2 3.8,20 6.2,12.4 0,7.6 7.6,7.6' fill='rgba(253,230,138,0.18)' stroke='rgba(253,230,138,0.25)' stroke-width='0.8'/%3E%3C/g%3E%3C!-- 小さい星 --%3E%3Cg transform='translate(50,280)'%3E%3Cpolygon points='6,0 7.4,4.6 12,4.6 8.3,7.4 9.7,12 6,9.2 2.3,12 3.7,7.4 0,4.6 4.6,4.6' fill='rgba(253,230,138,0.15)' stroke='rgba(253,230,138,0.2)' stroke-width='0.6'/%3E%3C/g%3E%3C!-- 泡たち --%3E%3Ccircle cx='340' cy='200' r='5' fill='none' stroke='rgba(147,197,253,0.2)' stroke-width='1'/%3E%3Ccircle cx='350' cy='210' r='3' fill='none' stroke='rgba(147,197,253,0.15)' stroke-width='0.8'/%3E%3Ccircle cx='335' cy='215' r='2' fill='none' stroke='rgba(196,181,253,0.18)' stroke-width='0.8'/%3E%3Ccircle cx='345' cy='195' r='2.5' fill='none' stroke='rgba(110,231,183,0.15)' stroke-width='0.8'/%3E%3C!-- 試験管2（小さめ） --%3E%3Cg transform='translate(130,270) rotate(10,8,20)'%3E%3Crect x='5' y='2' width='6' height='20' rx='1' fill='none' stroke='rgba(110,231,183,0.2)' stroke-width='1.2'/%3E%3Crect x='3' y='0' width='10' height='3' rx='1' fill='none' stroke='rgba(110,231,183,0.2)' stroke-width='1.2'/%3E%3Cellipse cx='8' cy='19' rx='2' ry='1.5' fill='rgba(253,230,138,0.12)'/%3E%3C/g%3E%3C!-- フラスコ2（丸底） --%3E%3Cg transform='translate(290,280)'%3E%3Ccircle cx='14' cy='22' r='12' fill='none' stroke='rgba(249,168,212,0.18)' stroke-width='1.2'/%3E%3Crect x='11' y='0' width='6' height='12' rx='0.5' fill='none' stroke='rgba(249,168,212,0.18)' stroke-width='1.2'/%3E%3Cellipse cx='14' cy='26' rx='8' ry='4' fill='rgba(249,168,212,0.06)'/%3E%3Ccircle cx='12' cy='22' r='1' fill='rgba(196,181,253,0.15)'/%3E%3Ccircle cx='16' cy='25' r='0.7' fill='rgba(196,181,253,0.12)'/%3E%3C/g%3E%3C!-- 泡 追加 --%3E%3Ccircle cx='180' cy='340' r='4' fill='none' stroke='rgba(110,231,183,0.18)' stroke-width='1'/%3E%3Ccircle cx='190' cy='350' r='2.5' fill='none' stroke='rgba(196,181,253,0.15)' stroke-width='0.8'/%3E%3Ccircle cx='175' cy='355' r='1.8' fill='none' stroke='rgba(249,168,212,0.15)' stroke-width='0.8'/%3E%3C!-- 星 追加 --%3E%3Cg transform='translate(360,350)'%3E%3Cpolygon points='8,0 9.9,6.1 16,6.1 11,9.9 13,16 8,12.2 3,16 5,9.9 0,6.1 6.1,6.1' fill='rgba(147,197,253,0.12)' stroke='rgba(147,197,253,0.2)' stroke-width='0.6'/%3E%3C/g%3E%3C!-- 原子モデル 小 --%3E%3Cg transform='translate(20,350)'%3E%3Ccircle cx='8' cy='8' r='2' fill='rgba(110,231,183,0.15)'/%3E%3Cellipse cx='8' cy='8' rx='7' ry='3' fill='none' stroke='rgba(110,231,183,0.12)' stroke-width='0.8'/%3E%3Cellipse cx='8' cy='8' rx='7' ry='3' fill='none' stroke='rgba(196,181,253,0.12)' stroke-width='0.8' transform='rotate(60,8,8)'/%3E%3C/g%3E%3C/svg%3E");
+    /* 放射状グラデーションのレイヤー: 奥行きと柔らかい光を加える */
+    radial-gradient(ellipse at 20% 20%, rgba(196,181,253,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(249,168,212,0.10) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 80%, rgba(110,231,183,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(147,197,253,0.08) 0%, transparent 40%),
+    /* SVGパターン（opacity強化版: 0.25→0.4前後） */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3E%3C!-- 試験管 --%3E%3Cg transform='translate(30,20) rotate(-15,10,30)'%3E%3Crect x='6' y='0' width='8' height='28' rx='1' fill='none' stroke='rgba(196,181,253,0.4)' stroke-width='1.5'/%3E%3Crect x='4' y='0' width='12' height='4' rx='1' fill='none' stroke='rgba(196,181,253,0.4)' stroke-width='1.5'/%3E%3Cellipse cx='10' cy='26' rx='3' ry='2' fill='rgba(249,168,212,0.25)'/%3E%3Ccircle cx='9' cy='18' r='1.2' fill='rgba(249,168,212,0.3)'/%3E%3Ccircle cx='11' cy='21' r='0.8' fill='rgba(196,181,253,0.3)'/%3E%3C/g%3E%3C!-- フラスコ --%3E%3Cg transform='translate(160,30)'%3E%3Cpath d='M12,0 L12,14 L22,30 Q23,32 21,33 L3,33 Q1,32 2,30 L12,14 Z' fill='none' stroke='rgba(110,231,183,0.38)' stroke-width='1.5'/%3E%3Crect x='9' y='0' width='6' height='3' rx='0.5' fill='none' stroke='rgba(110,231,183,0.38)' stroke-width='1.5'/%3E%3Cellipse cx='12' cy='28' rx='7' ry='3' fill='rgba(147,197,253,0.2)'/%3E%3Ccircle cx='10' cy='25' r='1' fill='rgba(110,231,183,0.3)'/%3E%3Ccircle cx='14' cy='23' r='0.7' fill='rgba(110,231,183,0.25)'/%3E%3C/g%3E%3C!-- ビーカー --%3E%3Cg transform='translate(310,60)'%3E%3Cpath d='M2,4 L2,28 Q2,30 4,30 L22,30 Q24,30 24,28 L24,4 Z' fill='none' stroke='rgba(249,168,212,0.35)' stroke-width='1.5'/%3E%3Cpath d='M24,10 L30,8' fill='none' stroke='rgba(249,168,212,0.35)' stroke-width='1.5'/%3E%3Crect x='4' y='18' width='18' height='11' rx='0' fill='rgba(196,181,253,0.14)'/%3E%3Cline x1='4' y1='12' x2='8' y2='12' stroke='rgba(249,168,212,0.25)' stroke-width='1'/%3E%3Cline x1='4' y1='18' x2='8' y2='18' stroke='rgba(249,168,212,0.25)' stroke-width='1'/%3E%3Cline x1='4' y1='24' x2='8' y2='24' stroke='rgba(249,168,212,0.25)' stroke-width='1'/%3E%3C/g%3E%3C!-- DNA螺旋 --%3E%3Cg transform='translate(80,130)'%3E%3Cpath d='M0,0 Q8,5 16,0 Q8,5 0,10 Q8,15 16,10 Q8,15 0,20 Q8,25 16,20 Q8,25 0,30 Q8,35 16,30 Q8,35 0,40' fill='none' stroke='rgba(196,181,253,0.38)' stroke-width='1.5'/%3E%3Cpath d='M16,0 Q8,5 0,0 Q8,5 16,10 Q8,15 0,10 Q8,15 16,20 Q8,25 0,20 Q8,25 16,30 Q8,35 0,30 Q8,35 16,40' fill='none' stroke='rgba(249,168,212,0.3)' stroke-width='1.5'/%3E%3Cline x1='4' y1='5' x2='12' y2='5' stroke='rgba(110,231,183,0.25)' stroke-width='1'/%3E%3Cline x1='4' y1='15' x2='12' y2='15' stroke='rgba(110,231,183,0.25)' stroke-width='1'/%3E%3Cline x1='4' y1='25' x2='12' y2='25' stroke='rgba(110,231,183,0.25)' stroke-width='1'/%3E%3Cline x1='4' y1='35' x2='12' y2='35' stroke='rgba(110,231,183,0.25)' stroke-width='1'/%3E%3C/g%3E%3C!-- 原子モデル --%3E%3Cg transform='translate(260,140)'%3E%3Ccircle cx='16' cy='16' r='3' fill='rgba(249,168,212,0.3)' stroke='rgba(249,168,212,0.4)' stroke-width='1'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='rgba(196,181,253,0.3)' stroke-width='1'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='rgba(110,231,183,0.25)' stroke-width='1' transform='rotate(60,16,16)'/%3E%3Cellipse cx='16' cy='16' rx='14' ry='5' fill='none' stroke='rgba(147,197,253,0.3)' stroke-width='1' transform='rotate(120,16,16)'/%3E%3Ccircle cx='30' cy='16' r='1.5' fill='rgba(249,168,212,0.4)'/%3E%3Ccircle cx='9' cy='5' r='1.5' fill='rgba(110,231,183,0.4)'/%3E%3Ccircle cx='9' cy='27' r='1.5' fill='rgba(147,197,253,0.4)'/%3E%3C/g%3E%3C!-- 星（五芒星） --%3E%3Cg transform='translate(200,210)'%3E%3Cpolygon points='10,0 12.4,7.6 20,7.6 13.8,12.4 16.2,20 10,15.2 3.8,20 6.2,12.4 0,7.6 7.6,7.6' fill='rgba(253,230,138,0.3)' stroke='rgba(253,230,138,0.4)' stroke-width='0.8'/%3E%3C/g%3E%3C!-- 小さい星 --%3E%3Cg transform='translate(50,280)'%3E%3Cpolygon points='6,0 7.4,4.6 12,4.6 8.3,7.4 9.7,12 6,9.2 2.3,12 3.7,7.4 0,4.6 4.6,4.6' fill='rgba(253,230,138,0.25)' stroke='rgba(253,230,138,0.35)' stroke-width='0.6'/%3E%3C/g%3E%3C!-- 泡たち --%3E%3Ccircle cx='340' cy='200' r='5' fill='none' stroke='rgba(147,197,253,0.35)' stroke-width='1'/%3E%3Ccircle cx='350' cy='210' r='3' fill='none' stroke='rgba(147,197,253,0.25)' stroke-width='0.8'/%3E%3Ccircle cx='335' cy='215' r='2' fill='none' stroke='rgba(196,181,253,0.3)' stroke-width='0.8'/%3E%3Ccircle cx='345' cy='195' r='2.5' fill='none' stroke='rgba(110,231,183,0.25)' stroke-width='0.8'/%3E%3C!-- 試験管2（小さめ） --%3E%3Cg transform='translate(130,270) rotate(10,8,20)'%3E%3Crect x='5' y='2' width='6' height='20' rx='1' fill='none' stroke='rgba(110,231,183,0.35)' stroke-width='1.2'/%3E%3Crect x='3' y='0' width='10' height='3' rx='1' fill='none' stroke='rgba(110,231,183,0.35)' stroke-width='1.2'/%3E%3Cellipse cx='8' cy='19' rx='2' ry='1.5' fill='rgba(253,230,138,0.2)'/%3E%3C/g%3E%3C!-- フラスコ2（丸底） --%3E%3Cg transform='translate(290,280)'%3E%3Ccircle cx='14' cy='22' r='12' fill='none' stroke='rgba(249,168,212,0.3)' stroke-width='1.2'/%3E%3Crect x='11' y='0' width='6' height='12' rx='0.5' fill='none' stroke='rgba(249,168,212,0.3)' stroke-width='1.2'/%3E%3Cellipse cx='14' cy='26' rx='8' ry='4' fill='rgba(249,168,212,0.1)'/%3E%3Ccircle cx='12' cy='22' r='1' fill='rgba(196,181,253,0.25)'/%3E%3Ccircle cx='16' cy='25' r='0.7' fill='rgba(196,181,253,0.2)'/%3E%3C/g%3E%3C!-- 泡 追加 --%3E%3Ccircle cx='180' cy='340' r='4' fill='none' stroke='rgba(110,231,183,0.3)' stroke-width='1'/%3E%3Ccircle cx='190' cy='350' r='2.5' fill='none' stroke='rgba(196,181,253,0.25)' stroke-width='0.8'/%3E%3Ccircle cx='175' cy='355' r='1.8' fill='none' stroke='rgba(249,168,212,0.25)' stroke-width='0.8'/%3E%3C!-- 星 追加 --%3E%3Cg transform='translate(360,350)'%3E%3Cpolygon points='8,0 9.9,6.1 16,6.1 11,9.9 13,16 8,12.2 3,16 5,9.9 0,6.1 6.1,6.1' fill='rgba(147,197,253,0.2)' stroke='rgba(147,197,253,0.35)' stroke-width='0.6'/%3E%3C/g%3E%3C!-- 原子モデル 小 --%3E%3Cg transform='translate(20,350)'%3E%3Ccircle cx='8' cy='8' r='2' fill='rgba(110,231,183,0.25)'/%3E%3Cellipse cx='8' cy='8' rx='7' ry='3' fill='none' stroke='rgba(110,231,183,0.2)' stroke-width='0.8'/%3E%3Cellipse cx='8' cy='8' rx='7' ry='3' fill='none' stroke='rgba(196,181,253,0.2)' stroke-width='0.8' transform='rotate(60,8,8)'/%3E%3C/g%3E%3C/svg%3E");
+  animation: bgBreath 12s ease-in-out infinite, bgPatternShift 25s linear infinite;
+}
+
+/* 背景の呼吸アニメーション（opacityのゆるやかな変動） */
+@keyframes bgBreath {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.92; }
+}
+/* 背景パターンのゆっくりした位置シフト */
+@keyframes bgPatternShift {
+  0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+  50% { background-position: 0 0, 0 0, 0 0, 0 0, 20px 15px; }
+  100% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
 }
 
 /* 浮遊○×アニメーション */
@@ -691,11 +743,16 @@ body {
 
 /* 可愛いカードホバーエフェクト */
 .card-cute:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(45,212,191,0.15), 0 0 0 2px rgba(45,212,191,0.1);
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    0 12px 40px rgba(45,212,191,0.18),
+    0 0 0 2px rgba(45,212,191,0.15),
+    0 0 20px rgba(56,189,248,0.08);
+  border-color: rgba(45,212,191,0.3);
 }
 .card-cute {
-  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+  border: 1.5px solid transparent;
 }
 
 /* ボタンの可愛いバウンス */
@@ -939,22 +996,29 @@ body {
 .lab-card {
   position: relative;
   background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1.5px solid rgba(196, 181, 253, 0.3);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 1.5rem;
   box-shadow:
     0 4px 20px rgba(196, 181, 253, 0.1),
-    0 1px 4px rgba(0, 0, 0, 0.04);
-  transition: all 0.3s var(--ease-smooth);
+    0 1px 4px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.4s var(--ease-smooth);
   overflow: visible;
 }
 .lab-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-6px);
   box-shadow:
-    0 8px 30px rgba(196, 181, 253, 0.18),
-    0 2px 8px rgba(249, 168, 212, 0.1);
-  border-color: rgba(249, 168, 212, 0.35);
+    0 12px 40px rgba(196, 181, 253, 0.25),
+    0 4px 12px rgba(249, 168, 212, 0.15),
+    0 0 0 1px rgba(196, 181, 253, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  border-color: transparent;
+  /* ホバー時にグラデーションボーダーを疑似的に表現 */
+  border-image: linear-gradient(135deg, rgba(196,181,253,0.5), rgba(249,168,212,0.5), rgba(110,231,183,0.5)) 1;
+  border-image-slice: 1;
 }
 /* 泡の装飾（カード右上） */
 .lab-card::before,
@@ -1123,4 +1187,133 @@ body {
     transparent
   );
   border-radius: 0 0 50% 50%;
+}
+
+/* ===========================
+   グラスモーフィズムカード
+   =========================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 0.35s var(--ease-smooth);
+}
+.glass-card:hover {
+  box-shadow:
+    0 12px 44px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+/* ===========================
+   グラデーションテキスト
+   =========================== */
+.gradient-text {
+  background: linear-gradient(135deg, #2dd4bf, #38bdf8, #c084fc, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===========================
+   新規ユーティリティクラス
+   =========================== */
+
+/* テキストグロー — テキストにやわらかい発光を加える */
+.text-glow {
+  text-shadow:
+    0 0 8px rgba(45, 212, 191, 0.4),
+    0 0 20px rgba(56, 189, 248, 0.2),
+    0 0 40px rgba(196, 90, 255, 0.1);
+}
+
+/* グラデーション境界線 — 虹色のボーダーを実現（border-widthと併用） */
+.border-gradient {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #2dd4bf, #38bdf8, #c084fc, #f472b6);
+  z-index: -1;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  padding: 2px;
+}
+
+/* ホバー時の浮き上がり — 要素がふわっと持ち上がる */
+.hover-lift {
+  transition: transform 0.35s var(--ease-smooth), box-shadow 0.35s var(--ease-smooth);
+}
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(45, 212, 191, 0.1);
+}
+
+/* 柔らかい脈動 — scaleで静かに呼吸するような動き */
+@keyframes pulseSoft {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.03); opacity: 0.9; }
+}
+.animate-pulse-soft {
+  animation: pulseSoft 3s ease-in-out infinite;
+}
+
+/* セクション区切り — グラデーション + 装飾付き */
+.section-divider {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  margin: 3rem auto;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(45, 212, 191, 0.3) 15%,
+    rgba(56, 189, 248, 0.5) 35%,
+    rgba(196, 90, 255, 0.4) 50%,
+    rgba(249, 168, 212, 0.5) 65%,
+    rgba(45, 212, 191, 0.3) 85%,
+    transparent 100%
+  );
+  border-radius: 2px;
+}
+/* 中央の装飾ドット */
+.section-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2dd4bf, #c084fc);
+  box-shadow: 0 0 12px rgba(45, 212, 191, 0.4);
+}
+/* 左右の小さな装飾ドット */
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 20px);
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.5);
+  box-shadow: 40px 0 0 rgba(249, 168, 212, 0.5);
 }

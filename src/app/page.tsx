@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * 診断研究所 ポータルページ（可愛い x ラボ x テーマパーク）
+ * 診断研究所 ポータルページ（大幅リニューアル版）
  *
- * 研究所入口のようなワクワク感と可愛い装飾で
- * テーマパークの入場ゲートをイメージ。
+ * グラスモーフィズム + リッチアニメーション + 高情報密度
+ * テーマパーク入口のワクワク感と洗練されたデザインの融合
  */
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -161,9 +161,9 @@ const ALL_DIAGNOSES = [
 
 // 人気の実験ランキング（手動ピックアップ）
 const POPULAR_EXPERIMENTS = [
-  { rank: 1, id: "mbti128", medal: "#FFD700" },
-  { rank: 2, id: "shadow", medal: "#C0C0C0" },
-  { rank: 3, id: "deathcause", medal: "#CD7F32" },
+  { rank: 1, id: "mbti128", medal: "#FFD700", label: "ゴールド" },
+  { rank: 2, id: "shadow", medal: "#C0C0C0", label: "シルバー" },
+  { rank: 3, id: "deathcause", medal: "#CD7F32", label: "ブロンズ" },
 ];
 
 // 研究所からのお知らせ
@@ -173,36 +173,91 @@ const LAB_NEWS = [
   { date: "2026.01", text: "MBTI-128 超精密診断をリリース!", isNew: false },
 ];
 
+// タイプライター用テキスト
+const TYPEWRITER_TEXTS = [
+  "あなたの本当の姿、実験してみない?",
+  "心理学ベースの本格診断 13種類",
+  "知らなかった自分に出会える場所",
+  "完全無料・登録不要ですぐ始められる",
+];
 
-export default function PortalPage() {
-  // カードのフェードアップ
-  const gridRef = useRef<HTMLDivElement>(null);
-  const [cardsVisible, setCardsVisible] = useState(false);
+// カードに付けるタグ（「人気」「新作」など）
+const CARD_TAGS: Record<string, { text: string; bg: string; color: string }> = {
+  mbti128: { text: "大人気", bg: "linear-gradient(135deg, #FF6BE8, #C45AFF)", color: "#fff" },
+  shadow: { text: "人気", bg: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "#fff" },
+  deathcause: { text: "話題", bg: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "#fff" },
+  love: { text: "定番", bg: "linear-gradient(135deg, #ec4899, #f43f5e)", color: "#fff" },
+  torisetsu: { text: "新作", bg: "linear-gradient(135deg, #2dd4bf, #38bdf8)", color: "#fff" },
+};
+
+
+// ========== スクロールフェードインフック ==========
+function useScrollFadeIn(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
-    if (!gridRef.current) return;
+    if (!ref.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setCardsVisible(true);
+          setVisible(true);
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold }
     );
-    observer.observe(gridRef.current);
+    observer.observe(ref.current);
     return () => observer.disconnect();
-  }, []);
+  }, [threshold]);
+  return { ref, visible };
+}
 
-  // ハイドレーション対策: マウント前はlocalStorage依存の表示を抑制
+
+export default function PortalPage() {
+  // ハイドレーション対策
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
 
-  // ヒーローフェードアップ
+  // ヒーローアニメーション
   const [heroMounted, setHeroMounted] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => setHeroMounted(true), 100);
     return () => clearTimeout(timer);
   }, []);
+
+  // タイプライターアニメーション
+  const [typewriterIndex, setTypewriterIndex] = useState(0);
+  const [typewriterText, setTypewriterText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  useEffect(() => {
+    const currentFullText = TYPEWRITER_TEXTS[typewriterIndex];
+    let timeout: NodeJS.Timeout;
+
+    if (!isDeleting && typewriterText === currentFullText) {
+      // テキスト完成後、2秒待って削除開始
+      timeout = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && typewriterText === "") {
+      // 削除完了、次のテキストへ
+      setIsDeleting(false);
+      setTypewriterIndex((prev) => (prev + 1) % TYPEWRITER_TEXTS.length);
+    } else if (isDeleting) {
+      timeout = setTimeout(() => {
+        setTypewriterText(currentFullText.slice(0, typewriterText.length - 1));
+      }, 30);
+    } else {
+      timeout = setTimeout(() => {
+        setTypewriterText(currentFullText.slice(0, typewriterText.length + 1));
+      }, 60);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [typewriterText, isDeleting, typewriterIndex]);
+
+  // スクロールフェードイン（各セクション用）
+  const rankingFade = useScrollFadeIn(0.1);
+  const newsFade = useScrollFadeIn(0.1);
+  const gridFade = useScrollFadeIn(0.05);
+  const personaFade = useScrollFadeIn(0.1);
 
   // ペルソナストア
   const personaResults = usePersonaStore((s) => s.results);
@@ -250,7 +305,7 @@ export default function PortalPage() {
     setTimeout(() => ripple.remove(), 600);
   }, []);
 
-  // ティッカー（研究所風）
+  // ティッカー
   const tickerItems = [
     "13種類の本格実験",
     "心理学研究ベース",
@@ -280,73 +335,77 @@ export default function PortalPage() {
 
   return (
     <>
-      {/* ===== 浮遊SVGアニメーション背景（ヒーロー用） ===== */}
+      {/* ===== 装飾的グラデーション背景ブロブ ===== */}
       <div style={{
         position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
         pointerEvents: "none", zIndex: 0, overflow: "hidden",
       }}>
-        {/* フラスコ - 左上 */}
+        {/* ピンクブロブ - 左上 */}
+        <div style={{
+          position: "absolute", top: "-10%", left: "-15%",
+          width: "50vw", height: "50vw", maxWidth: 600, maxHeight: 600,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(249,168,212,0.25) 0%, rgba(249,168,212,0.08) 40%, transparent 70%)",
+          animation: "blobFloat 12s ease-in-out infinite",
+          filter: "blur(40px)",
+        }} />
+        {/* 紫ブロブ - 右上 */}
+        <div style={{
+          position: "absolute", top: "5%", right: "-10%",
+          width: "45vw", height: "45vw", maxWidth: 550, maxHeight: 550,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(196,181,253,0.22) 0%, rgba(196,181,253,0.06) 40%, transparent 70%)",
+          animation: "blobFloat 15s ease-in-out infinite reverse",
+          filter: "blur(40px)",
+        }} />
+        {/* ミントブロブ - 中央下 */}
+        <div style={{
+          position: "absolute", top: "40%", left: "20%",
+          width: "55vw", height: "55vw", maxWidth: 650, maxHeight: 650,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(110,231,183,0.18) 0%, rgba(110,231,183,0.05) 40%, transparent 70%)",
+          animation: "blobFloat 18s ease-in-out infinite 3s",
+          filter: "blur(50px)",
+        }} />
+        {/* ブルーブロブ - 右下 */}
+        <div style={{
+          position: "absolute", top: "60%", right: "5%",
+          width: "40vw", height: "40vw", maxWidth: 500, maxHeight: 500,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(147,197,253,0.2) 0%, rgba(147,197,253,0.05) 40%, transparent 70%)",
+          animation: "blobFloat 14s ease-in-out infinite 6s",
+          filter: "blur(45px)",
+        }} />
+
+        {/* 浮遊SVG装飾 */}
         <FlaskSvg size={48} color="#2dd4bf" style={{
           position: "absolute", top: "12%", left: "5%",
-          opacity: 0.18,
-          animation: "labFloat1 8s ease-in-out infinite",
+          opacity: 0.15, animation: "labFloat1 8s ease-in-out infinite",
         }} />
-        {/* 試験管 - 右上 */}
         <TestTubeSvg size={40} color="#38bdf8" style={{
           position: "absolute", top: "8%", right: "10%",
-          opacity: 0.15,
-          animation: "labFloat2 10s ease-in-out infinite",
+          opacity: 0.12, animation: "labFloat2 10s ease-in-out infinite",
           transform: "rotate(15deg)",
         }} />
-        {/* DNA - 左中央 */}
         <DnaSvg size={30} color="#c084fc" style={{
           position: "absolute", top: "30%", left: "8%",
-          opacity: 0.12,
-          animation: "labFloat3 12s ease-in-out infinite",
+          opacity: 0.1, animation: "labFloat3 12s ease-in-out infinite",
         }} />
-        {/* 泡1 */}
         <BubbleSvg size={20} color="#2dd4bf" style={{
           position: "absolute", top: "20%", left: "30%",
           animation: "bubbleRise1 7s ease-in-out infinite",
         }} />
-        {/* 泡2 */}
         <BubbleSvg size={14} color="#38bdf8" style={{
           position: "absolute", top: "40%", right: "20%",
           animation: "bubbleRise2 9s ease-in-out infinite",
         }} />
-        {/* 泡3 */}
-        <BubbleSvg size={10} color="#c084fc" style={{
-          position: "absolute", top: "60%", left: "15%",
-          animation: "bubbleRise3 6s ease-in-out infinite",
-        }} />
-        {/* フラスコ - 右下 */}
         <FlaskSvg size={36} color="#c084fc" style={{
           position: "absolute", bottom: "20%", right: "8%",
-          opacity: 0.12,
-          animation: "labFloat1 11s ease-in-out infinite reverse",
+          opacity: 0.1, animation: "labFloat1 11s ease-in-out infinite reverse",
         }} />
-        {/* 試験管 - 左下 */}
-        <TestTubeSvg size={32} color="#2dd4bf" style={{
-          position: "absolute", bottom: "30%", left: "12%",
-          opacity: 0.1,
-          animation: "labFloat2 9s ease-in-out infinite reverse",
-          transform: "rotate(-20deg)",
-        }} />
-        {/* 泡4 */}
-        <BubbleSvg size={16} color="#FF6BE8" style={{
-          position: "absolute", top: "70%", right: "35%",
-          animation: "bubbleRise1 8s ease-in-out infinite 2s",
-        }} />
-        {/* 泡5 */}
         <BubbleSvg size={24} color="#2dd4bf" style={{
           position: "absolute", top: "50%", left: "45%",
           animation: "bubbleRise2 11s ease-in-out infinite 1s",
-        }} />
-        {/* DNA - 右 */}
-        <DnaSvg size={24} color="#38bdf8" style={{
-          position: "absolute", top: "15%", right: "25%",
-          opacity: 0.08,
-          animation: "labFloat3 14s ease-in-out infinite reverse",
         }} />
       </div>
 
@@ -367,7 +426,7 @@ export default function PortalPage() {
         </span>
       </div>
 
-      {/* ===== ナビバー（ラボ風ガラス） ===== */}
+      {/* ===== ナビバー ===== */}
       <nav
         style={{
           position: "fixed", top: 28, left: 0, right: 0, zIndex: 100,
@@ -381,10 +440,7 @@ export default function PortalPage() {
       >
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <FlaskSvg size={20} color="#2dd4bf" />
-          <span className="font-stick" style={{
-            color: "#2dd4bf",
-            fontSize: "1.1rem",
-          }}>
+          <span className="font-stick" style={{ color: "#2dd4bf", fontSize: "1.1rem" }}>
             診断研究所
           </span>
         </div>
@@ -395,9 +451,7 @@ export default function PortalPage() {
             background: completedCount > 0 ? "linear-gradient(135deg, #2dd4bf, #38bdf8)" : "rgba(45,212,191,.1)",
             borderRadius: 20,
             color: completedCount > 0 ? "#fff" : "#2dd4bf",
-            fontSize: 11,
-            fontWeight: 700,
-            textDecoration: "none",
+            fontSize: 11, fontWeight: 700, textDecoration: "none",
             letterSpacing: "0.03em",
             border: completedCount > 0 ? "none" : "1px solid rgba(45,212,191,.2)",
             display: "flex", alignItems: "center", gap: 6,
@@ -408,25 +462,45 @@ export default function PortalPage() {
         </Link>
       </nav>
 
-      {/* ===== ヒーローセクション（研究所入口風） ===== */}
+      {/* ===== ヒーローセクション（グラスモーフィズム） ===== */}
       <section
         style={{
-          minHeight: "52svh", display: "flex", flexDirection: "column",
+          minHeight: "60svh", display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center", textAlign: "center",
-          padding: "110px 20px 32px", position: "relative", zIndex: 1,
+          padding: "120px 20px 40px", position: "relative", zIndex: 1,
         }}
       >
-        {/* ラボ装飾フレーム */}
+        {/* グラスモーフィズム ヒーローカード */}
         <div style={{
-          position: "relative", display: "inline-flex", flexDirection: "column",
-          alignItems: "center",
+          position: "relative",
+          background: "rgba(255,255,255,0.35)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(255,255,255,0.5)",
+          borderRadius: 32,
+          padding: "48px 40px 40px",
+          maxWidth: 680,
+          width: "100%",
+          boxShadow: "0 8px 40px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.6)",
+          opacity: heroMounted ? 1 : 0,
+          transform: heroMounted ? "translateY(0) scale(1)" : "translateY(30px) scale(0.96)",
+          transition: "opacity 0.8s ease-out, transform 0.8s ease-out",
         }}>
+          {/* カード内部の微かな光沢エフェクト */}
+          <div style={{
+            position: "absolute", top: 0, left: 0, right: 0, height: "50%",
+            borderRadius: "32px 32px 0 0",
+            background: "linear-gradient(180deg, rgba(255,255,255,0.3), transparent)",
+            pointerEvents: "none",
+          }} />
+
           {/* 上部の試験管×フラスコ装飾 */}
           <div style={{
-            display: "flex", alignItems: "center", gap: 12, marginBottom: 8,
+            display: "flex", alignItems: "center", gap: 12, marginBottom: 12,
+            justifyContent: "center",
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(-10px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+            transition: "opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s",
           }}>
             <TestTubeSvg size={28} color="#2dd4bf" style={{ transform: "rotate(-15deg)" }} />
             <BubbleSvg size={10} color="#2dd4bf" />
@@ -435,19 +509,52 @@ export default function PortalPage() {
             <TestTubeSvg size={22} color="#38bdf8" style={{ transform: "rotate(15deg)" }} />
           </div>
 
-          {/* メインタイトル */}
+          {/* 「13種類の本格診断」バッジ */}
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "8px 20px", borderRadius: 50,
+            background: "linear-gradient(135deg, rgba(45,212,191,0.15), rgba(99,102,241,0.12))",
+            border: "1px solid rgba(45,212,191,0.3)",
+            marginBottom: 20,
+            opacity: heroMounted ? 1 : 0,
+            transition: "opacity 0.5s ease-out 0.3s",
+          }}>
+            <span style={{ fontSize: 16 }}>{"\u{1F9EA}"}</span>
+            <span style={{
+              fontSize: 13, fontWeight: 800, letterSpacing: "0.08em",
+              background: "linear-gradient(135deg, #2dd4bf, #6366f1)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}>
+              13種類の本格診断
+            </span>
+            <span style={{
+              fontSize: 10, fontWeight: 700, color: "#fff",
+              background: "#ef4444", borderRadius: 8, padding: "1px 6px",
+            }}>
+              無料
+            </span>
+          </div>
+
+          {/* メインタイトル（グラデーションテキスト） */}
           <h1
             style={{
-              lineHeight: 1.1, marginBottom: 4,
+              lineHeight: 1.15, marginBottom: 8,
               opacity: heroMounted ? 1 : 0,
               transform: heroMounted ? "translateY(0)" : "translateY(14px)",
-              transition: "opacity 0.6s ease-out 0.1s, transform 0.6s ease-out 0.1s",
+              transition: "opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s",
             }}
           >
-            <span className="font-stick" style={{
-              display: "block", fontSize: "clamp(40px, 11vw, 72px)",
-              color: "#0f1f2b",
-              textShadow: "0 2px 20px rgba(45,212,191,0.15)",
+            <span className="font-dela" style={{
+              display: "block",
+              fontSize: "clamp(36px, 10vw, 64px)",
+              background: "linear-gradient(135deg, #0f1f2b 0%, #2dd4bf 40%, #6366f1 70%, #c084fc 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              textShadow: "none",
+              filter: "drop-shadow(0 2px 8px rgba(45,212,191,0.2))",
             }}>
               診断研究所
             </span>
@@ -455,104 +562,94 @@ export default function PortalPage() {
 
           {/* 英語サブ */}
           <p style={{
-            fontSize: "0.7rem", letterSpacing: "0.25em", color: "#2dd4bf",
-            marginBottom: 12, fontWeight: 600,
+            fontSize: "0.75rem", letterSpacing: "0.3em", color: "#6366f1",
+            marginBottom: 16, fontWeight: 600,
             opacity: heroMounted ? 1 : 0,
-            transition: "opacity 0.6s ease-out 0.2s",
+            transition: "opacity 0.6s ease-out 0.4s",
           }}>
             SHINDAN LABORATORY
           </p>
 
-          {/* 下部のライン装飾 */}
+          {/* グラデーション区切り線 */}
           <div style={{
-            width: 60, height: 2, borderRadius: 1,
-            background: "linear-gradient(90deg, transparent, #2dd4bf, #6366f1, #2dd4bf, transparent)",
-            marginBottom: 16,
+            width: 80, height: 3, borderRadius: 2, margin: "0 auto 20px",
+            background: "linear-gradient(90deg, #2dd4bf, #6366f1, #c084fc)",
             opacity: heroMounted ? 1 : 0,
-            transition: "opacity 0.6s ease-out 0.25s",
+            transition: "opacity 0.6s ease-out 0.45s",
           }} />
-        </div>
 
-        {/* キャッチコピー */}
-        <p
-          className="font-zen"
-          style={{
-            fontSize: "1.15rem", fontWeight: 700, color: "#2d4a57",
-            marginBottom: 8, lineHeight: 1.7,
-            opacity: heroMounted ? 1 : 0,
-            transform: heroMounted ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 0.6s ease-out 0.3s, transform 0.6s ease-out 0.3s",
-          }}
-        >
-          あなたの本当の姿、実験してみない?
-        </p>
-        <p
-          style={{
-            fontSize: "0.82rem", color: "#4a6572", marginBottom: 20,
-            opacity: heroMounted ? 1 : 0,
-            transition: "opacity 0.6s ease-out 0.35s",
-          }}
-        >
-          心理学ベースの本格診断で、知らなかった自分に出会える研究所。
-        </p>
+          {/* タイプライター風テキスト */}
+          <div
+            style={{
+              fontSize: "clamp(0.95rem, 3vw, 1.2rem)", fontWeight: 700,
+              color: "#2d4a57", marginBottom: 8,
+              minHeight: "1.8em",
+              opacity: heroMounted ? 1 : 0,
+              transition: "opacity 0.6s ease-out 0.5s",
+            }}
+            className="font-zen"
+          >
+            <span>{typewriterText}</span>
+            <span style={{
+              display: "inline-block", width: 2, height: "1.1em",
+              background: "#2dd4bf", marginLeft: 2,
+              verticalAlign: "middle",
+              animation: "cursorBlink 0.8s step-end infinite",
+            }} />
+          </div>
 
-        {/* 実験ラベル風バッジ */}
-        <div
-          style={{
+          <p style={{
+            fontSize: "0.82rem", color: "#4a6572", marginBottom: 24,
+            lineHeight: 1.7,
+            opacity: heroMounted ? 1 : 0,
+            transition: "opacity 0.6s ease-out 0.55s",
+          }}>
+            心理学ベースの本格診断で、知らなかった自分に出会える研究所。
+          </p>
+
+          {/* 特徴バッジ群 */}
+          <div style={{
             display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap",
+            marginBottom: 24,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
-            transition: "opacity 0.6s ease-out 0.45s, transform 0.6s ease-out 0.45s",
-          }}
-        >
-          {[
-            { label: "13の実験", icon: "\u{1F9EA}", bg: "rgba(45,212,191,.12)" },
-            { label: "心理学ベース", icon: "\u{1F9EC}", bg: "rgba(99,102,241,.1)" },
-            { label: "入場無料", icon: "\u{1F193}", bg: "rgba(56,189,248,.1)" },
-            { label: "ペルソナカード", icon: "\u{1F0CF}", bg: "rgba(192,132,252,.1)" },
-          ].map((badge) => (
-            <span
-              key={badge.label}
-              style={{
-                padding: "6px 14px", borderRadius: 8,
-                background: badge.bg,
-                border: "1px dashed rgba(45,212,191,.3)",
-                fontSize: 12, color: "#2d4a57", fontWeight: 600,
-                letterSpacing: "0.03em",
-                position: "relative",
-                fontFamily: "monospace, 'Zen Maru Gothic', sans-serif",
-              }}
-            >
-              {/* ラベル風のドット装飾 */}
-              <span style={{
-                position: "absolute", top: -3, left: -3,
-                width: 6, height: 6, borderRadius: "50%",
-                background: "#2dd4bf",
-              }} />
-              <span style={{ marginRight: 4 }}>{badge.icon}</span>
-              {badge.label}
-            </span>
-          ))}
-        </div>
+            transition: "opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s",
+          }}>
+            {[
+              { label: "心理学ベース", icon: "\u{1F9EC}", gradient: "linear-gradient(135deg, rgba(99,102,241,.12), rgba(139,92,246,.08))" },
+              { label: "ペルソナカード", icon: "\u{1F0CF}", gradient: "linear-gradient(135deg, rgba(192,132,252,.12), rgba(236,72,153,.08))" },
+              { label: "SNSシェア", icon: "\u{1F4F1}", gradient: "linear-gradient(135deg, rgba(56,189,248,.12), rgba(45,212,191,.08))" },
+            ].map((badge) => (
+              <span
+                key={badge.label}
+                style={{
+                  padding: "8px 16px", borderRadius: 12,
+                  background: badge.gradient,
+                  border: "1px solid rgba(255,255,255,0.5)",
+                  backdropFilter: "blur(4px)",
+                  fontSize: 12, color: "#2d4a57", fontWeight: 600,
+                  display: "flex", alignItems: "center", gap: 6,
+                }}
+              >
+                <span style={{ fontSize: 16 }}>{badge.icon}</span>
+                {badge.label}
+              </span>
+            ))}
+          </div>
 
-        {/* CTAボタン */}
-        <div style={{
-          marginTop: 28,
-          opacity: heroMounted ? 1 : 0,
-          transform: heroMounted ? "translateY(0)" : "translateY(14px)",
-          transition: "opacity 0.6s ease-out 0.55s, transform 0.6s ease-out 0.55s",
-        }}>
+          {/* CTAボタン */}
           <a
             href="#experiments"
+            className="btn-gradient"
             style={{
               display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "14px 32px", borderRadius: 50,
-              background: "linear-gradient(135deg, #2dd4bf, #6366f1)",
-              color: "#fff", fontSize: 14, fontWeight: 700,
+              padding: "16px 40px", borderRadius: 50,
+              fontSize: 15, fontWeight: 800,
               textDecoration: "none",
-              boxShadow: "0 4px 24px rgba(45,212,191,.3), 0 0 0 4px rgba(45,212,191,.1)",
-              transition: "all 0.3s ease",
-              fontFamily: "'Zen Maru Gothic', sans-serif",
+              boxShadow: "0 4px 24px rgba(45,212,191,.35), 0 0 0 4px rgba(45,212,191,.1)",
+              opacity: heroMounted ? 1 : 0,
+              transform: heroMounted ? "translateY(0)" : "translateY(14px)",
+              transition: "opacity 0.6s ease-out 0.7s, transform 0.6s ease-out 0.7s, box-shadow 0.3s ease",
             }}
           >
             <FlaskSvg size={18} color="#fff" />
@@ -561,87 +658,142 @@ export default function PortalPage() {
         </div>
       </section>
 
+      {/* ===== セクション区切り ===== */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div className="section-line-animate" />
+      </div>
+
       {/* ===== 人気の実験ランキング ===== */}
       <section
+        ref={rankingFade.ref}
         style={{
-          padding: "32px 16px", maxWidth: 700, margin: "0 auto",
+          padding: "40px 16px", maxWidth: 800, margin: "0 auto",
           position: "relative", zIndex: 1,
+          opacity: rankingFade.visible ? 1 : 0,
+          transform: rankingFade.visible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
         }}
       >
+        {/* グラスモーフィズムカード */}
         <div style={{
-          background: "rgba(255,255,255,0.75)",
-          backdropFilter: "blur(14px)",
-          border: "1px solid rgba(45,212,191,.12)",
-          borderRadius: 20,
-          padding: "24px 20px",
-          boxShadow: "0 4px 24px rgba(0,0,0,.04)",
+          background: "rgba(255,255,255,0.45)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.5)",
+          borderRadius: 24,
+          padding: "32px 28px",
+          boxShadow: "0 8px 32px rgba(0,0,0,.05), inset 0 1px 0 rgba(255,255,255,0.5)",
+          position: "relative", overflow: "hidden",
         }}>
+          {/* 背景の微かなグラデーション装飾 */}
+          <div style={{
+            position: "absolute", top: -40, right: -40,
+            width: 200, height: 200, borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(255,215,0,0.08), transparent 70%)",
+            pointerEvents: "none",
+          }} />
+
           {/* セクションヘッダ */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-            <TrophySvg size={28} />
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+            <TrophySvg size={32} />
             <div>
-              <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#2dd4bf", display: "block" }}>
+              <span style={{
+                fontSize: "0.7rem", letterSpacing: "0.15em", color: "#f59e0b",
+                display: "block", fontWeight: 700,
+              }}>
                 POPULAR EXPERIMENTS
               </span>
-              <h2 className="font-stick" style={{ fontSize: "1.2rem", color: "#0f1f2b", margin: 0 }}>
+              <h2 className="font-stick" style={{ fontSize: "1.3rem", color: "#0f1f2b", margin: 0 }}>
                 人気の実験ランキング
               </h2>
             </div>
           </div>
 
           {/* ランキングリスト */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {POPULAR_EXPERIMENTS.map((item) => {
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {POPULAR_EXPERIMENTS.map((item, idx) => {
               const diag = ALL_DIAGNOSES.find((d) => d.id === item.id);
               if (!diag) return null;
+
+              // メダルのグラデーション（ゴールド/シルバー/ブロンズ）
+              const medalGradients: Record<number, string> = {
+                1: "linear-gradient(135deg, #FFD700, #FFA500, #FFD700, #FFEC8B)",
+                2: "linear-gradient(135deg, #C0C0C0, #E8E8E8, #A9A9A9, #D3D3D3)",
+                3: "linear-gradient(135deg, #CD7F32, #DEB887, #8B6914, #DAA520)",
+              };
+              const medalShadows: Record<number, string> = {
+                1: "0 2px 12px rgba(255,215,0,.5), inset 0 1px 2px rgba(255,255,255,.6)",
+                2: "0 2px 12px rgba(192,192,192,.4), inset 0 1px 2px rgba(255,255,255,.6)",
+                3: "0 2px 12px rgba(205,127,50,.4), inset 0 1px 2px rgba(255,255,255,.4)",
+              };
+
               return (
                 <Link
                   key={item.id}
                   href={diag.href}
                   style={{
-                    display: "flex", alignItems: "center", gap: 14,
-                    padding: "12px 16px", borderRadius: 14,
-                    background: "rgba(255,255,255,0.6)",
-                    border: "1px solid rgba(45,212,191,.1)",
+                    display: "flex", alignItems: "center", gap: 16,
+                    padding: "16px 20px", borderRadius: 16,
+                    background: idx === 0
+                      ? "linear-gradient(135deg, rgba(255,215,0,0.06), rgba(255,165,0,0.04))"
+                      : "rgba(255,255,255,0.5)",
+                    border: idx === 0
+                      ? "1.5px solid rgba(255,215,0,0.3)"
+                      : "1px solid rgba(45,212,191,.1)",
                     textDecoration: "none",
-                    transition: "all 0.25s ease",
+                    transition: "all 0.3s cubic-bezier(0.25,1,0.5,1)",
                     position: "relative", overflow: "hidden",
                   }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.transform = "translateX(4px)";
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 16px rgba(0,0,0,.06)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.transform = "none";
-                    (e.currentTarget as HTMLAnchorElement).style.boxShadow = "none";
-                  }}
+                  className="card-cute"
                 >
-                  {/* 順位メダル */}
+                  {/* 順位メダル（リッチ版） */}
                   <div style={{
-                    width: 32, height: 32, borderRadius: "50%",
-                    background: `linear-gradient(135deg, ${item.medal}, ${item.medal}88)`,
+                    width: 40, height: 40, borderRadius: "50%",
+                    background: medalGradients[item.rank] || medalGradients[3],
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 14, fontWeight: 900, color: "#fff",
+                    fontSize: 16, fontWeight: 900, color: "#fff",
                     flexShrink: 0,
-                    boxShadow: `0 2px 8px ${item.medal}44`,
+                    boxShadow: medalShadows[item.rank] || medalShadows[3],
+                    textShadow: "0 1px 2px rgba(0,0,0,0.2)",
+                    position: "relative",
                   }}>
+                    {/* 光沢オーバーレイ */}
+                    <div style={{
+                      position: "absolute", top: 0, left: 0, right: 0, height: "50%",
+                      borderRadius: "50% 50% 0 0",
+                      background: "linear-gradient(180deg, rgba(255,255,255,0.4), transparent)",
+                      pointerEvents: "none",
+                    }} />
                     {item.rank}
                   </div>
+
                   {/* 絵文字 */}
-                  <span style={{ fontSize: "1.6rem" }}>{diag.emoji}</span>
+                  <span style={{ fontSize: "1.8rem", filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.1))" }}>
+                    {diag.emoji}
+                  </span>
+
                   {/* テキスト */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h3 className="font-zen" style={{
-                      fontSize: "0.9rem", fontWeight: 700, color: "#0f1f2b", margin: 0,
+                      fontSize: "0.95rem", fontWeight: 700, color: "#0f1f2b", margin: 0,
                     }}>
                       {diag.title}
                     </h3>
-                    <p style={{ fontSize: "0.72rem", color: "#4a6572", margin: 0 }}>
+                    <p style={{ fontSize: "0.72rem", color: "#4a6572", margin: "2px 0 0 0" }}>
                       {diag.questionCount}問 / 約{diag.estimatedMinutes}分
                     </p>
                   </div>
+
+                  {/* ランクラベル */}
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, color: item.medal,
+                    letterSpacing: "0.05em", opacity: 0.7,
+                  }}>
+                    {item.label}
+                  </span>
+
                   {/* 矢印 */}
-                  <span style={{ color: "#2dd4bf", fontSize: 16, fontWeight: 700 }}>→</span>
+                  <span style={{ color: "#2dd4bf", fontSize: 18, fontWeight: 700 }}>{"\u2192"}</span>
                 </Link>
               );
             })}
@@ -649,26 +801,34 @@ export default function PortalPage() {
         </div>
       </section>
 
+      {/* ===== セクション区切り ===== */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div className="section-line-animate" />
+      </div>
+
       {/* ===== 研究所からのお知らせ ===== */}
       <section
+        ref={newsFade.ref}
         style={{
-          padding: "16px 16px 32px", maxWidth: 700, margin: "0 auto",
+          padding: "16px 16px 40px", maxWidth: 800, margin: "0 auto",
           position: "relative", zIndex: 1,
+          opacity: newsFade.visible ? 1 : 0,
+          transform: newsFade.visible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
         }}
       >
         <div style={{
-          background: "rgba(255,255,255,0.7)",
-          backdropFilter: "blur(14px)",
-          border: "1px solid rgba(45,212,191,.12)",
+          background: "rgba(255,255,255,0.4)",
+          backdropFilter: "blur(16px)",
+          border: "1px solid rgba(255,255,255,0.5)",
           borderRadius: 20,
-          padding: "20px 20px",
-          boxShadow: "0 4px 24px rgba(0,0,0,.04)",
+          padding: "24px 24px",
+          boxShadow: "0 4px 24px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.4)",
         }}>
-          {/* セクションヘッダ */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
             <MagnifyingSvg size={22} color="#6366f1" />
             <div>
-              <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#6366f1", display: "block" }}>
+              <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#6366f1", display: "block", fontWeight: 700 }}>
                 LAB NEWS
               </span>
               <h2 className="font-stick" style={{ fontSize: "1.1rem", color: "#0f1f2b", margin: 0 }}>
@@ -677,31 +837,31 @@ export default function PortalPage() {
             </div>
           </div>
 
-          {/* ニュースリスト */}
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {LAB_NEWS.map((news, i) => (
               <div
                 key={i}
                 style={{
                   display: "flex", alignItems: "flex-start", gap: 12,
-                  padding: "10px 14px", borderRadius: 12,
+                  padding: "12px 16px", borderRadius: 12,
                   background: news.isNew ? "rgba(45,212,191,.06)" : "transparent",
                   borderLeft: news.isNew ? "3px solid #2dd4bf" : "3px solid rgba(45,212,191,.15)",
+                  transition: "background 0.2s ease",
                 }}
               >
                 <span style={{
                   fontSize: "0.68rem", color: "#94a8b4", whiteSpace: "nowrap",
-                  fontFamily: "monospace",
-                  paddingTop: 2,
+                  fontFamily: "monospace", paddingTop: 2,
                 }}>
                   {news.date}
                 </span>
                 <span style={{ fontSize: "0.82rem", color: "#2d4a57", lineHeight: 1.5 }}>
                   {news.isNew && (
                     <span style={{
-                      display: "inline-block", padding: "1px 6px", borderRadius: 4,
-                      background: "#2dd4bf", color: "#fff", fontSize: 9,
-                      fontWeight: 700, marginRight: 6, verticalAlign: "middle",
+                      display: "inline-block", padding: "2px 8px", borderRadius: 6,
+                      background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
+                      color: "#fff", fontSize: 9, fontWeight: 700, marginRight: 6,
+                      verticalAlign: "middle",
                     }}>
                       NEW
                     </span>
@@ -714,34 +874,41 @@ export default function PortalPage() {
         </div>
       </section>
 
+      {/* ===== セクション区切り ===== */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div className="section-line-animate" />
+      </div>
+
       {/* ===== 診断カードグリッド ===== */}
       <section
         id="experiments"
+        ref={gridFade.ref}
         style={{
-          padding: "24px 16px 80px", maxWidth: 1100, margin: "0 auto",
+          padding: "32px 16px 80px", maxWidth: 1200, margin: "0 auto",
           position: "relative", zIndex: 1,
         }}
       >
-        {/* グローバルプロフィール設定（実験ノート風カード） */}
+        {/* グローバルプロフィール設定 */}
         <div
           style={{
-            marginBottom: 24,
-            background: "rgba(255,255,255,0.75)",
-            backdropFilter: "blur(12px)",
-            border: "1px solid rgba(45,212,191,.12)",
-            borderRadius: 16,
-            padding: "14px 20px",
-            boxShadow: "0 2px 12px rgba(0,0,0,.04)",
+            marginBottom: 28,
+            background: "rgba(255,255,255,0.45)",
+            backdropFilter: "blur(16px)",
+            border: "1px solid rgba(255,255,255,0.5)",
+            borderRadius: 18,
+            padding: "16px 22px",
+            boxShadow: "0 4px 16px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.4)",
             position: "relative",
+            opacity: gridFade.visible ? 1 : 0,
+            transform: gridFade.visible ? "translateY(0)" : "translateY(20px)",
+            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
           }}
         >
-          {/* フラスコ装飾 */}
           <FlaskSvg size={18} color="#2dd4bf" style={{
             position: "absolute", top: 10, right: 14, opacity: 0.25,
           }} />
 
           {mounted && globalProfile.gender && globalProfile.age ? (
-            // 設定済み表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{
@@ -749,10 +916,12 @@ export default function PortalPage() {
                   width: 28, height: 28, borderRadius: "50%",
                   background: "rgba(45,212,191,.15)", fontSize: 14, color: "#2dd4bf",
                 }}>
-                  ✓
+                  {"\u2713"}
                 </span>
                 <span style={{ fontSize: 13, color: "#2d4a57" }}>
-                  <strong style={{ color: "#2dd4bf" }}>{globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}</strong> で実験中
+                  <strong style={{ color: "#2dd4bf" }}>
+                    {globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}
+                  </strong> で実験中
                 </span>
               </div>
               <button
@@ -772,7 +941,6 @@ export default function PortalPage() {
               </button>
             </div>
           ) : (
-            // 未設定表示
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <TestTubeSvg size={16} color="#2dd4bf" />
@@ -782,11 +950,10 @@ export default function PortalPage() {
               </div>
               <button
                 onClick={() => setShowProfileSetup(true)}
+                className="btn-gradient"
                 style={{
                   padding: "6px 16px", borderRadius: 12,
-                  background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
-                  border: "none", color: "#fff", fontSize: 12, fontWeight: 700,
-                  cursor: "pointer",
+                  fontSize: 12,
                 }}
               >
                 登録する
@@ -796,14 +963,11 @@ export default function PortalPage() {
 
           {/* インライン設定フォーム */}
           {showProfileSetup && (
-            <div
-              style={{
-                marginTop: 16, paddingTop: 16,
-                borderTop: "1px dashed rgba(45,212,191,.2)",
-                animation: "slideDown 0.3s ease-out",
-              }}
-            >
-              {/* 名前入力 */}
+            <div style={{
+              marginTop: 16, paddingTop: 16,
+              borderTop: "1px dashed rgba(45,212,191,.2)",
+              animation: "slideDown 0.3s ease-out",
+            }}>
               <div style={{ marginBottom: 14 }}>
                 <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>被験者名（ニックネームでもOK）</p>
                 <input
@@ -825,14 +989,13 @@ export default function PortalPage() {
                 />
               </div>
 
-              {/* 性別選択 */}
               <div style={{ marginBottom: 14 }}>
                 <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>性別</p>
                 <div style={{ display: "flex", gap: 8 }}>
                   {[
-                    { value: "male", label: "男性", emoji: "♂" },
-                    { value: "female", label: "女性", emoji: "♀" },
-                    { value: "other", label: "その他", emoji: "◇" },
+                    { value: "male", label: "男性", emoji: "\u2642" },
+                    { value: "female", label: "女性", emoji: "\u2640" },
+                    { value: "other", label: "その他", emoji: "\u25C7" },
                   ].map((g) => (
                     <button
                       key={g.value}
@@ -852,7 +1015,6 @@ export default function PortalPage() {
                 </div>
               </div>
 
-              {/* 年齢スライダー */}
               <div style={{ marginBottom: 14 }}>
                 <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>
                   年齢: <strong style={{ color: "#2dd4bf", fontSize: 16 }}>{tempAge}</strong>歳
@@ -873,10 +1035,10 @@ export default function PortalPage() {
                 />
               </div>
 
-              {/* 保存ボタン */}
               <button
                 onClick={handleSaveProfile}
                 disabled={!tempGender}
+                className={tempGender ? "btn-gradient" : ""}
                 style={{
                   width: "100%", padding: "10px 0", borderRadius: 12,
                   background: tempGender
@@ -884,7 +1046,8 @@ export default function PortalPage() {
                     : "rgba(45,212,191,.1)",
                   border: "none",
                   color: tempGender ? "#fff" : "#4a6572",
-                  fontSize: 13, fontWeight: 700, cursor: tempGender ? "pointer" : "default",
+                  fontSize: 13, fontWeight: 700,
+                  cursor: tempGender ? "pointer" : "default",
                   transition: "all 0.2s ease",
                 }}
               >
@@ -895,10 +1058,22 @@ export default function PortalPage() {
         </div>
 
         {/* セクションタイトル */}
-        <div style={{ textAlign: "left", marginBottom: 20, display: "flex", alignItems: "center", gap: 12 }}>
-          <FlaskSvg size={24} color="#2dd4bf" />
+        <div style={{
+          textAlign: "left", marginBottom: 24,
+          display: "flex", alignItems: "center", gap: 14,
+          opacity: gridFade.visible ? 1 : 0,
+          transform: gridFade.visible ? "translateY(0)" : "translateY(20px)",
+          transition: "opacity 0.5s ease-out 0.1s, transform 0.5s ease-out 0.1s",
+        }}>
+          <div style={{
+            width: 48, height: 48, borderRadius: 14,
+            background: "linear-gradient(135deg, rgba(45,212,191,.15), rgba(99,102,241,.1))",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <FlaskSvg size={26} color="#2dd4bf" />
+          </div>
           <div>
-            <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#2dd4bf", display: "block", marginBottom: 4 }}>
+            <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#2dd4bf", display: "block", marginBottom: 4, fontWeight: 700 }}>
               ALL EXPERIMENTS
             </span>
             <h2 className="font-stick" style={{ fontSize: "clamp(1.4rem, 5vw, 2rem)", color: "#0f1f2b", margin: 0 }}>
@@ -908,22 +1083,22 @@ export default function PortalPage() {
         </div>
 
         {/* カテゴリタブ */}
-        <div
-          style={{
-            display: "flex", gap: 8, marginBottom: 20,
-            overflowX: "auto", paddingBottom: 4,
-            scrollbarWidth: "none",
-          }}
-        >
+        <div style={{
+          display: "flex", gap: 8, marginBottom: 24,
+          overflowX: "auto", paddingBottom: 4,
+          scrollbarWidth: "none",
+          opacity: gridFade.visible ? 1 : 0,
+          transition: "opacity 0.5s ease-out 0.15s",
+        }}>
           {CATEGORIES.map((cat) => (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
               style={{
-                padding: "8px 16px", borderRadius: 20,
+                padding: "10px 18px", borderRadius: 24,
                 background: activeCategory === cat.key
                   ? "linear-gradient(135deg, #2dd4bf, #6366f1)"
-                  : "rgba(255,255,255,0.6)",
+                  : "rgba(255,255,255,0.5)",
                 border: activeCategory === cat.key
                   ? "none"
                   : "1px solid rgba(45,212,191,.15)",
@@ -932,6 +1107,9 @@ export default function PortalPage() {
                 whiteSpace: "nowrap",
                 transition: "all 0.25s ease",
                 backdropFilter: "blur(8px)",
+                boxShadow: activeCategory === cat.key
+                  ? "0 4px 16px rgba(45,212,191,.25)"
+                  : "0 1px 4px rgba(0,0,0,.04)",
               }}
             >
               {cat.emoji} {cat.label}
@@ -939,20 +1117,20 @@ export default function PortalPage() {
           ))}
         </div>
 
-        {/* カードグリッド */}
+        {/* カードグリッド（3列 / 2列 / 1列） */}
         <div
-          ref={gridRef}
+          className="portal-grid"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-            gap: 14,
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: 18,
           }}
-          className="portal-grid"
         >
           {filteredDiagnoses.map((diag, index) => {
             const result = personaResults[diag.id];
             const isCompleted = !!result;
             const isHovered = hoveredCard === diag.id;
+            const tag = CARD_TAGS[diag.id];
 
             return (
               <Link
@@ -963,81 +1141,95 @@ export default function PortalPage() {
                 onMouseLeave={() => setHoveredCard(null)}
                 style={{
                   display: "flex",
-                  alignItems: "flex-start",
-                  gap: 16,
+                  flexDirection: "column",
                   textDecoration: "none",
-                  background: "rgba(255,255,255,0.72)",
-                  backdropFilter: "blur(12px)",
-                  borderRadius: 16,
-                  padding: "18px 18px",
-                  border: isHovered ? `1px solid ${diag.themeColor}40` : "1px solid rgba(45,212,191,.12)",
-                  borderTop: isHovered ? `2.5px solid ${diag.themeColor}` : "1px solid rgba(45,212,191,.12)",
+                  background: "rgba(255,255,255,0.5)",
+                  backdropFilter: "blur(14px)",
+                  WebkitBackdropFilter: "blur(14px)",
+                  borderRadius: 20,
+                  padding: "0",
+                  border: isHovered
+                    ? `1.5px solid ${diag.themeColor}60`
+                    : "1px solid rgba(255,255,255,0.6)",
                   position: "relative",
                   overflow: "hidden",
-                  opacity: cardsVisible ? 1 : 0,
-                  transform: cardsVisible
-                    ? (isHovered ? "translateY(-3px) scale(1.01)" : "translateY(0) scale(1)")
-                    : "translateY(24px) scale(0.96)",
-                  transition: `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, transform 0.35s ease, border-color 0.3s, box-shadow 0.3s, border-top 0.3s`,
+                  opacity: gridFade.visible ? 1 : 0,
+                  transform: gridFade.visible
+                    ? (isHovered ? "translateY(-6px) scale(1.02)" : "translateY(0) scale(1)")
+                    : "translateY(30px) scale(0.96)",
+                  transition: `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, transform 0.35s ease, border-color 0.3s, box-shadow 0.3s`,
                   boxShadow: isHovered
-                    ? `0 0 25px ${diag.themeColor}15, 0 8px 30px rgba(0,0,0,.06)`
-                    : "0 2px 12px rgba(0,0,0,.04)",
-                  // 研究ノート風の罫線パターン背景
-                  backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 23px, rgba(45,212,191,0.04) 23px, rgba(45,212,191,0.04) 24px)",
+                    ? `0 0 30px ${diag.themeColor}20, 0 12px 40px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,0.5)`
+                    : "0 4px 16px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.4)",
                 }}
               >
-                {/* カード角のフラスコ装飾 */}
-                <FlaskSvg size={16} color={diag.themeColor} style={{
-                  position: "absolute", top: 8, right: 8, opacity: 0.2,
-                }} />
+                {/* カードトップ: 絵文字+グラデーション背景 */}
+                <div style={{
+                  padding: "28px 20px 20px",
+                  background: `linear-gradient(145deg, ${diag.gradientFrom}12, ${diag.gradientTo}08)`,
+                  position: "relative",
+                  textAlign: "center",
+                  borderBottom: `1px solid ${diag.themeColor}15`,
+                }}>
+                  {/* ホバー時のグローエフェクト */}
+                  {isHovered && (
+                    <div style={{
+                      position: "absolute", top: "50%", left: "50%",
+                      width: 120, height: 120,
+                      transform: "translate(-50%, -50%)",
+                      borderRadius: "50%",
+                      background: `radial-gradient(circle, ${diag.themeColor}15, transparent 70%)`,
+                      animation: "cardGlow 2s ease-in-out infinite",
+                      pointerEvents: "none",
+                    }} />
+                  )}
 
-                {/* ホバー時の泡エフェクト */}
-                {isHovered && (
-                  <>
-                    <BubbleSvg size={8} color={diag.themeColor} style={{
-                      position: "absolute", bottom: 12, right: 20,
-                      animation: "cardBubble1 1.5s ease-in-out infinite",
-                    }} />
-                    <BubbleSvg size={6} color={diag.themeColor} style={{
-                      position: "absolute", bottom: 18, right: 34,
-                      animation: "cardBubble2 1.8s ease-in-out infinite 0.3s",
-                    }} />
-                    <BubbleSvg size={10} color={diag.themeColor} style={{
-                      position: "absolute", bottom: 8, right: 48,
-                      animation: "cardBubble3 2s ease-in-out infinite 0.6s",
-                    }} />
-                  </>
-                )}
+                  {/* タグ（人気、新作など） */}
+                  {tag && (
+                    <span style={{
+                      position: "absolute", top: 10, right: 10,
+                      padding: "3px 10px", borderRadius: 10,
+                      background: tag.bg, color: tag.color,
+                      fontSize: 10, fontWeight: 800,
+                      boxShadow: "0 2px 8px rgba(0,0,0,.1)",
+                      letterSpacing: "0.05em",
+                    }}>
+                      {tag.text}
+                    </span>
+                  )}
 
-                {/* 左側: 大きな絵文字アイコン */}
-                <div
-                  style={{
-                    fontSize: "2.2rem",
-                    minWidth: 48,
-                    height: 48,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    borderRadius: 14,
-                    background: `linear-gradient(135deg, ${diag.themeColor}18, ${diag.themeColor}08)`,
-                    flexShrink: 0,
-                    transition: "transform 0.3s ease",
-                    transform: isHovered ? "rotate(-5deg) scale(1.05)" : "none",
-                  }}
-                >
-                  {diag.emoji}
+                  {/* 大きな絵文字 */}
+                  <div style={{
+                    fontSize: "3rem",
+                    lineHeight: 1,
+                    transition: "transform 0.3s cubic-bezier(0.25,1,0.5,1)",
+                    transform: isHovered ? "scale(1.15) rotate(-5deg)" : "scale(1)",
+                    filter: isHovered ? `drop-shadow(0 4px 12px ${diag.themeColor}40)` : "none",
+                    marginBottom: 4,
+                  }}>
+                    {diag.emoji}
+                  </div>
+
+                  {/* サブタイトル */}
+                  {diag.subtitle && (
+                    <p style={{
+                      fontSize: 11, color: diag.themeColor, fontWeight: 600,
+                      margin: 0, opacity: 0.8,
+                    }}>
+                      {diag.subtitle}
+                    </p>
+                  )}
                 </div>
 
-                {/* 右側: テキスト情報 */}
-                <div style={{ flex: 1, minWidth: 0 }}>
+                {/* カードボトム: テキスト情報 */}
+                <div style={{ padding: "16px 20px 18px", flex: 1, display: "flex", flexDirection: "column" }}>
                   {/* タイトル行 */}
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <h3
                       className="font-zen"
                       style={{
                         fontSize: "0.95rem", fontWeight: 700,
-                        color: "#0f1f2b",
-                        margin: 0,
+                        color: "#0f1f2b", margin: 0,
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                       }}
                     >
@@ -1046,33 +1238,20 @@ export default function PortalPage() {
                     {isCompleted && (
                       <span style={{
                         display: "inline-flex", alignItems: "center", justifyContent: "center",
-                        width: 18, height: 18, borderRadius: "50%",
-                        background: "rgba(45,212,191,.15)", fontSize: 10, color: "#2dd4bf",
-                        flexShrink: 0,
+                        width: 20, height: 20, borderRadius: "50%",
+                        background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
+                        fontSize: 10, color: "#fff", flexShrink: 0,
+                        boxShadow: "0 2px 6px rgba(45,212,191,.3)",
                       }}>
-                        ✓
+                        {"\u2713"}
                       </span>
                     )}
                   </div>
 
-                  {/* ホバー時「実験中...」テキスト */}
-                  {isHovered && (
-                    <span style={{
-                      display: "inline-block",
-                      fontSize: "0.65rem", color: diag.themeColor,
-                      fontWeight: 700, fontFamily: "monospace",
-                      letterSpacing: "0.1em",
-                      animation: "experimentPulse 1.2s ease-in-out infinite",
-                      marginBottom: 2,
-                    }}>
-                      ▶ EXPERIMENT READY...
-                    </span>
-                  )}
-
                   {/* 説明文 */}
                   <p style={{
-                    fontSize: "0.75rem", lineHeight: 1.5, color: "#2d4a57",
-                    marginBottom: 8,
+                    fontSize: "0.75rem", lineHeight: 1.6, color: "#4a6572",
+                    marginBottom: 12, flex: 1,
                     display: "-webkit-box",
                     WebkitLineClamp: 2,
                     WebkitBoxOrient: "vertical",
@@ -1084,95 +1263,92 @@ export default function PortalPage() {
                   {/* メタ情報バッジ */}
                   <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
                     <span style={{
-                      padding: "2px 8px", borderRadius: 8,
-                      background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.15)",
-                      fontSize: 10, color: "#2d4a57",
+                      padding: "3px 10px", borderRadius: 8,
+                      background: `${diag.themeColor}0D`,
+                      border: `1px solid ${diag.themeColor}20`,
+                      fontSize: 10, color: "#2d4a57", fontWeight: 600,
+                      display: "flex", alignItems: "center", gap: 3,
                     }}>
-                      {diag.questionCount}問
+                      {"\u{1F4DD}"} {diag.questionCount}問
                     </span>
                     <span style={{
-                      padding: "2px 8px", borderRadius: 8,
-                      background: "rgba(45,212,191,.08)", border: "1px solid rgba(45,212,191,.15)",
-                      fontSize: 10, color: "#2d4a57",
+                      padding: "3px 10px", borderRadius: 8,
+                      background: `${diag.themeColor}0D`,
+                      border: `1px solid ${diag.themeColor}20`,
+                      fontSize: 10, color: "#2d4a57", fontWeight: 600,
+                      display: "flex", alignItems: "center", gap: 3,
                     }}>
-                      約{diag.estimatedMinutes}分
+                      {"\u23F1"} 約{diag.estimatedMinutes}分
                     </span>
                     {isCompleted && result && (
                       <span style={{
-                        padding: "2px 8px", borderRadius: 8,
-                        background: "rgba(45,212,191,.1)", border: "1px solid rgba(45,212,191,.2)",
-                        fontSize: 10, color: "#2dd4bf", fontWeight: 600,
-                      }}>
-                        {result.typeName}
-                      </span>
-                    )}
-                    {diag.isFeatured && (
-                      <span style={{
-                        padding: "2px 8px", borderRadius: 8,
-                        background: "linear-gradient(135deg, rgba(45,212,191,.12), rgba(99,102,241,.12))",
+                        padding: "3px 10px", borderRadius: 8,
+                        background: "rgba(45,212,191,.1)",
                         border: "1px solid rgba(45,212,191,.2)",
                         fontSize: 10, color: "#2dd4bf", fontWeight: 700,
-                        letterSpacing: "0.04em",
                       }}>
-                        イチオシ
+                        {result.typeName}
                       </span>
                     )}
                   </div>
                 </div>
 
-                {/* 背景グラデーション（微かなアクセント） */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0, right: 0, width: 100, height: 100,
-                    background: `radial-gradient(circle at top right, ${diag.themeColor}0A, transparent 70%)`,
-                    pointerEvents: "none",
-                  }}
-                />
+                {/* ホバー時の下部グラデーションバー */}
+                <div style={{
+                  height: 3,
+                  background: isHovered
+                    ? `linear-gradient(90deg, ${diag.gradientFrom}, ${diag.gradientTo})`
+                    : "transparent",
+                  transition: "background 0.3s ease",
+                }} />
               </Link>
             );
           })}
         </div>
       </section>
 
-      {/* ===== ペルソナカード誘導セクション（研究成果発表風） ===== */}
+      {/* ===== セクション区切り ===== */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <div className="section-line-animate" />
+      </div>
+
+      {/* ===== ペルソナカード誘導セクション ===== */}
       <section
+        ref={personaFade.ref}
         style={{
           padding: "40px 20px",
-          maxWidth: 650,
-          margin: "0 auto",
-          textAlign: "center",
-          position: "relative",
-          zIndex: 1,
+          maxWidth: 700, margin: "0 auto",
+          textAlign: "center", position: "relative", zIndex: 1,
+          opacity: personaFade.visible ? 1 : 0,
+          transform: personaFade.visible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
         }}
       >
-        <div
-          style={{
-            background: "rgba(255,255,255,0.75)",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(45,212,191,.12)",
-            borderRadius: 24,
-            padding: "36px 24px",
-            boxShadow: "0 4px 24px rgba(0,0,0,.04)",
-            position: "relative", overflow: "hidden",
-          }}
-        >
+        <div style={{
+          background: "rgba(255,255,255,0.4)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.5)",
+          borderRadius: 28,
+          padding: "40px 28px",
+          boxShadow: "0 8px 32px rgba(0,0,0,.05), inset 0 1px 0 rgba(255,255,255,0.5)",
+          position: "relative", overflow: "hidden",
+        }}>
           {/* 背景装飾 */}
           <div style={{
-            position: "absolute", top: -10, left: -10, opacity: 0.08,
+            position: "absolute", top: -20, left: -20, opacity: 0.06,
             transform: "rotate(-15deg)",
           }}>
-            <DnaSvg size={50} color="#6366f1" />
+            <DnaSvg size={60} color="#6366f1" />
           </div>
           <div style={{
-            position: "absolute", bottom: -5, right: -5, opacity: 0.08,
+            position: "absolute", bottom: -10, right: -10, opacity: 0.06,
             transform: "rotate(20deg)",
           }}>
-            <FlaskSvg size={60} color="#2dd4bf" />
+            <FlaskSvg size={70} color="#2dd4bf" />
           </div>
 
-          {/* メダルとトロフィー装飾 */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
             <MedalSvg size={28} color="#c084fc" />
             <TrophySvg size={44} color="#FFD700" />
             <MedalSvg size={28} color="#FF6BE8" />
@@ -1180,83 +1356,68 @@ export default function PortalPage() {
 
           <span style={{
             fontSize: "0.65rem", letterSpacing: "0.2em", color: "#6366f1",
-            display: "block", marginBottom: 8,
+            display: "block", marginBottom: 8, fontWeight: 700,
           }}>
             RESEARCH RESULTS
           </span>
 
-          <h2
-            className="font-stick"
-            style={{
-              fontSize: "clamp(1.2rem, 4vw, 1.6rem)",
-              color: "#0f1f2b",
-              marginBottom: 10,
-            }}
-          >
+          <h2 className="font-stick" style={{
+            fontSize: "clamp(1.2rem, 4vw, 1.6rem)", color: "#0f1f2b", marginBottom: 10,
+          }}>
             研究成果発表
           </h2>
-          <p
-            style={{
-              fontSize: 13, color: "#2d4a57", lineHeight: 1.8,
-              marginBottom: 8, maxWidth: 420, margin: "0 auto 8px",
-            }}
-          >
+
+          <p style={{
+            fontSize: 13, color: "#2d4a57", lineHeight: 1.8,
+            marginBottom: 8, maxWidth: 420, margin: "0 auto 8px",
+          }}>
             全ての実験結果を統合して、あなただけの研究レポートを生成。
           </p>
-          <p
-            style={{
-              fontSize: 12, color: "#4a6572", lineHeight: 1.7,
-              marginBottom: 24, maxWidth: 420, margin: "0 auto 24px",
-            }}
-          >
-            レアリティ付きのペルソナカードをSNSでシェアして、
-            仲間と結果を比較しよう!
+          <p style={{
+            fontSize: 12, color: "#4a6572", lineHeight: 1.7,
+            marginBottom: 24, maxWidth: 420, margin: "0 auto 24px",
+          }}>
+            レアリティ付きのペルソナカードをSNSでシェアして、仲間と結果を比較しよう!
           </p>
 
-          {/* 進捗インジケータ */}
           {completedCount > 0 && (
             <div style={{
-              marginBottom: 20,
-              padding: "10px 16px",
-              borderRadius: 12,
+              marginBottom: 20, padding: "12px 18px", borderRadius: 14,
               background: "rgba(45,212,191,.06)",
               border: "1px dashed rgba(45,212,191,.2)",
             }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
                 <span style={{ fontSize: 11, color: "#4a6572" }}>実験進捗</span>
                 <span style={{ fontSize: 11, color: "#2dd4bf", fontWeight: 700 }}>
                   {completedCount} / {ALL_DIAGNOSES.length}
                 </span>
               </div>
               <div style={{
-                width: "100%", height: 6, borderRadius: 3,
-                background: "rgba(45,212,191,.1)",
-                overflow: "hidden",
+                width: "100%", height: 8, borderRadius: 4,
+                background: "rgba(45,212,191,.1)", overflow: "hidden",
               }}>
                 <div style={{
                   width: `${(completedCount / ALL_DIAGNOSES.length) * 100}%`,
-                  height: "100%", borderRadius: 3,
-                  background: "linear-gradient(90deg, #2dd4bf, #6366f1)",
+                  height: "100%", borderRadius: 4,
+                  background: "linear-gradient(90deg, #2dd4bf, #6366f1, #c084fc)",
                   transition: "width 0.5s ease",
-                }} />
+                  position: "relative",
+                }}>
+                  <span className="progress-shimmer" />
+                </div>
               </div>
             </div>
           )}
 
           <Link
             href="/persona"
+            className="btn-gradient"
             style={{
-              padding: "14px 36px",
-              fontSize: 14,
+              padding: "14px 36px", fontSize: 14,
               textDecoration: "none",
               display: "inline-flex", alignItems: "center", gap: 8,
-              background: "linear-gradient(135deg, #2dd4bf, #6366f1)",
-              color: "#fff",
               borderRadius: 50,
-              fontWeight: 700,
-              fontFamily: "'Zen Maru Gothic', sans-serif",
               boxShadow: "0 4px 20px rgba(45,212,191,.25), 0 0 0 4px rgba(45,212,191,.08)",
-              transition: "all 0.3s ease",
             }}
           >
             <TestTubeSvg size={18} color="#fff" />
@@ -1267,104 +1428,149 @@ export default function PortalPage() {
         </div>
       </section>
 
-      {/* ===== フッター（ラボ風） ===== */}
-      <footer
-        style={{
-          padding: "48px 20px 30px", textAlign: "center",
-          borderTop: "1px solid rgba(45,212,191,.1)",
-          position: "relative", zIndex: 1,
-        }}
-      >
-        {/* ラボ装飾ライン */}
+      {/* ===== リッチフッター ===== */}
+      <footer style={{
+        padding: "0", position: "relative", zIndex: 1,
+        marginTop: 40,
+      }}>
+        {/* グラデーション区切り線 */}
         <div style={{
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-          marginBottom: 16,
-        }}>
-          <div style={{ width: 40, height: 1, background: "rgba(45,212,191,.2)" }} />
-          <TestTubeSvg size={16} color="#2dd4bf" style={{ opacity: 0.4 }} />
-          <FlaskSvg size={18} color="#6366f1" style={{ opacity: 0.3 }} />
-          <TestTubeSvg size={14} color="#38bdf8" style={{ opacity: 0.35 }} />
-          <div style={{ width: 40, height: 1, background: "rgba(45,212,191,.2)" }} />
-        </div>
+          height: 3,
+          background: "linear-gradient(90deg, transparent, #2dd4bf, #6366f1, #c084fc, #6366f1, #2dd4bf, transparent)",
+          margin: "0 auto",
+          maxWidth: 1200,
+        }} />
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
-          <FlaskSvg size={18} color="#2dd4bf" />
-          <span className="font-stick" style={{
-            fontSize: "1.2rem",
-            color: "#2dd4bf",
-          }}>
-            診断研究所
-          </span>
-        </div>
-        <p style={{ fontSize: "0.78rem", color: "#4a6572", marginBottom: 4, letterSpacing: "0.08em" }}>
-          SHINDAN LABORATORY
-        </p>
-        <p style={{ fontSize: "0.82rem", color: "#4a6572", marginBottom: 12 }}>
-          あなたの本当の姿を、科学する。
-        </p>
-
-        {/* TikTok公式 */}
+        {/* フッターコンテンツ */}
         <div style={{
-          display: "flex", alignItems: "center", justifyContent: "center",
-          gap: 8, padding: "16px 0",
+          background: "linear-gradient(180deg, rgba(240,250,250,0), rgba(240,250,250,1) 20%)",
+          padding: "48px 20px 30px",
         }}>
-          <a
-            href="https://www.tiktok.com/@tokimeki_lab"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "10px 20px", borderRadius: 25,
-              background: "#000", color: "#fff",
-              fontSize: 13, fontWeight: 700,
-              textDecoration: "none",
-              transition: "all 0.2s ease",
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z"/>
-            </svg>
-            公式TikTokはこちら
-          </a>
-        </div>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            {/* 上段: ブランド + 説明 + リンク */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: 32,
+              marginBottom: 32,
+            }} className="footer-grid">
+              {/* ブランド */}
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                  <FlaskSvg size={22} color="#2dd4bf" />
+                  <span className="font-stick" style={{ fontSize: "1.2rem", color: "#2dd4bf" }}>
+                    診断研究所
+                  </span>
+                </div>
+                <p style={{ fontSize: "0.75rem", color: "#4a6572", lineHeight: 1.7, marginBottom: 4 }}>
+                  SHINDAN LABORATORY
+                </p>
+                <p style={{ fontSize: "0.78rem", color: "#4a6572", lineHeight: 1.7 }}>
+                  あなたの本当の姿を、科学する。心理学ベースの本格診断を13種類提供しています。
+                </p>
+              </div>
 
-        {/* 法的ページリンク */}
-        <div style={{
-          display: "flex", flexWrap: "wrap", justifyContent: "center",
-          gap: "4px 16px", padding: "12px 0",
-        }}>
-          {[
-            { label: "プライバシーポリシー", href: "/privacy" },
-            { label: "利用規約", href: "/terms" },
-            { label: "特定商取引法に基づく表記", href: "/tokusho" },
-            { label: "お問い合わせ", href: "/contact" },
-          ].map((link) => (
-            <Link key={link.href} href={link.href} style={{
-              fontSize: 10, color: "#4a6572", textDecoration: "none",
+              {/* 診断カテゴリ */}
+              <div>
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: "#2d4a57", marginBottom: 12, letterSpacing: "0.05em" }}>
+                  診断カテゴリ
+                </h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {CATEGORIES.filter(c => c.key !== "all").map((cat) => (
+                    <span
+                      key={cat.key}
+                      style={{ fontSize: 12, color: "#4a6572", cursor: "pointer" }}
+                      onClick={() => {
+                        setActiveCategory(cat.key);
+                        document.getElementById("experiments")?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      {cat.emoji} {cat.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* SNS + 法的リンク */}
+              <div>
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: "#2d4a57", marginBottom: 12, letterSpacing: "0.05em" }}>
+                  リンク
+                </h4>
+                {/* TikTok */}
+                <a
+                  href="https://www.tiktok.com/@tokimeki_lab"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", gap: 8,
+                    padding: "8px 16px", borderRadius: 20,
+                    background: "#000", color: "#fff",
+                    fontSize: 12, fontWeight: 700,
+                    textDecoration: "none",
+                    marginBottom: 12,
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z"/>
+                  </svg>
+                  公式TikTok
+                </a>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {[
+                    { label: "プライバシーポリシー", href: "/privacy" },
+                    { label: "利用規約", href: "/terms" },
+                    { label: "特定商取引法に基づく表記", href: "/tokusho" },
+                    { label: "お問い合わせ", href: "/contact" },
+                  ].map((link) => (
+                    <Link key={link.href} href={link.href} style={{
+                      fontSize: 11, color: "#4a6572", textDecoration: "none",
+                      transition: "color 0.2s ease",
+                    }}>
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 下段: コピーライト */}
+            <div style={{
+              borderTop: "1px solid rgba(45,212,191,.1)",
+              paddingTop: 16,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
             }}>
-              {link.label}
-            </Link>
-          ))}
-        </div>
-
-        {/* コピーライト */}
-        <div style={{
-          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-          padding: "4px 0 20px",
-        }}>
-          <TestTubeSvg size={12} color="#94a8b4" style={{ opacity: 0.5 }} />
-          <p style={{ fontSize: 10, color: "#94a8b4", margin: 0 }}>
-            &copy; 2026 診断研究所 All rights reserved.
-          </p>
-          <TestTubeSvg size={12} color="#94a8b4" style={{ opacity: 0.5 }} />
+              <TestTubeSvg size={12} color="#94a8b4" style={{ opacity: 0.5 }} />
+              <p style={{ fontSize: 10, color: "#94a8b4", margin: 0 }}>
+                &copy; 2026 診断研究所 All rights reserved.
+              </p>
+              <FlaskSvg size={12} color="#94a8b4" style={{ opacity: 0.5 }} />
+            </div>
+          </div>
         </div>
       </footer>
 
       {/* CSSアニメーション */}
       <style jsx>{`
+        /* レスポンシブグリッド: 3列 -> 2列 -> 1列 */
+        @media (max-width: 960px) {
+          .portal-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
         @media (max-width: 640px) {
           .portal-grid {
             grid-template-columns: 1fr !important;
+          }
+        }
+
+        /* フッターグリッド: 3列 -> 1列 */
+        @media (max-width: 768px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+            gap: 24px !important;
+            text-align: center;
           }
         }
 
@@ -1388,6 +1594,12 @@ export default function PortalPage() {
           cursor: pointer;
           box-shadow: 0 0 12px rgba(45,212,191,.4);
           border: 2px solid rgba(255,255,255,.8);
+        }
+
+        /* タイプライターのカーソル点滅 */
+        @keyframes cursorBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
         }
 
         /* 浮遊アニメーション（フラスコ・試験管） */
@@ -1415,30 +1627,6 @@ export default function PortalPage() {
         @keyframes bubbleRise2 {
           0%, 100% { transform: translateY(0) scale(1); opacity: 0.5; }
           50% { transform: translateY(-25px) scale(0.8); opacity: 0.2; }
-        }
-        @keyframes bubbleRise3 {
-          0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
-          50% { transform: translateY(-35px) scale(1.3); opacity: 0.15; }
-        }
-
-        /* カードホバー時の泡エフェクト */
-        @keyframes cardBubble1 {
-          0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
-          50% { transform: translateY(-16px) scale(1.3); opacity: 0.1; }
-        }
-        @keyframes cardBubble2 {
-          0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
-          50% { transform: translateY(-20px) scale(1.1); opacity: 0.05; }
-        }
-        @keyframes cardBubble3 {
-          0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; }
-          50% { transform: translateY(-14px) scale(1.4); opacity: 0.08; }
-        }
-
-        /* 「実験中...」点滅 */
-        @keyframes experimentPulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
         }
       `}</style>
     </>

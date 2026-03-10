@@ -87,7 +87,7 @@ function generateParticles(
         // やや大きめの丸、ゆっくり上昇
         base.size = Math.random() * 6 + 3;
         base.duration = `${6 + Math.random() * 6}s`;
-        base.opacity = 0.2 + Math.random() * 0.3;
+        base.opacity = 0.35 + Math.random() * 0.2;
         break;
       case 'sparkles':
         // キラキラ星型文字
@@ -98,21 +98,21 @@ function generateParticles(
         // 白い粒、ゆっくり落下
         base.size = Math.random() * 3 + 1.5;
         base.duration = `${8 + Math.random() * 8}s`;
-        base.opacity = 0.3 + Math.random() * 0.4;
+        base.opacity = 0.45 + Math.random() * 0.15;
         break;
       case 'hearts':
         // 小さいハート
         base.char = '♥';
         base.size = Math.random() * 10 + 8;
         base.duration = `${6 + Math.random() * 6}s`;
-        base.opacity = 0.3 + Math.random() * 0.4;
+        base.opacity = 0.4 + Math.random() * 0.2;
         break;
       case 'leaves':
         // 小さい葉
         base.char = '🍃';
         base.size = Math.random() * 10 + 8;
         base.duration = `${8 + Math.random() * 8}s`;
-        base.opacity = 0.3 + Math.random() * 0.4;
+        base.opacity = 0.4 + Math.random() * 0.2;
         break;
       case 'lightning':
         // ランダムな閃光（数は少なく、大きめ）
@@ -150,10 +150,10 @@ function generateFloatingMotifs(motifCount: number): FloatingMotifData[] {
     motifIndex: i % motifCount,
     top: `${10 + Math.random() * 75}%`,
     left: `${5 + Math.random() * 85}%`,
-    size: 20 + Math.random() * 25,
+    size: 25 + Math.random() * 30,
     delay: Math.random() * 8,
     duration: 15 + Math.random() * 15,
-    opacity: 0.08 + Math.random() * 0.1,
+    opacity: 0.15 + Math.random() * 0.15,
     rotation: Math.random() * 360,
   }));
 }
@@ -381,34 +381,108 @@ export default function DiagnosticEngine({ config }: Props) {
         </div>
       )}
 
-      {/* 背景：ブロブ（テーマ色で差別化） */}
+      {/* 背景：グラデーションメッシュ（奥行きのある背景） */}
       <div
         style={{
           position: "fixed",
-          top: "15%",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 0,
+          background: [
+            `radial-gradient(ellipse 80% 60% at 10% 20%, ${theme.blob1Color}30, transparent 60%)`,
+            `radial-gradient(ellipse 60% 80% at 90% 80%, ${theme.blob2Color}30, transparent 60%)`,
+            `radial-gradient(ellipse 70% 50% at 80% 15%, ${theme.blob1Color}18, transparent 55%)`,
+            `radial-gradient(ellipse 50% 70% at 20% 85%, ${theme.blob2Color}18, transparent 55%)`,
+          ].join(', '),
+          animation: "meshShift 20s ease-in-out infinite alternate",
+          willChange: "opacity",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 背景：ブロブ（テーマ色で差別化）4つ配置 */}
+      {/* ブロブ1: 左上（大きめ） */}
+      <div
+        style={{
+          position: "fixed",
+          top: "10%",
           left: "-10%",
-          width: 340,
-          height: 340,
+          width: 380,
+          height: 380,
           borderRadius: "50%",
           background: `radial-gradient(circle, ${theme.blob1Color}, transparent 70%)`,
           filter: "blur(60px)",
           animation: "blobFloat 8s ease-in-out infinite",
           pointerEvents: "none",
           zIndex: 0,
+          willChange: "transform",
         }}
         aria-hidden="true"
       />
+      {/* ブロブ2: 右下（大きめ） */}
       <div
         style={{
           position: "fixed",
-          bottom: "10%",
+          bottom: "8%",
           right: "-8%",
-          width: 300,
-          height: 300,
+          width: 340,
+          height: 340,
           borderRadius: "50%",
           background: `radial-gradient(circle, ${theme.blob2Color}, transparent 70%)`,
           filter: "blur(60px)",
           animation: "blobFloat 10s 2s ease-in-out infinite",
+          pointerEvents: "none",
+          zIndex: 0,
+          willChange: "transform",
+        }}
+        aria-hidden="true"
+      />
+      {/* ブロブ3: 右上（小さめ） */}
+      <div
+        style={{
+          position: "fixed",
+          top: "5%",
+          right: "-5%",
+          width: 220,
+          height: 220,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${theme.blob2Color}, transparent 70%)`,
+          filter: "blur(50px)",
+          animation: "blobFloat 12s 4s ease-in-out infinite",
+          pointerEvents: "none",
+          zIndex: 0,
+          willChange: "transform",
+        }}
+        aria-hidden="true"
+      />
+      {/* ブロブ4: 左下（小さめ） */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: "15%",
+          left: "-6%",
+          width: 240,
+          height: 240,
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${theme.blob1Color}, transparent 70%)`,
+          filter: "blur(50px)",
+          animation: "blobFloat 14s 6s ease-in-out infinite",
+          pointerEvents: "none",
+          zIndex: 0,
+          willChange: "transform",
+        }}
+        aria-hidden="true"
+      />
+
+      {/* 背景：下部グラデーションフェード */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: "30vh",
+          background: `linear-gradient(to bottom, transparent, ${theme.bgColor}90)`,
           pointerEvents: "none",
           zIndex: 0,
         }}
@@ -434,7 +508,7 @@ export default function DiagnosticEngine({ config }: Props) {
         )}
       </div>
 
-      {/* 浮遊モチーフ用のCSSアニメーション定義 */}
+      {/* 浮遊モチーフ・メッシュグラデーション用のCSSアニメーション定義 */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes motifFloat {
           0%, 100% {
@@ -448,6 +522,20 @@ export default function DiagnosticEngine({ config }: Props) {
           }
           75% {
             transform: translateY(-15px) rotate(4deg) scale(1.03);
+          }
+        }
+        @keyframes meshShift {
+          0% {
+            opacity: 0.7;
+            filter: hue-rotate(0deg);
+          }
+          50% {
+            opacity: 1;
+            filter: hue-rotate(8deg);
+          }
+          100% {
+            opacity: 0.8;
+            filter: hue-rotate(-5deg);
           }
         }
       `}} />

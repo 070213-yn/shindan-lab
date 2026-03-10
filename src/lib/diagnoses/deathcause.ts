@@ -218,7 +218,7 @@ export const deathcauseDiagnosis: DiagnosisConfig = {
     },
   ],
 
-  hashtags: ['前世の死因', '前世診断', '転生ボーナス', 'ときめきラボ'],
+  hashtags: ['前世の死因', '前世診断', '転生ボーナス', '診断研究所'],
   references: [
     'Jung, C. G. (1968). The Archetypes and the Collective Unconscious.',
     'Campbell, J. (1949). The Hero with a Thousand Faces.',

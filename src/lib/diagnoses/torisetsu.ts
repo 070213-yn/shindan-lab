@@ -255,7 +255,7 @@ export const torisetsuDiagnosis: DiagnosisConfig = {
     },
   ],
 
-  hashtags: ['取扱説明書', 'トリセツ診断', '私の説明書', 'ときめきラボ'],
+  hashtags: ['取扱説明書', 'トリセツ診断', '私の説明書', '診断研究所'],
   references: [
     'Costa, P. T., & McCrae, R. R. (1992). NEO Personality Inventory.',
     'Aron, E. N. (1996). The Highly Sensitive Person.',

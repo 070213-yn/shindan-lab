@@ -477,7 +477,7 @@ export const mentalDiagnosis: DiagnosisConfig = {
     '#メンタル強さ診断',
     '#あなたのメンタルタイプは',
     '#心理テスト',
-    '#ときめきラボ',
+    '#診断研究所',
   ],
   references: [
     'Connor, K. M., & Davidson, J. R. T. (2003). Development of a new resilience scale: The Connor-Davidson Resilience Scale (CD-RISC). Depression and Anxiety, 18(2), 76-82.',

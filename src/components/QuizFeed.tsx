@@ -188,7 +188,7 @@ export default function QuizFeed() {
             className="font-stick"
             style={{ fontSize: 16, color: "#FF6BE8" }}
           >
-            ときめきラボ 診断
+            診断研究所 診断
           </span>
           <button
             onClick={() => window.history.back()}

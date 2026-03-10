@@ -143,7 +143,7 @@ export default function DiagResult({ config, store }: Props) {
     ctx.font = "bold 14px sans-serif";
     ctx.fillStyle = `${config.themeColor}B0`;
     ctx.textAlign = "center";
-    ctx.fillText(`ときめきラボ ── ${config.title}`, W / 2, 36);
+    ctx.fillText(`診断研究所 ── ${config.title}`, W / 2, 36);
 
     // タイプemoji
     ctx.font = "52px sans-serif";
@@ -236,7 +236,7 @@ export default function DiagResult({ config, store }: Props) {
   }
 
   // シェアテキスト
-  const shareText = `ときめきラボの${config.title}やったら「${bestType.emoji}${bestType.name}」だった！ ${config.hashtags.map((h) => `#${h}`).join(" ")}`;
+  const shareText = `診断研究所の${config.title}やったら「${bestType.emoji}${bestType.name}」だった！ ${config.hashtags.map((h) => `#${h}`).join(" ")}`;
   const shareUrl = "https://tokimeki-lab.com";
 
   return (

@@ -159,11 +159,11 @@ const ALL_DIAGNOSES = [
   ...ALL_DIAGNOSES_RAW.filter((d) => d.id !== "mbti128"),
 ];
 
-// 人気の実験ランキング（手動ピックアップ）
+// 人気の実験ランキング（デフォルト: Google Analytics連動予定）
 const POPULAR_EXPERIMENTS = [
   { rank: 1, id: "mbti128", medal: "#FFD700", label: "ゴールド" },
-  { rank: 2, id: "shadow", medal: "#C0C0C0", label: "シルバー" },
-  { rank: 3, id: "deathcause", medal: "#CD7F32", label: "ブロンズ" },
+  { rank: 2, id: "love", medal: "#C0C0C0", label: "シルバー" },
+  { rank: 3, id: "torisetsu", medal: "#CD7F32", label: "ブロンズ" },
 ];
 
 // 研究所からのお知らせ
@@ -607,35 +607,168 @@ export default function PortalPage() {
             心理学ベースの本格診断で、知らなかった自分に出会える研究所。
           </p>
 
-          {/* 特徴バッジ群 */}
+          {/* プロフィール設定ボタン */}
           <div style={{
-            display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap",
-            marginBottom: 24,
+            marginBottom: 16,
             opacity: heroMounted ? 1 : 0,
             transform: heroMounted ? "translateY(0)" : "translateY(14px)",
             transition: "opacity 0.6s ease-out 0.6s, transform 0.6s ease-out 0.6s",
           }}>
-            {[
-              { label: "心理学ベース", icon: "\u{1F9EC}", gradient: "linear-gradient(135deg, rgba(99,102,241,.12), rgba(139,92,246,.08))" },
-              { label: "ペルソナカード", icon: "\u{1F0CF}", gradient: "linear-gradient(135deg, rgba(192,132,252,.12), rgba(236,72,153,.08))" },
-              { label: "SNSシェア", icon: "\u{1F4F1}", gradient: "linear-gradient(135deg, rgba(56,189,248,.12), rgba(45,212,191,.08))" },
-            ].map((badge) => (
-              <span
-                key={badge.label}
+            {mounted && globalProfile.gender && globalProfile.age ? (
+              <button
+                onClick={() => {
+                  setTempName(globalProfile.name ?? "");
+                  setTempGender(globalProfile.gender);
+                  setTempAge(globalProfile.age ?? 16);
+                  setShowProfileSetup(true);
+                }}
                 style={{
-                  padding: "8px 16px", borderRadius: 12,
-                  background: badge.gradient,
-                  border: "1px solid rgba(255,255,255,0.5)",
-                  backdropFilter: "blur(4px)",
-                  fontSize: 12, color: "#2d4a57", fontWeight: 600,
-                  display: "flex", alignItems: "center", gap: 6,
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "10px 22px", borderRadius: 14,
+                  background: "rgba(45,212,191,.08)",
+                  border: "1px solid rgba(45,212,191,.2)",
+                  color: "#2d4a57", fontSize: 13, fontWeight: 600,
+                  cursor: "pointer", transition: "all 0.2s ease",
+                  fontFamily: "'Zen Maru Gothic', sans-serif",
                 }}
               >
-                <span style={{ fontSize: 16 }}>{badge.icon}</span>
-                {badge.label}
-              </span>
-            ))}
+                <span style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  width: 22, height: 22, borderRadius: "50%",
+                  background: "rgba(45,212,191,.15)", fontSize: 12, color: "#2dd4bf",
+                }}>{"\u2713"}</span>
+                <span>
+                  <strong style={{ color: "#2dd4bf" }}>
+                    {globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}
+                  </strong> で設定済み
+                </span>
+                <span style={{ fontSize: 11, color: "#2dd4bf", fontWeight: 700 }}>変更</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowProfileSetup(true)}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "10px 22px", borderRadius: 14,
+                  background: "rgba(45,212,191,.08)",
+                  border: "1.5px dashed rgba(45,212,191,.35)",
+                  color: "#2d4a57", fontSize: 13, fontWeight: 600,
+                  cursor: "pointer", transition: "all 0.2s ease",
+                  fontFamily: "'Zen Maru Gothic', sans-serif",
+                }}
+              >
+                <TestTubeSvg size={16} color="#2dd4bf" />
+                すべての診断で使えるプロフィールを設定
+              </button>
+            )}
           </div>
+
+          {/* プロフィール設定フォーム（インラインモーダル） */}
+          {showProfileSetup && (
+            <div style={{
+              marginBottom: 20, padding: "20px",
+              borderRadius: 16,
+              background: "rgba(255,255,255,0.6)",
+              border: "1px solid rgba(45,212,191,.2)",
+              animation: "slideDown 0.3s ease-out",
+              textAlign: "left",
+            }}>
+              <div style={{ marginBottom: 14 }}>
+                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>ニックネーム（任意）</p>
+                <input
+                  type="text"
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  placeholder="ニックネームを入力"
+                  maxLength={20}
+                  style={{
+                    width: "100%", padding: "10px 14px", borderRadius: 10,
+                    background: "rgba(255,255,255,.8)",
+                    border: "1px solid rgba(45,212,191,.2)",
+                    color: "#0f1f2b", fontSize: 14, outline: "none",
+                    fontFamily: "'Zen Maru Gothic', sans-serif",
+                    transition: "border-color 0.2s ease",
+                  }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "#2dd4bf"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(45,212,191,.2)"; }}
+                />
+              </div>
+
+              <div style={{ marginBottom: 14 }}>
+                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>性別</p>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {[
+                    { value: "male", label: "男性", emoji: "\u2642" },
+                    { value: "female", label: "女性", emoji: "\u2640" },
+                    { value: "other", label: "その他", emoji: "\u25C7" },
+                  ].map((g) => (
+                    <button
+                      key={g.value}
+                      onClick={() => setTempGender(g.value)}
+                      style={{
+                        flex: 1, padding: "8px 0", borderRadius: 10,
+                        background: tempGender === g.value ? "rgba(45,212,191,.15)" : "rgba(255,255,255,.6)",
+                        border: tempGender === g.value ? "1.5px solid #2dd4bf" : "1px solid rgba(45,212,191,.15)",
+                        color: tempGender === g.value ? "#2dd4bf" : "#4a6572",
+                        fontSize: 13, fontWeight: 600, cursor: "pointer",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      {g.emoji} {g.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 14 }}>
+                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>
+                  年齢: <strong style={{ color: "#2dd4bf", fontSize: 16 }}>{tempAge}</strong>歳
+                </p>
+                <input
+                  type="range"
+                  min={10}
+                  max={60}
+                  value={tempAge}
+                  onChange={(e) => setTempAge(Number(e.target.value))}
+                  className="profile-slider"
+                  style={{
+                    width: "100%", height: 6,
+                    WebkitAppearance: "none", appearance: "none",
+                    background: `linear-gradient(to right, #2dd4bf ${((tempAge - 10) / 50) * 100}%, rgba(45,212,191,.15) ${((tempAge - 10) / 50) * 100}%)`,
+                    borderRadius: 3, outline: "none", cursor: "pointer",
+                  }}
+                />
+              </div>
+
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  onClick={() => setShowProfileSetup(false)}
+                  style={{
+                    flex: 1, padding: "10px 0", borderRadius: 12,
+                    background: "rgba(0,0,0,.04)", border: "1px solid rgba(0,0,0,.08)",
+                    color: "#4a6572", fontSize: 13, fontWeight: 600, cursor: "pointer",
+                  }}
+                >
+                  キャンセル
+                </button>
+                <button
+                  onClick={handleSaveProfile}
+                  disabled={!tempGender}
+                  className={tempGender ? "btn-gradient" : ""}
+                  style={{
+                    flex: 2, padding: "10px 0", borderRadius: 12,
+                    background: tempGender ? "linear-gradient(135deg, #2dd4bf, #38bdf8)" : "rgba(45,212,191,.1)",
+                    border: "none",
+                    color: tempGender ? "#fff" : "#4a6572",
+                    fontSize: 13, fontWeight: 700,
+                    cursor: tempGender ? "pointer" : "default",
+                  }}
+                >
+                  保存する
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* CTAボタン */}
           <a
@@ -806,79 +939,6 @@ export default function PortalPage() {
         <div className="section-line-animate" />
       </div>
 
-      {/* ===== 研究所からのお知らせ ===== */}
-      <section
-        ref={newsFade.ref}
-        style={{
-          padding: "16px 16px 40px", maxWidth: 800, margin: "0 auto",
-          position: "relative", zIndex: 1,
-          opacity: newsFade.visible ? 1 : 0,
-          transform: newsFade.visible ? "translateY(0)" : "translateY(30px)",
-          transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
-        }}
-      >
-        <div style={{
-          background: "rgba(255,255,255,0.4)",
-          backdropFilter: "blur(16px)",
-          border: "1px solid rgba(255,255,255,0.5)",
-          borderRadius: 20,
-          padding: "24px 24px",
-          boxShadow: "0 4px 24px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.4)",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-            <MagnifyingSvg size={22} color="#6366f1" />
-            <div>
-              <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#6366f1", display: "block", fontWeight: 700 }}>
-                LAB NEWS
-              </span>
-              <h2 className="font-stick" style={{ fontSize: "1.1rem", color: "#0f1f2b", margin: 0 }}>
-                研究所からのお知らせ
-              </h2>
-            </div>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {LAB_NEWS.map((news, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex", alignItems: "flex-start", gap: 12,
-                  padding: "12px 16px", borderRadius: 12,
-                  background: news.isNew ? "rgba(45,212,191,.06)" : "transparent",
-                  borderLeft: news.isNew ? "3px solid #2dd4bf" : "3px solid rgba(45,212,191,.15)",
-                  transition: "background 0.2s ease",
-                }}
-              >
-                <span style={{
-                  fontSize: "0.68rem", color: "#94a8b4", whiteSpace: "nowrap",
-                  fontFamily: "monospace", paddingTop: 2,
-                }}>
-                  {news.date}
-                </span>
-                <span style={{ fontSize: "0.82rem", color: "#2d4a57", lineHeight: 1.5 }}>
-                  {news.isNew && (
-                    <span style={{
-                      display: "inline-block", padding: "2px 8px", borderRadius: 6,
-                      background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
-                      color: "#fff", fontSize: 9, fontWeight: 700, marginRight: 6,
-                      verticalAlign: "middle",
-                    }}>
-                      NEW
-                    </span>
-                  )}
-                  {news.text}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== セクション区切り ===== */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
-        <div className="section-line-animate" />
-      </div>
-
       {/* ===== 診断カードグリッド ===== */}
       <section
         id="experiments"
@@ -888,175 +948,6 @@ export default function PortalPage() {
           position: "relative", zIndex: 1,
         }}
       >
-        {/* グローバルプロフィール設定 */}
-        <div
-          style={{
-            marginBottom: 28,
-            background: "rgba(255,255,255,0.45)",
-            backdropFilter: "blur(16px)",
-            border: "1px solid rgba(255,255,255,0.5)",
-            borderRadius: 18,
-            padding: "16px 22px",
-            boxShadow: "0 4px 16px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.4)",
-            position: "relative",
-            opacity: gridFade.visible ? 1 : 0,
-            transform: gridFade.visible ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
-          }}
-        >
-          <FlaskSvg size={18} color="#2dd4bf" style={{
-            position: "absolute", top: 10, right: 14, opacity: 0.25,
-          }} />
-
-          {mounted && globalProfile.gender && globalProfile.age ? (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{
-                  display: "inline-flex", alignItems: "center", justifyContent: "center",
-                  width: 28, height: 28, borderRadius: "50%",
-                  background: "rgba(45,212,191,.15)", fontSize: 14, color: "#2dd4bf",
-                }}>
-                  {"\u2713"}
-                </span>
-                <span style={{ fontSize: 13, color: "#2d4a57" }}>
-                  <strong style={{ color: "#2dd4bf" }}>
-                    {globalProfile.name ? `${globalProfile.name}さん` : ""}{globalProfile.name ? " / " : ""}{globalProfile.age}歳・{genderLabel(globalProfile.gender)}
-                  </strong> で実験中
-                </span>
-              </div>
-              <button
-                onClick={() => {
-                  setTempName(globalProfile.name ?? "");
-                  setTempGender(globalProfile.gender);
-                  setTempAge(globalProfile.age ?? 16);
-                  setShowProfileSetup(true);
-                }}
-                style={{
-                  padding: "4px 12px", borderRadius: 12,
-                  background: "rgba(45,212,191,.1)", border: "1px solid rgba(45,212,191,.2)",
-                  color: "#2dd4bf", fontSize: 11, fontWeight: 700, cursor: "pointer",
-                }}
-              >
-                変更
-              </button>
-            </div>
-          ) : (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <TestTubeSvg size={16} color="#2dd4bf" />
-                <span style={{ fontSize: 13, color: "#4a6572" }}>
-                  被験者情報を登録すると、実験がスムーズに!
-                </span>
-              </div>
-              <button
-                onClick={() => setShowProfileSetup(true)}
-                className="btn-gradient"
-                style={{
-                  padding: "6px 16px", borderRadius: 12,
-                  fontSize: 12,
-                }}
-              >
-                登録する
-              </button>
-            </div>
-          )}
-
-          {/* インライン設定フォーム */}
-          {showProfileSetup && (
-            <div style={{
-              marginTop: 16, paddingTop: 16,
-              borderTop: "1px dashed rgba(45,212,191,.2)",
-              animation: "slideDown 0.3s ease-out",
-            }}>
-              <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>被験者名（ニックネームでもOK）</p>
-                <input
-                  type="text"
-                  value={tempName}
-                  onChange={(e) => setTempName(e.target.value)}
-                  placeholder="ニックネームを入力"
-                  maxLength={20}
-                  style={{
-                    width: "100%", padding: "10px 14px", borderRadius: 10,
-                    background: "rgba(255,255,255,.8)",
-                    border: "1px solid rgba(45,212,191,.2)",
-                    color: "#0f1f2b", fontSize: 14, outline: "none",
-                    fontFamily: "'Zen Maru Gothic', sans-serif",
-                    transition: "border-color 0.2s ease",
-                  }}
-                  onFocus={(e) => { e.currentTarget.style.borderColor = "#2dd4bf"; }}
-                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(45,212,191,.2)"; }}
-                />
-              </div>
-
-              <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>性別</p>
-                <div style={{ display: "flex", gap: 8 }}>
-                  {[
-                    { value: "male", label: "男性", emoji: "\u2642" },
-                    { value: "female", label: "女性", emoji: "\u2640" },
-                    { value: "other", label: "その他", emoji: "\u25C7" },
-                  ].map((g) => (
-                    <button
-                      key={g.value}
-                      onClick={() => setTempGender(g.value)}
-                      style={{
-                        flex: 1, padding: "8px 0", borderRadius: 10,
-                        background: tempGender === g.value ? "rgba(45,212,191,.15)" : "rgba(255,255,255,.6)",
-                        border: tempGender === g.value ? "1.5px solid #2dd4bf" : "1px solid rgba(45,212,191,.15)",
-                        color: tempGender === g.value ? "#2dd4bf" : "#4a6572",
-                        fontSize: 13, fontWeight: 600, cursor: "pointer",
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      {g.emoji} {g.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div style={{ marginBottom: 14 }}>
-                <p style={{ fontSize: 12, color: "#4a6572", marginBottom: 8 }}>
-                  年齢: <strong style={{ color: "#2dd4bf", fontSize: 16 }}>{tempAge}</strong>歳
-                </p>
-                <input
-                  type="range"
-                  min={10}
-                  max={60}
-                  value={tempAge}
-                  onChange={(e) => setTempAge(Number(e.target.value))}
-                  className="profile-slider"
-                  style={{
-                    width: "100%", height: 6,
-                    WebkitAppearance: "none", appearance: "none",
-                    background: `linear-gradient(to right, #2dd4bf ${((tempAge - 10) / 50) * 100}%, rgba(45,212,191,.15) ${((tempAge - 10) / 50) * 100}%)`,
-                    borderRadius: 3, outline: "none", cursor: "pointer",
-                  }}
-                />
-              </div>
-
-              <button
-                onClick={handleSaveProfile}
-                disabled={!tempGender}
-                className={tempGender ? "btn-gradient" : ""}
-                style={{
-                  width: "100%", padding: "10px 0", borderRadius: 12,
-                  background: tempGender
-                    ? "linear-gradient(135deg, #2dd4bf, #38bdf8)"
-                    : "rgba(45,212,191,.1)",
-                  border: "none",
-                  color: tempGender ? "#fff" : "#4a6572",
-                  fontSize: 13, fontWeight: 700,
-                  cursor: tempGender ? "pointer" : "default",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                保存する
-              </button>
-            </div>
-          )}
-        </div>
-
         {/* セクションタイトル */}
         <div style={{
           textAlign: "left", marginBottom: 24,
@@ -1155,7 +1046,7 @@ export default function PortalPage() {
                   overflow: "hidden",
                   opacity: gridFade.visible ? 1 : 0,
                   transform: gridFade.visible
-                    ? (isHovered ? "translateY(-6px) scale(1.02)" : "translateY(0) scale(1)")
+                    ? (isHovered ? "scale(1.03)" : "scale(1)")
                     : "translateY(30px) scale(0.96)",
                   transition: `opacity 0.5s cubic-bezier(0.25,1,0.5,1) ${index * 0.04}s, transform 0.35s ease, border-color 0.3s, box-shadow 0.3s`,
                   boxShadow: isHovered
@@ -1428,6 +1319,74 @@ export default function PortalPage() {
         </div>
       </section>
 
+      {/* ===== 研究所からのお知らせ（最下部） ===== */}
+      <section
+        ref={newsFade.ref}
+        style={{
+          padding: "16px 16px 40px", maxWidth: 800, margin: "0 auto",
+          position: "relative", zIndex: 1,
+          opacity: newsFade.visible ? 1 : 0,
+          transform: newsFade.visible ? "translateY(0)" : "translateY(30px)",
+          transition: "opacity 0.7s ease-out, transform 0.7s ease-out",
+        }}
+      >
+        <div style={{
+          background: "rgba(255,255,255,0.4)",
+          backdropFilter: "blur(16px)",
+          border: "1px solid rgba(255,255,255,0.5)",
+          borderRadius: 20,
+          padding: "24px 24px",
+          boxShadow: "0 4px 24px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,0.4)",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+            <MagnifyingSvg size={22} color="#6366f1" />
+            <div>
+              <span style={{ fontSize: "0.7rem", letterSpacing: "0.15em", color: "#6366f1", display: "block", fontWeight: 700 }}>
+                LAB NEWS
+              </span>
+              <h2 className="font-stick" style={{ fontSize: "1.1rem", color: "#0f1f2b", margin: 0 }}>
+                研究所からのお知らせ
+              </h2>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {LAB_NEWS.map((news, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex", alignItems: "flex-start", gap: 12,
+                  padding: "12px 16px", borderRadius: 12,
+                  background: news.isNew ? "rgba(45,212,191,.06)" : "transparent",
+                  borderLeft: news.isNew ? "3px solid #2dd4bf" : "3px solid rgba(45,212,191,.15)",
+                  transition: "background 0.2s ease",
+                }}
+              >
+                <span style={{
+                  fontSize: "0.68rem", color: "#94a8b4", whiteSpace: "nowrap",
+                  fontFamily: "monospace", paddingTop: 2,
+                }}>
+                  {news.date}
+                </span>
+                <span style={{ fontSize: "0.82rem", color: "#2d4a57", lineHeight: 1.5 }}>
+                  {news.isNew && (
+                    <span style={{
+                      display: "inline-block", padding: "2px 8px", borderRadius: 6,
+                      background: "linear-gradient(135deg, #2dd4bf, #38bdf8)",
+                      color: "#fff", fontSize: 9, fontWeight: 700, marginRight: 6,
+                      verticalAlign: "middle",
+                    }}>
+                      NEW
+                    </span>
+                  )}
+                  {news.text}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== リッチフッター ===== */}
       <footer style={{
         padding: "0", position: "relative", zIndex: 1,
@@ -1435,7 +1394,7 @@ export default function PortalPage() {
       }}>
         {/* グラデーション区切り線 */}
         <div style={{
-          height: 3,
+          height: 2,
           background: "linear-gradient(90deg, transparent, #2dd4bf, #6366f1, #c084fc, #6366f1, #2dd4bf, transparent)",
           margin: "0 auto",
           maxWidth: 1200,
@@ -1444,108 +1403,77 @@ export default function PortalPage() {
         {/* フッターコンテンツ */}
         <div style={{
           background: "linear-gradient(180deg, rgba(240,250,250,0), rgba(240,250,250,1) 20%)",
-          padding: "48px 20px 30px",
+          padding: "36px 20px 24px",
         }}>
-          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            {/* 上段: ブランド + 説明 + リンク */}
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gap: 32,
-              marginBottom: 32,
-            }} className="footer-grid">
-              {/* ブランド */}
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-                  <FlaskSvg size={22} color="#2dd4bf" />
-                  <span className="font-stick" style={{ fontSize: "1.2rem", color: "#2dd4bf" }}>
-                    診断研究所
-                  </span>
-                </div>
-                <p style={{ fontSize: "0.75rem", color: "#4a6572", lineHeight: 1.7, marginBottom: 4 }}>
-                  SHINDAN LABORATORY
-                </p>
-                <p style={{ fontSize: "0.78rem", color: "#4a6572", lineHeight: 1.7 }}>
-                  あなたの本当の姿を、科学する。心理学ベースの本格診断を13種類提供しています。
-                </p>
-              </div>
+          <div style={{ maxWidth: 600, margin: "0 auto", textAlign: "center" }}>
+            {/* ブランドロゴ */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 8 }}>
+              <FlaskSvg size={20} color="#2dd4bf" />
+              <span className="font-stick" style={{ fontSize: "1.05rem", color: "#2dd4bf" }}>
+                診断研究所
+              </span>
+            </div>
+            <p style={{ fontSize: 10, letterSpacing: "0.2em", color: "#94a8b4", marginBottom: 16 }}>
+              SHINDAN LABORATORY
+            </p>
 
-              {/* 診断カテゴリ */}
-              <div>
-                <h4 style={{ fontSize: 12, fontWeight: 700, color: "#2d4a57", marginBottom: 12, letterSpacing: "0.05em" }}>
-                  診断カテゴリ
-                </h4>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  {CATEGORIES.filter(c => c.key !== "all").map((cat) => (
-                    <span
-                      key={cat.key}
-                      style={{ fontSize: 12, color: "#4a6572", cursor: "pointer" }}
-                      onClick={() => {
-                        setActiveCategory(cat.key);
-                        document.getElementById("experiments")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                    >
-                      {cat.emoji} {cat.label}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* SNS + 法的リンク */}
-              <div>
-                <h4 style={{ fontSize: 12, fontWeight: 700, color: "#2d4a57", marginBottom: 12, letterSpacing: "0.05em" }}>
-                  リンク
-                </h4>
-                {/* TikTok */}
-                <a
-                  href="https://www.tiktok.com/@tokimeki_lab"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-flex", alignItems: "center", gap: 8,
-                    padding: "8px 16px", borderRadius: 20,
-                    background: "#000", color: "#fff",
-                    fontSize: 12, fontWeight: 700,
-                    textDecoration: "none",
-                    marginBottom: 12,
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z"/>
-                  </svg>
-                  公式TikTok
-                </a>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  {[
-                    { label: "プライバシーポリシー", href: "/privacy" },
-                    { label: "利用規約", href: "/terms" },
-                    { label: "特定商取引法に基づく表記", href: "/tokusho" },
-                    { label: "お問い合わせ", href: "/contact" },
-                  ].map((link) => (
-                    <Link key={link.href} href={link.href} style={{
-                      fontSize: 11, color: "#4a6572", textDecoration: "none",
-                      transition: "color 0.2s ease",
-                    }}>
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
+            {/* TikTokボタン */}
+            <div style={{ marginBottom: 20 }}>
+              <a
+                href="https://www.tiktok.com/@tokimeki_lab"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "7px 18px", borderRadius: 20,
+                  background: "#0f0f0f", color: "#fff",
+                  fontSize: 11, fontWeight: 700,
+                  textDecoration: "none",
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V9.17a8.16 8.16 0 004.76 1.52v-3.4a4.85 4.85 0 01-1-.6z"/>
+                </svg>
+                公式TikTok
+              </a>
             </div>
 
-            {/* 下段: コピーライト */}
+            {/* 法的リンク（横並び） */}
             <div style={{
-              borderTop: "1px solid rgba(45,212,191,.1)",
-              paddingTop: 16,
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexWrap: "wrap", gap: "4px 0", marginBottom: 20,
             }}>
-              <TestTubeSvg size={12} color="#94a8b4" style={{ opacity: 0.5 }} />
-              <p style={{ fontSize: 10, color: "#94a8b4", margin: 0 }}>
+              {[
+                { label: "プライバシーポリシー", href: "/privacy" },
+                { label: "利用規約", href: "/terms" },
+                { label: "特定商取引法", href: "/tokushoho" },
+                { label: "お問い合わせ", href: "/contact" },
+              ].map((link, i) => (
+                <span key={link.href} style={{ display: "inline-flex", alignItems: "center" }}>
+                  <Link href={link.href} style={{
+                    fontSize: 11, color: "#6b8a97", textDecoration: "none",
+                    padding: "4px 8px",
+                    transition: "color 0.2s ease",
+                  }}>
+                    {link.label}
+                  </Link>
+                  {i < 3 && (
+                    <span style={{ color: "rgba(45,212,191,.3)", fontSize: 10 }}>|</span>
+                  )}
+                </span>
+              ))}
+            </div>
+
+            {/* コピーライト */}
+            <div style={{
+              borderTop: "1px solid rgba(45,212,191,.08)",
+              paddingTop: 14,
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+            }}>
+              <p style={{ fontSize: 10, color: "#a0b4be", margin: 0 }}>
                 &copy; 2026 診断研究所 All rights reserved.
               </p>
-              <FlaskSvg size={12} color="#94a8b4" style={{ opacity: 0.5 }} />
             </div>
           </div>
         </div>
@@ -1562,15 +1490,6 @@ export default function PortalPage() {
         @media (max-width: 640px) {
           .portal-grid {
             grid-template-columns: 1fr !important;
-          }
-        }
-
-        /* フッターグリッド: 3列 -> 1列 */
-        @media (max-width: 768px) {
-          .footer-grid {
-            grid-template-columns: 1fr !important;
-            gap: 24px !important;
-            text-align: center;
           }
         }
 

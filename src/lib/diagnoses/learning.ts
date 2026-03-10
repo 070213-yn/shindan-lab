@@ -463,7 +463,7 @@ export const learningDiagnosis: DiagnosisConfig = {
     '#VARK',
     '#学習タイプ',
     '#テスト対策',
-    '#ときめきラボ',
+    '#診断研究所',
   ],
   references: [
     'Fleming, N.D. (2001). Teaching and Learning Styles: VARK Strategies. Christchurch, New Zealand.',

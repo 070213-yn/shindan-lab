@@ -503,7 +503,7 @@ export const isekaiDiagnosis: DiagnosisConfig = {
     '#RPG診断',
     '#あなたの異世界クラスは',
     '#性格診断',
-    '#ときめきラボ',
+    '#診断研究所',
   ],
   references: [
     'Myers, I. B., & Briggs, K. C. (1962). The Myers-Briggs Type Indicator. Consulting Psychologists Press.',

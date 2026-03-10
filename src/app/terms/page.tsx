@@ -96,7 +96,7 @@ interface FooterLink {
 // フッターリンク（他の法的ページへ）
 const footerLinks: FooterLink[] = [
   { label: "プライバシーポリシー", href: "/privacy" },
-  { label: "特定商取引法に基づく表記", href: "/tokusho" },
+  { label: "特定商取引法に基づく表記", href: "/tokushoho" },
   {
     label: "お問い合わせ",
     href: "https://docs.google.com/forms/d/e/1FAIpQLSe72uFPyf-pI1RcH04IuecN0mkwnU9a9L2yKyRcLhaHvq2TZg/viewform?usp=publish-editor",

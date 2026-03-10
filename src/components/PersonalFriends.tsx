@@ -218,12 +218,12 @@ export default function PersonalFriends() {
 
     let y = 60;
 
-    // ヘッダー: ときめきラボ
+    // ヘッダー: 診断研究所
     ctx.font = "bold 16px sans-serif";
     ctx.fillStyle = "rgba(45,212,191,0.8)";
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
-    ctx.fillText("ときめきラボ", W / 2, y);
+    ctx.fillText("診断研究所", W / 2, y);
     y += 50;
 
     // タイトル: MY PERSONAL FRIENDS
@@ -308,7 +308,7 @@ export default function PersonalFriends() {
     // ハッシュタグ
     ctx.font = "13px sans-serif";
     ctx.fillStyle = "rgba(45,212,191,0.6)";
-    ctx.fillText("#ときめきラボ  #パーソナルフレンズ  #診断", W / 2, H - 45);
+    ctx.fillText("#診断研究所  #パーソナルフレンズ  #診断", W / 2, H - 45);
 
     // URL
     ctx.font = "10px sans-serif";
@@ -336,7 +336,7 @@ export default function PersonalFriends() {
   if (!mounted) return null;
 
   const shareText = completedCount > 0
-    ? `ときめきラボで${completedCount}/${totalCount}体のパーソナルフレンズを集めたよ！${personaTitle ? `称号は「${personaTitle}」` : ""} #ときめきラボ #パーソナルフレンズ #診断`
+    ? `診断研究所で${completedCount}/${totalCount}体のパーソナルフレンズを集めたよ！${personaTitle ? `称号は「${personaTitle}」` : ""} #診断研究所 #パーソナルフレンズ #診断`
     : "";
   const shareUrl = "https://tokimeki-lab.com/persona";
 

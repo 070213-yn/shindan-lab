@@ -486,7 +486,7 @@ export const moneyDiagnosis: DiagnosisConfig = {
     '#マネータイプ診断',
     '#お金の使い方',
     '#金銭感覚診断',
-    '#ときめきラボ',
+    '#診断研究所',
   ],
   references: [
     'Klontz, B., Britt, S.L., Mentzer, J. & Klontz, T. (2011). Money Beliefs and Financial Behaviors: Development of the Klontz Money Script Inventory. Journal of Financial Therapy, 2(1), 1-22.',

@@ -714,7 +714,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
   // --- メタ情報 ---
   questionCount: 72,
   estimatedMinutes: 18,
-  hashtags: ['#MBTI128', '#超精密人格診断', '#128タイプ', '#ときめきラボ', '#性格診断', '#人格進化'],
+  hashtags: ['#MBTI128', '#超精密人格診断', '#128タイプ', '#診断研究所', '#性格診断', '#人格進化'],
   references: [
     'Jung, C.G. (1921). Psychological Types. Princeton University Press.',
     'Myers, I.B. & Myers, P.B. (1995). Gifts Differing: Understanding Personality Type. Davies-Black Publishing.',

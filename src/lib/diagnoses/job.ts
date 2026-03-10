@@ -670,7 +670,7 @@ export const jobDiagnosis: DiagnosisConfig = {
     '#将来の仕事',
     '#キャリア診断',
     '#適性検査',
-    '#ときめきラボ',
+    '#診断研究所',
   ],
   references: [
     'Holland, J.L. (1997). Making Vocational Choices: A Theory of Vocational Personalities and Work Environments (3rd ed.). Psychological Assessment Resources.',

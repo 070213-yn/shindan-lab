@@ -20,6 +20,14 @@ import {
   generatePersonaDescription,
 } from "@/lib/personaEngine";
 
+/** Hex色+アルファ値(0-1)をrgba文字列に変換するヘルパー */
+function hexToRgba(hex: string, alpha: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
 /** Canvas角丸四角形ヘルパー */
 function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
@@ -100,26 +108,26 @@ export default function PersonaCard() {
 
     // 装飾ブロブ
     const blobGrad1 = ctx.createRadialGradient(W * 0.2, H * 0.15, 0, W * 0.2, H * 0.15, 200);
-    blobGrad1.addColorStop(0, `${colors.primary}30`);
-    blobGrad1.addColorStop(1, "transparent");
+    blobGrad1.addColorStop(0, hexToRgba(colors.primary, 0.19));
+    blobGrad1.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = blobGrad1;
     ctx.fillRect(0, 0, W, H * 0.4);
 
     const blobGrad2 = ctx.createRadialGradient(W * 0.8, H * 0.7, 0, W * 0.8, H * 0.7, 180);
-    blobGrad2.addColorStop(0, `${colors.secondary}20`);
-    blobGrad2.addColorStop(1, "transparent");
+    blobGrad2.addColorStop(0, hexToRgba(colors.secondary, 0.13));
+    blobGrad2.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = blobGrad2;
     ctx.fillRect(0, H * 0.4, W, H * 0.6);
 
     // 外枠
     roundedRect(ctx, 12, 12, W - 24, H - 24, 24);
-    ctx.strokeStyle = `${colors.primary}40`;
+    ctx.strokeStyle = hexToRgba(colors.primary, 0.25);
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // 内枠（装飾）
     roundedRect(ctx, 20, 20, W - 40, H - 40, 20);
-    ctx.strokeStyle = `${colors.primary}15`;
+    ctx.strokeStyle = hexToRgba(colors.primary, 0.08);
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -127,7 +135,7 @@ export default function PersonaCard() {
 
     // ヘッダー: 診断研究所
     ctx.font = "bold 16px sans-serif";
-    ctx.fillStyle = `${colors.primary}B0`;
+    ctx.fillStyle = hexToRgba(colors.primary, 0.69);
     ctx.textAlign = "center";
     ctx.fillText("診断研究所 PERSONA CARD", W / 2, y);
     y += 50;
@@ -140,21 +148,21 @@ export default function PersonaCard() {
     // エンブレム外輪
     ctx.beginPath();
     ctx.arc(cx, cy, emblemR + 8, 0, Math.PI * 2);
-    ctx.strokeStyle = `${colors.primary}50`;
+    ctx.strokeStyle = hexToRgba(colors.primary, 0.31);
     ctx.lineWidth = 2;
     ctx.stroke();
 
     ctx.beginPath();
     ctx.arc(cx, cy, emblemR + 3, 0, Math.PI * 2);
-    ctx.strokeStyle = `${colors.secondary}30`;
+    ctx.strokeStyle = hexToRgba(colors.secondary, 0.19);
     ctx.lineWidth = 1;
     ctx.stroke();
 
     // エンブレム内部（グラデーション）
     const emblemGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, emblemR);
-    emblemGrad.addColorStop(0, `${colors.primary}40`);
-    emblemGrad.addColorStop(0.7, `${colors.secondary}20`);
-    emblemGrad.addColorStop(1, `${colors.accent}10`);
+    emblemGrad.addColorStop(0, hexToRgba(colors.primary, 0.25));
+    emblemGrad.addColorStop(0.7, hexToRgba(colors.secondary, 0.13));
+    emblemGrad.addColorStop(1, hexToRgba(colors.accent, 0.06));
     ctx.beginPath();
     ctx.arc(cx, cy, emblemR, 0, Math.PI * 2);
     ctx.fillStyle = emblemGrad;
@@ -192,7 +200,7 @@ export default function PersonaCard() {
 
     // サブタイトル
     ctx.font = "14px sans-serif";
-    ctx.fillStyle = `${colors.primary}90`;
+    ctx.fillStyle = hexToRgba(colors.primary, 0.565);
     ctx.fillText(subtitle, W / 2, y);
     y += 20;
 
@@ -211,8 +219,8 @@ export default function PersonaCard() {
     // 区切り線
     const lineGrad = ctx.createLinearGradient(60, y, W - 60, y);
     lineGrad.addColorStop(0, "transparent");
-    lineGrad.addColorStop(0.3, `${colors.primary}60`);
-    lineGrad.addColorStop(0.7, `${colors.secondary}60`);
+    lineGrad.addColorStop(0.3, hexToRgba(colors.primary, 0.376));
+    lineGrad.addColorStop(0.7, hexToRgba(colors.secondary, 0.376));
     lineGrad.addColorStop(1, "transparent");
     ctx.beginPath();
     ctx.moveTo(60, y);
@@ -303,9 +311,9 @@ export default function PersonaCard() {
         else ctx.lineTo(px, py);
       });
       ctx.closePath();
-      ctx.fillStyle = `${colors.primary}25`;
+      ctx.fillStyle = hexToRgba(colors.primary, 0.145);
       ctx.fill();
-      ctx.strokeStyle = `${colors.primary}80`;
+      ctx.strokeStyle = hexToRgba(colors.primary, 0.502);
       ctx.lineWidth = 2;
       ctx.stroke();
 
@@ -328,7 +336,7 @@ export default function PersonaCard() {
     if (keywords.length > 0 && y + 60 < H - 60) {
       ctx.font = "11px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillStyle = `${colors.primary}80`;
+      ctx.fillStyle = hexToRgba(colors.primary, 0.502);
       const tagText = keywords.slice(0, 8).map((k) => `#${k}`).join("  ");
       ctx.fillText(tagText, W / 2, y);
       y += 20;
@@ -341,7 +349,7 @@ export default function PersonaCard() {
 
     // フッター
     ctx.font = "11px sans-serif";
-    ctx.fillStyle = `${colors.primary}50`;
+    ctx.fillStyle = hexToRgba(colors.primary, 0.314);
     ctx.textAlign = "center";
     ctx.fillText("#診断研究所 #ペルソナカード", W / 2, H - 40);
     ctx.font = "9px sans-serif";
@@ -350,12 +358,14 @@ export default function PersonaCard() {
   }
 
   function handleSaveImage() {
+    // 保存前にCanvasを再描画（描画が消えている場合の対策）
+    drawPersonaCanvas();
     const canvas = canvasRef.current;
     if (!canvas) return;
     const url = canvas.toDataURL("image/png");
     const a = document.createElement("a");
     a.href = url;
-    a.download = "tokimeki-lab-persona.png";
+    a.download = "shindan-lab-persona.png";
     a.click();
   }
 

@@ -503,7 +503,7 @@ export const stressDiagnosis: DiagnosisConfig = {
     '#あなたの心の処方箋',
     '#ストレス対処タイプ診断',
     '#心理テスト',
-    '#ときめきラボ',
+    '#診断研究所',
   ],
   references: [
     'Lazarus, R. S., & Folkman, S. (1984). Stress, Appraisal, and Coping. Springer Publishing Company.',

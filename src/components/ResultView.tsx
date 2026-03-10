@@ -132,7 +132,7 @@ export default function ResultView() {
     ctx.font = "bold 14px sans-serif";
     ctx.fillStyle = "rgba(45,212,191,.8)";
     ctx.textAlign = "center";
-    ctx.fillText("ときめきラボ ── 12タイプ恋愛性格診断", W / 2, 36);
+    ctx.fillText("診断研究所 ── 12タイプ恋愛性格診断", W / 2, 36);
 
     // --- 左半分: タイプ情報 ---
     const leftX = 60;
@@ -217,7 +217,7 @@ export default function ResultView() {
     // ハッシュタグ
     ctx.font = "11px sans-serif";
     ctx.fillStyle = "rgba(45,212,191,.6)";
-    ctx.fillText("#ときめきラボ #12タイプ恋愛診断", W / 2, bottomY + 22);
+    ctx.fillText("#診断研究所 #12タイプ恋愛診断", W / 2, bottomY + 22);
   }
 
   /** テキスト折り返しヘルパー（Canvas描画用） */
@@ -253,7 +253,7 @@ export default function ResultView() {
   }
 
   /** シェアテキスト */
-  const shareText = `ときめきラボで恋愛タイプ診断したら「${bestType.emoji}${bestType.name}」だった！ #ときめきラボ #12タイプ恋愛診断`;
+  const shareText = `診断研究所で恋愛タイプ診断したら「${bestType.emoji}${bestType.name}」だった！ #診断研究所 #12タイプ恋愛診断`;
   const shareUrl = "https://tokimeki-lab.com";
 
   return (

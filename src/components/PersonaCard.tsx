@@ -276,11 +276,17 @@ export default function PersonaCard() {
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // ラベル
+        // ラベル（位置に応じてテキスト揃えを調整）
         ctx.font = "10px sans-serif";
         ctx.fillStyle = stats.colors[i];
-        ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        if (lx < radarCx - 10) {
+          ctx.textAlign = "right";
+        } else if (lx > radarCx + 10) {
+          ctx.textAlign = "left";
+        } else {
+          ctx.textAlign = "center";
+        }
         ctx.fillText(label, lx, ly);
       });
       ctx.textBaseline = "alphabetic";

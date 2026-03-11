@@ -56,6 +56,42 @@ export function calcTypeScore(norm: number[], typeId: string): number {
     // 知性型: 高成長、高実利、高安定、低不安
     case 'INTELLECTUAL':
       return Gr * 2 + Pr * 1.2 + St * 0.8 + (100 - A) * 0.5;
+    // 一途溺愛型: 高情熱、高献身、低回避
+    case 'DEVOTION':
+      return P * 2.5 + Ag * 2 + (100 - Av) * 1.2 + (100 - Lu) * 0.5;
+    // ツンデレ型: 中回避、高情熱、中不安
+    case 'TSUNDERE':
+      return P * 2 + Av * 1.5 + A * 1.2 + (100 - Lu) * 0.3;
+    // じっくり燃焼型: 高友情、高成長、中情熱
+    case 'SLOW_BURN':
+      return St * 2.5 + Gr * 2 + P * 0.8 + (100 - Lu) * 0.3;
+    // 守りたがり型: 高献身、高現実、中不安
+    case 'PROTECTOR':
+      return Ag * 2.5 + Pr * 1.8 + A * 0.8 + (100 - Av) * 0.5;
+    // 恋のチャレンジャー型: 高自由、高情熱、中成長
+    case 'ADVENTURER':
+      return Lu * 2.5 + P * 2 + Gr * 0.8 + (100 - A) * 0.3;
+    // ミラーリング型: 中献身、中友情、高成長
+    case 'MIRROR':
+      return Gr * 2.5 + Ag * 1.5 + St * 1.5 + (100 - Av) * 0.5;
+    // 癒し系恋人型: 高献身、高友情、低回避
+    case 'HEALER':
+      return Ag * 2.5 + St * 2 + (100 - Av) * 1.2 + (100 - A) * 0.5;
+    // 理想の恋人追求型: 高成長、高現実、中情熱
+    case 'PERFECTIONIST':
+      return Gr * 2.5 + Pr * 2 + P * 0.8 + (100 - Lu) * 0.3;
+    // ミステリアス型: 高回避、中自由、中情熱
+    case 'MYSTERY':
+      return Av * 2.5 + Lu * 1.5 + P * 1 + (100 - Ag) * 0.5;
+    // 初恋引きずり型: 高不安、高友情、中情熱
+    case 'NOSTALGIC':
+      return A * 2.5 + St * 2 + P * 0.8 + (100 - Lu) * 0.3;
+    // 恋のライバル型: 高情熱、高成長、中自由
+    case 'CHALLENGER':
+      return P * 2.5 + Gr * 1.8 + Lu * 1 + (100 - Av) * 0.3;
+    // 運命信者型: 高情熱、中不安、低現実
+    case 'SOULMATE':
+      return P * 2.5 + A * 1.2 + (100 - Pr) * 1 + Ag * 0.5;
     default:
       return 0;
   }

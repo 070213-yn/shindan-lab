@@ -62,7 +62,7 @@ function BigFiveRadar({ bigFive }: { bigFive: TotalAnalysisType['bigFive'] }) {
   };
 
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} width="100%" style={{ maxWidth: 300, margin: '0 auto', display: 'block' }}>
+    <svg viewBox={`-30 0 ${size + 60} ${size}`} width="100%" style={{ maxWidth: 340, margin: '0 auto', display: 'block' }}>
       {/* ガイド多角形 */}
       {[0.33, 0.66, 1].map((scale) => (
         <path key={scale} d={guidePath(scale)} fill="none" stroke="rgba(45,212,191,0.12)" strokeWidth="1" />
@@ -86,8 +86,10 @@ function BigFiveRadar({ bigFive }: { bigFive: TotalAnalysisType['bigFive'] }) {
       {/* ラベル */}
       {labels.map((l, i) => {
         const p = getPoint(i, 1.25);
+        // 左側のラベルはend、右側はstart、上下はmiddle
+        const anchor = p.x < cx - 10 ? "end" : p.x > cx + 10 ? "start" : "middle";
         return (
-          <text key={i} x={p.x} y={p.y} textAnchor="middle" dominantBaseline="middle" fill="#4a6572" fontSize="11">
+          <text key={i} x={p.x} y={p.y} textAnchor={anchor} dominantBaseline="middle" fill="#4a6572" fontSize="11">
             {l.label}
           </text>
         );

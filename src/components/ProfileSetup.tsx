@@ -38,7 +38,7 @@ const TOTAL_STEPS = 3;
 
 // カード選択のアニメーション: ホバー時のtranslateYとshadowを追加
 const cardBase: React.CSSProperties = {
-  background: "rgba(255,255,255,.04)",
+  background: "rgba(255,255,255,.7)",
   borderWidth: 2,
   borderStyle: "solid",
   borderColor: "rgba(255,107,232,.2)",
@@ -47,6 +47,7 @@ const cardBase: React.CSSProperties = {
   cursor: "pointer",
   textAlign: "center",
   transition: "all .25s cubic-bezier(.25,1,.5,1)",
+  backdropFilter: "blur(8px)",
 };
 
 // 選択時のbox-shadow追加で視覚フィードバック改善
@@ -74,7 +75,7 @@ const btnBack: React.CSSProperties = {
   borderRadius: 50,
   border: "1px solid rgba(255,107,232,.25)",
   background: "transparent",
-  color: "#C8AEED",
+  color: "#7B5A8E",
   fontWeight: 600,
   fontSize: 14,
   cursor: "pointer",
@@ -157,10 +158,10 @@ export default function ProfileSetup() {
   // --- ステップ共通ヘッダー（\nを<br />に変換して表示） ---
   const renderHeader = (stepNum: number, title: string, desc?: string) => (
     <div style={{ marginBottom: 28 }}>
-      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: 3, color: "rgba(255,107,232,.5)", marginBottom: 6 }}>
+      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: 3, color: "#D946A8", marginBottom: 6 }}>
         STEP {stepNum} / {TOTAL_STEPS}
       </p>
-      <h2 style={{ fontFamily: "'Stick', sans-serif", fontSize: 26, color: "#FF6BE8", lineHeight: 1.3, marginBottom: 6 }}>
+      <h2 style={{ fontFamily: "'Stick', sans-serif", fontSize: 26, color: "#C026A3", lineHeight: 1.3, marginBottom: 6 }}>
         {/* タイトル内の\nを<br />に変換 */}
         {title.split("\n").map((line, i, arr) => (
           <span key={i}>
@@ -170,7 +171,7 @@ export default function ProfileSetup() {
         ))}
       </h2>
       {desc && (
-        <p style={{ fontSize: 13, color: "#C8AEED", lineHeight: 1.8 }}>
+        <p style={{ fontSize: 13, color: "#6B5A7E", lineHeight: 1.8 }}>
           {/* 説明文内の\nも<br />に変換 */}
           {desc.split("\n").map((line, i, arr) => (
             <span key={i}>
@@ -198,7 +199,7 @@ export default function ProfileSetup() {
             style={{
               ...btnBack,
               // ホバー時: テキストとボーダーを明るくする
-              color: backHovered ? "#FF6BE8" : "#C8AEED",
+              color: backHovered ? "#C026A3" : "#7B5A8E",
               borderColor: backHovered ? "rgba(255,107,232,.5)" : "rgba(255,107,232,.25)",
             }}
             onMouseEnter={() => setBackHovered(true)}
@@ -267,7 +268,7 @@ export default function ProfileSetup() {
         >
           {g.emoji}
         </span>
-        <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 3 }}>{g.label}</div>
+        <div style={{ fontSize: 15, fontWeight: 700, color: "#5B2D6E", marginBottom: 3 }}>{g.label}</div>
       </div>
     );
   };
@@ -317,7 +318,7 @@ export default function ProfileSetup() {
             >
               {g.emoji}
             </span>
-            <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>{g.label}</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: "#5B2D6E" }}>{g.label}</div>
           </div>
         );
       })()}
@@ -351,7 +352,7 @@ export default function ProfileSetup() {
           >
             {profile.realAge}
           </span>
-          <span style={{ fontSize: 16, color: "rgba(255,107,232,.6)", fontWeight: 700 }}>歳</span>
+          <span style={{ fontSize: 16, color: "#C026A3", fontWeight: 700 }}>歳</span>
         </div>
 
         {/* スライダー（カスタムトラック + アクセントライン） */}
@@ -383,7 +384,7 @@ export default function ProfileSetup() {
             }}
           />
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "rgba(255,107,232,.4)", marginTop: 4 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#B07CC8", marginTop: 4 }}>
           <span>8歳</span><span>100歳</span>
         </div>
 
@@ -445,8 +446,8 @@ export default function ProfileSetup() {
               >
                 {opt.emoji}
               </span>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", marginBottom: 2 }}>{opt.label}</div>
-              <div style={{ fontSize: 10, color: "#C8AEED" }}>{opt.sub}</div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#5B2D6E", marginBottom: 2 }}>{opt.label}</div>
+              <div style={{ fontSize: 10, color: "#8B7A9E" }}>{opt.sub}</div>
             </div>
           );
         })}

@@ -376,7 +376,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                   marginBottom: 10,
                 }}
               >
-                <span style={{ fontSize: 11, color: "rgba(74,101,114,.5)" }}>
+                <span style={{ fontSize: 11, color: "rgba(74,101,114,.7)" }}>
                   Q{i + 1}
                 </span>
                 {answers[i] !== null && (
@@ -456,7 +456,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                   justifyContent: "space-between",
                   marginTop: 6,
                   fontSize: 9,
-                  color: "rgba(74,101,114,.5)",
+                  color: "rgba(74,101,114,.7)",
                   padding: "0 4px",
                 }}
               >
@@ -483,7 +483,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
               background: allAnswered
                 ? `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`
                 : "rgba(45,212,191,.1)",
-              color: allAnswered ? "#fff" : "rgba(74,101,114,.4)",
+              color: allAnswered ? "#fff" : "rgba(74,101,114,.6)",
               border: "none",
               borderRadius: 50,
               fontSize: 16,

@@ -184,7 +184,7 @@ export default function DiagProfileSetup({ config, store, theme }: Props) {
           style={{
             fontSize: 13,
             color: theme.textSecondary,
-            opacity: 0.6,
+            opacity: 0.85,
             marginBottom: 28,
           }}
         >
@@ -258,7 +258,7 @@ export default function DiagProfileSetup({ config, store, theme }: Props) {
             >
               {profileData[currentField.id] ?? currentField.defaultValue ?? currentField.min ?? 10}
               {currentField.unit && (
-                <span style={{ fontSize: 18, color: theme.textSecondary, opacity: 0.6, marginLeft: 4 }}>
+                <span style={{ fontSize: 18, color: theme.textSecondary, opacity: 0.85, marginLeft: 4 }}>
                   {currentField.unit}
                 </span>
               )}
@@ -291,7 +291,7 @@ export default function DiagProfileSetup({ config, store, theme }: Props) {
                 marginTop: 8,
                 fontSize: 11,
                 color: theme.textSecondary,
-                opacity: 0.5,
+                opacity: 0.8,
               }}
             >
               <span>{currentField.min ?? 0}{currentField.unit || ""}</span>

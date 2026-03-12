@@ -16,6 +16,7 @@ import { pastlifeDiagnosis } from './pastlife';
 import { stressDiagnosis } from './stress';
 import { mbti128Diagnosis } from './mbti128';
 import { torisetsuDiagnosis } from './torisetsu';
+import { godtypeDiagnosis } from './godtype';
 
 /** 全診断の設定マップ（ID → 設定） */
 export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
@@ -24,6 +25,7 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   stress: stressDiagnosis,
   mbti128: mbti128Diagnosis,
   torisetsu: torisetsuDiagnosis,
+  godtype: godtypeDiagnosis,
 };
 
 /** ポータル表示用の診断一覧（表示順制御） */
@@ -33,4 +35,5 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   pastlifeDiagnosis,
   stressDiagnosis,
   torisetsuDiagnosis,
+  godtypeDiagnosis,
 ];

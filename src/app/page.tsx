@@ -122,6 +122,7 @@ const CATEGORY_MAP: Record<string, CategoryKey> = {
   love: "social",
   pastlife: "mystery",
   torisetsu: "personality",
+  godtype: "mystery",
 };
 
 // 全カードデータ（MBTI-128を先頭 + 恋愛 + 他の診断）
@@ -168,7 +169,7 @@ const LAB_NEWS = [
 // タイプライター用テキスト
 const TYPEWRITER_TEXTS = [
   "あなたの本当の姿、実験してみない?",
-  "心理学ベースの本格診断 6種類",
+  "心理学ベースの本格診断 7種類",
   "知らなかった自分に出会える場所",
   "完全無料・登録不要ですぐ始められる",
 ];
@@ -179,6 +180,7 @@ const CARD_TAGS: Record<string, { text: string; bg: string; color: string }> = {
   shadow: { text: "人気", bg: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "#fff" },
   love: { text: "定番", bg: "linear-gradient(135deg, #ec4899, #f43f5e)", color: "#fff" },
   torisetsu: { text: "新作", bg: "linear-gradient(135deg, #2dd4bf, #38bdf8)", color: "#fff" },
+  godtype: { text: "新作", bg: "linear-gradient(135deg, #D4AF37, #F0C040)", color: "#fff" },
 };
 
 

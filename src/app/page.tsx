@@ -118,18 +118,10 @@ const CATEGORIES: { key: CategoryKey; label: string; emoji: string }[] = [
 const CATEGORY_MAP: Record<string, CategoryKey> = {
   mbti128: "personality",
   shadow: "personality",
-  mental: "mind",
   stress: "mind",
-  talent: "ability",
-  learning: "ability",
-  job: "career",
-  money: "career",
   love: "social",
-  spirit: "mystery",
-  isekai: "mystery",
   pastlife: "mystery",
   torisetsu: "personality",
-  deathcause: "mystery",
 };
 
 // 全カードデータ（MBTI-128を先頭 + 恋愛 + 他の診断）
@@ -168,7 +160,7 @@ const POPULAR_EXPERIMENTS = [
 
 // 研究所からのお知らせ
 const LAB_NEWS = [
-  { date: "2026.03", text: "新着: 前世の死因診断を追加しました!", isNew: true },
+  { date: "2026.03", text: "診断ラインナップをリニューアルしました!", isNew: true },
   { date: "2026.02", text: "ペルソナカード機能がパワーアップ!", isNew: false },
   { date: "2026.01", text: "MBTI-128 超精密診断をリリース!", isNew: false },
 ];
@@ -176,7 +168,7 @@ const LAB_NEWS = [
 // タイプライター用テキスト
 const TYPEWRITER_TEXTS = [
   "あなたの本当の姿、実験してみない?",
-  "心理学ベースの本格診断 13種類",
+  "心理学ベースの本格診断 6種類",
   "知らなかった自分に出会える場所",
   "完全無料・登録不要ですぐ始められる",
 ];
@@ -185,7 +177,6 @@ const TYPEWRITER_TEXTS = [
 const CARD_TAGS: Record<string, { text: string; bg: string; color: string }> = {
   mbti128: { text: "大人気", bg: "linear-gradient(135deg, #FF6BE8, #C45AFF)", color: "#fff" },
   shadow: { text: "人気", bg: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "#fff" },
-  deathcause: { text: "話題", bg: "linear-gradient(135deg, #f59e0b, #ef4444)", color: "#fff" },
   love: { text: "定番", bg: "linear-gradient(135deg, #ec4899, #f43f5e)", color: "#fff" },
   torisetsu: { text: "新作", bg: "linear-gradient(135deg, #2dd4bf, #38bdf8)", color: "#fff" },
 };

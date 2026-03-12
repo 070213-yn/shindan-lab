@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { TYPES } from "@/lib/types";
+import PixelSparkle from "@/components/PixelSparkle";
 
 // ============================================================
 // 恋愛性格診断 ランディングページ
@@ -105,6 +106,9 @@ export default function LandingPage() {
           background: "linear-gradient(170deg, #FFF0F8 0%, #FDE4F7 20%, #F3E0FF 45%, #E8D5FF 65%, #F5E6FF 85%, #FFF5FD 100%)",
         }}
       />
+
+      {/* ========== ピクセルキラキラパーティクル ========== */}
+      <PixelSparkle color="#FF6BE8" count={15} size={18} speed={130} style={{ zIndex: 1 }} />
 
       {/* ========== 浮遊ハートSVGアニメーション（背景装飾） ========== */}
       <div style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>

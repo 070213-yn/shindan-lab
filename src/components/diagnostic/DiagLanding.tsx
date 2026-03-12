@@ -13,6 +13,7 @@ import Link from "next/link";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 import { getDiagnosticTheme } from "@/lib/diagnosticThemes";
+import PixelSparkle from "@/components/PixelSparkle";
 
 interface Props {
   config: DiagnosisConfig;
@@ -167,6 +168,9 @@ export default function DiagLanding({ config, store }: Props) {
         overflow: "hidden",
       }}
     >
+      {/* ピクセルキラキラパーティクル */}
+      <PixelSparkle color={config.themeColor} count={10} size={20} speed={140} />
+
       {/* 動的スタイル */}
       <style dangerouslySetInnerHTML={{ __html: dynamicStyles }} />
 

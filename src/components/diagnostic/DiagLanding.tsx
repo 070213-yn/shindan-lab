@@ -8,7 +8,7 @@
  * テーマ固有のSVG装飾・ボタンスタイル・フレーバーテキストで個性を演出。
  */
 
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
@@ -79,6 +79,30 @@ export default function DiagLanding({ config, store }: Props) {
   const { setCurrentStep } = store;
   // テーマから色情報を取得
   const theme = useMemo(() => getDiagnosticTheme(config.id), [config.id]);
+
+  // --- IntersectionObserver: タイプカードのstaggered fadeUpアニメーション ---
+  const typesGridRef = useRef<HTMLDivElement>(null);
+  const [typesVisible, setTypesVisible] = useState(false);
+
+  useEffect(() => {
+    if (!typesGridRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTypesVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(typesGridRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // タイプ一覧セクションへスムーズスクロール
+  const scrollToTypes = () => {
+    document.getElementById("result-types")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   // 参考文献の最初の1つからラベルを生成
   const referenceLabel = config.references.length > 0
@@ -674,6 +698,35 @@ export default function DiagLanding({ config, store }: Props) {
           />
         </button>
 
+        {/* ====== タイプ一覧を見るボタン ====== */}
+        <button
+          onClick={scrollToTypes}
+          style={{
+            background: "transparent",
+            border: "none",
+            padding: "12px 0",
+            color: theme.textSecondary,
+            fontSize: 13,
+            cursor: "pointer",
+            textDecoration: "underline",
+            textUnderlineOffset: 3,
+            transition: "color 0.3s",
+            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.45s both",
+            opacity: 0.8,
+            width: "100%",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.color = config.themeColor;
+            (e.currentTarget as HTMLButtonElement).style.opacity = "1";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.color = theme.textSecondary;
+            (e.currentTarget as HTMLButtonElement).style.opacity = "0.8";
+          }}
+        >
+          {config.resultTypes.length}タイプ一覧を見る ↓
+        </button>
+
         {/* ====== 下部情報エリア ====== */}
         <div
           style={{
@@ -771,6 +824,216 @@ export default function DiagLanding({ config, store }: Props) {
         </div>
       </div>
       </div>
+
+      {/* ====== タイプ一覧セクション ====== */}
+      <section
+        id="result-types"
+        style={{
+          padding: "60px 0 40px",
+          maxWidth: 680,
+          width: "100%",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
+        {/* セクションタイトル */}
+        <div style={{ textAlign: "left", marginBottom: 32, padding: "0 4px" }}>
+          <span
+            style={{
+              fontSize: 11,
+              letterSpacing: "0.15em",
+              color: config.themeColor,
+              display: "block",
+              marginBottom: 6,
+              fontWeight: 700,
+            }}
+          >
+            RESULT TYPES
+          </span>
+          <h2
+            className="font-stick"
+            style={{
+              fontSize: 22,
+              color: theme.textPrimary,
+              margin: 0,
+            }}
+          >
+            診断結果タイプ一覧
+          </h2>
+          {/* アクセントライン */}
+          <div
+            style={{
+              width: 48,
+              height: 3,
+              borderRadius: 3,
+              background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo})`,
+              marginTop: 10,
+            }}
+          />
+        </div>
+
+        {/* タイプカードグリッド */}
+        <div
+          ref={typesGridRef}
+          className="diag-types-grid"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 12,
+          }}
+        >
+          {config.resultTypes.map((type, index) => (
+            <div
+              key={type.id}
+              style={{
+                background: theme.cardBg,
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                borderRadius: 14,
+                padding: "18px 14px",
+                border: `1.5px solid ${type.color}30`,
+                transition: "transform 0.3s, border-color 0.3s, box-shadow 0.3s",
+                opacity: typesVisible ? 1 : 0,
+                transform: typesVisible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.96)",
+                transitionProperty: "opacity, transform, border-color, box-shadow",
+                transitionDuration: "0.5s, 0.5s, 0.3s, 0.3s",
+                transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
+                transitionDelay: typesVisible ? `${index * 0.05}s` : "0s",
+                boxShadow: `0 2px 8px ${config.themeColor}08`,
+                cursor: "default",
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.transform = "translateY(-3px) scale(1.02)";
+                el.style.borderColor = type.color;
+                el.style.boxShadow = `0 0 16px ${type.color}25, 0 6px 20px ${config.themeColor}10`;
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.transform = "none";
+                el.style.borderColor = `${type.color}30`;
+                el.style.boxShadow = `0 2px 8px ${config.themeColor}08`;
+              }}
+            >
+              {/* 絵文字 */}
+              <div style={{ fontSize: 28, marginBottom: 6, lineHeight: 1 }}>
+                {type.emoji}
+              </div>
+              {/* タイプ名 */}
+              <h3
+                className="font-zen"
+                style={{
+                  fontSize: 13,
+                  fontWeight: 700,
+                  color: type.color,
+                  marginBottom: 3,
+                  margin: 0,
+                  lineHeight: 1.3,
+                }}
+              >
+                {type.name}
+              </h3>
+              {/* タグ */}
+              <p
+                style={{
+                  fontSize: 10,
+                  color: theme.textSecondary,
+                  margin: 0,
+                  letterSpacing: "0.02em",
+                  lineHeight: 1.4,
+                  opacity: 0.7,
+                }}
+              >
+                {type.tag}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* ====== タイプ一覧下の開始ボタン ====== */}
+        <div
+          style={{
+            marginTop: 40,
+            textAlign: "center",
+          }}
+        >
+          <button
+            onClick={() => setCurrentStep("profile")}
+            className="diag-landing-btn"
+            style={{
+              position: "relative",
+              width: "100%",
+              maxWidth: 400,
+              padding: "18px 0",
+              background: `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`,
+              color: "#fff",
+              border: "none",
+              borderRadius: 50,
+              fontSize: 17,
+              fontWeight: 700,
+              fontFamily: "'Zen Maru Gothic', sans-serif",
+              cursor: "pointer",
+              boxShadow: `0 4px 24px ${config.themeColor}40`,
+              transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+              overflow: "hidden",
+              letterSpacing: "0.04em",
+            }}
+          >
+            {/* シマーアニメーション */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "-100%",
+                width: "60%",
+                height: "100%",
+                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 60%, transparent 100%)",
+                animation: "diagLandingShimmer 3s ease-in-out 1.5s infinite",
+                pointerEvents: "none",
+              }}
+            />
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                opacity: 0.9,
+                position: "relative",
+              }}
+              dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
+            />
+            <span style={{ position: "relative" }}>{buttonLabel}</span>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                opacity: 0.9,
+                transform: "scaleX(-1)",
+                position: "relative",
+              }}
+              dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
+            />
+          </button>
+        </div>
+      </section>
+
+      {/* レスポンシブグリッド用スタイル */}
+      <style jsx>{`
+        @media (max-width: 900px) {
+          .diag-types-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+          }
+        }
+        @media (max-width: 580px) {
+          .diag-types-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

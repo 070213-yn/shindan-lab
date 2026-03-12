@@ -5,7 +5,7 @@
  * ポータルページと動的ルーティングで使用。
  *
  * 除外済み診断（ファイルは残存）:
- * talent, spirit, isekai, mental, money, job, learning, deathcause
+ * talent, spirit, isekai, mental, money, job, learning, deathcause, torisetsu
  */
 
 import type { DiagnosisConfig } from '../diagnosticTypes';
@@ -15,7 +15,6 @@ import { shadowDiagnosis } from './shadow';
 import { pastlifeDiagnosis } from './pastlife';
 import { stressDiagnosis } from './stress';
 import { mbti128Diagnosis } from './mbti128';
-import { torisetsuDiagnosis } from './torisetsu';
 import { godtypeDiagnosis } from './godtype';
 
 /** 全診断の設定マップ（ID → 設定） */
@@ -24,7 +23,6 @@ export const DIAGNOSIS_REGISTRY: Record<string, DiagnosisConfig> = {
   pastlife: pastlifeDiagnosis,
   stress: stressDiagnosis,
   mbti128: mbti128Diagnosis,
-  torisetsu: torisetsuDiagnosis,
   godtype: godtypeDiagnosis,
 };
 
@@ -34,6 +32,5 @@ export const DIAGNOSIS_LIST: DiagnosisConfig[] = [
   shadowDiagnosis,
   pastlifeDiagnosis,
   stressDiagnosis,
-  torisetsuDiagnosis,
   godtypeDiagnosis,
 ];

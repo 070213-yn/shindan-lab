@@ -120,7 +120,6 @@ const CATEGORY_MAP: Record<string, CategoryKey> = {
   stress: "mind",
   love: "social",
   pastlife: "mystery",
-  torisetsu: "personality",
   godtype: "mystery",
 };
 
@@ -155,7 +154,7 @@ const ALL_DIAGNOSES = [
 const POPULAR_EXPERIMENTS = [
   { rank: 1, id: "mbti128", medal: "#FFD700", label: "ゴールド" },
   { rank: 2, id: "love", medal: "#C0C0C0", label: "シルバー" },
-  { rank: 3, id: "torisetsu", medal: "#CD7F32", label: "ブロンズ" },
+  { rank: 3, id: "stress", medal: "#CD7F32", label: "ブロンズ" },
 ];
 
 // 研究所からのお知らせ
@@ -166,7 +165,7 @@ const LAB_NEWS = [
 // タイプライター用テキスト
 const TYPEWRITER_TEXTS = [
   "あなたの本当の姿、実験してみない?",
-  "心理学ベースの本格診断 7種類",
+  "心理学ベースの本格診断 6種類",
   "知らなかった自分に出会える場所",
   "完全無料・登録不要ですぐ始められる",
 ];
@@ -176,7 +175,6 @@ const CARD_TAGS: Record<string, { text: string; bg: string; color: string }> = {
   mbti128: { text: "大人気", bg: "linear-gradient(135deg, #FF6BE8, #C45AFF)", color: "#fff" },
   shadow: { text: "人気", bg: "linear-gradient(135deg, #6366f1, #8b5cf6)", color: "#fff" },
   love: { text: "定番", bg: "linear-gradient(135deg, #ec4899, #f43f5e)", color: "#fff" },
-  torisetsu: { text: "新作", bg: "linear-gradient(135deg, #2dd4bf, #38bdf8)", color: "#fff" },
   godtype: { text: "新作", bg: "linear-gradient(135deg, #D4AF37, #F0C040)", color: "#fff" },
 };
 
@@ -297,7 +295,7 @@ export default function PortalPage() {
 
   // ティッカー
   const tickerItems = [
-    "13種類の本格実験",
+    "6種類の本格実験",
     "心理学研究ベース",
     "完全無料・登録不要",
     "ペルソナカード生成",
@@ -509,7 +507,7 @@ export default function PortalPage() {
             <TestTubeSvg size={22} color="#38bdf8" style={{ transform: "rotate(15deg)" }} />
           </div>
 
-          {/* 「13種類の本格診断」バッジ */}
+          {/* 「6種類の本格診断」バッジ */}
           <div style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             padding: "8px 20px", borderRadius: 50,
@@ -527,7 +525,7 @@ export default function PortalPage() {
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
             }}>
-              13種類の本格診断
+              6種類の本格診断
             </span>
             <span style={{
               fontSize: 10, fontWeight: 700, color: "#fff",

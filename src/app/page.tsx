@@ -11,6 +11,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { DIAGNOSIS_LIST } from "@/lib/diagnoses";
 import { usePersonaStore } from "@/store/personaStore";
+import PixelSparkle from "@/components/PixelSparkle";
 
 // ========== SVGコンポーネント ==========
 
@@ -459,6 +460,16 @@ export default function PortalPage() {
           padding: "120px 20px 40px", position: "relative", zIndex: 1,
         }}
       >
+        {/* ヒーロー背景のキラキラ演出 */}
+        <PixelSparkle
+          variants={["star", "twinkle", "dust", "diamond"]}
+          color="#2dd4bf"
+          count={15}
+          size={16}
+          speed={150}
+          area="top"
+          style={{ zIndex: 0, pointerEvents: "none" }}
+        />
         {/* グラスモーフィズム ヒーローカード */}
         <div style={{
           position: "relative",
@@ -937,6 +948,15 @@ export default function PortalPage() {
           position: "relative", zIndex: 1,
         }}
       >
+        {/* カードグリッド周辺のふわふわパーティクル */}
+        <PixelSparkle
+          variants={["bubble", "dust", "snow"]}
+          color="#8B5CF6"
+          count={8}
+          size={14}
+          speed={160}
+          style={{ zIndex: 0, pointerEvents: "none" }}
+        />
         {/* セクションタイトル */}
         <div style={{
           textAlign: "left", marginBottom: 24,
@@ -1381,6 +1401,15 @@ export default function PortalPage() {
         padding: "0", position: "relative", zIndex: 1,
         marginTop: 40,
       }}>
+        {/* フッター上のさりげないキラキラ装飾 */}
+        <PixelSparkle
+          variant="twinkle"
+          color="#2dd4bf"
+          count={6}
+          size={12}
+          speed={180}
+          style={{ zIndex: 0, pointerEvents: "none" }}
+        />
         {/* グラデーション区切り線 */}
         <div style={{
           height: 2,

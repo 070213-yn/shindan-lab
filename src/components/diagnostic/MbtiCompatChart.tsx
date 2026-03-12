@@ -141,8 +141,29 @@ const DIAG_CONNS: { r1: number; c1: number; r2: number; c2: number; t: number }[
   { r1: 2, c1: 3, r2: 3, c2: 1, t: 0.3 }, // INFP↔ENTJ
 ];
 
-// === 相性計算（認知機能ベース）===
-// スコア 1〜5: 認知機能の補完度を基に算出
+// === 相性マトリックス（ソシオニクス + 認知機能理論ベース）===
+// 根拠: ソシオニクスの14タイプ間関係（Dual/Mirror/Activity/Conflict等）、
+// Jungの認知機能スタック分析、および複数の相性データベースを総合。
+// ★=5(Best), ◆=4(Better), ●=3(Good), ×=1(Bad)
+const COMPAT_MATRIX: Record<string, Record<string, number>> = {
+  ENTP: {ENTP:3,ISFP:4,ISTP:3,ENFP:4,ESFJ:1,INTJ:4,INFJ:5,ESTJ:1,INTP:4,ESFP:4,ESTP:3,INFP:3,ISFJ:1,ENTJ:4,ENFJ:4,ISTJ:1},
+  ISFP: {ENTP:4,ISFP:3,ISTP:3,ENFP:3,ESFJ:4,INTJ:1,INFJ:3,ESTJ:5,INTP:4,ESFP:4,ESTP:3,INFP:4,ISFJ:4,ENTJ:1,ENFJ:3,ISTJ:4},
+  ISTP: {ENTP:3,ISFP:3,ISTP:3,ENFP:1,ESFJ:5,INTJ:3,INFJ:1,ESTJ:4,INTP:4,ESFP:3,ESTP:4,INFP:1,ISFJ:3,ENTJ:4,ENFJ:1,ISTJ:4},
+  ENFP: {ENTP:4,ISFP:3,ISTP:1,ENFP:3,ESFJ:3,INTJ:5,INFJ:4,ESTJ:1,INTP:3,ESFP:3,ESTP:1,INFP:4,ISFJ:3,ENTJ:4,ENFJ:4,ISTJ:1},
+  ESFJ: {ENTP:1,ISFP:4,ISTP:5,ENFP:3,ESFJ:3,INTJ:3,INFJ:3,ESTJ:4,INTP:1,ESFP:4,ESTP:3,INFP:3,ISFJ:4,ENTJ:3,ENFJ:4,ISTJ:3},
+  INTJ: {ENTP:4,ISFP:1,ISTP:3,ENFP:5,ESFJ:3,INTJ:3,INFJ:4,ESTJ:3,INTP:4,ESFP:1,ESTP:3,INFP:4,ISFJ:3,ENTJ:4,ENFJ:3,ISTJ:3},
+  INFJ: {ENTP:5,ISFP:3,ISTP:1,ENFP:4,ESFJ:3,INTJ:4,INFJ:3,ESTJ:3,INTP:4,ESFP:3,ESTP:1,INFP:4,ISFJ:3,ENTJ:3,ENFJ:4,ISTJ:3},
+  ESTJ: {ENTP:1,ISFP:5,ISTP:4,ENFP:1,ESFJ:4,INTJ:3,INFJ:3,ESTJ:3,INTP:1,ESFP:3,ESTP:4,INFP:1,ISFJ:3,ENTJ:3,ENFJ:3,ISTJ:4},
+  INTP: {ENTP:4,ISFP:4,ISTP:4,ENFP:3,ESFJ:1,INTJ:4,INFJ:4,ESTJ:1,INTP:3,ESFP:4,ESTP:3,INFP:3,ISFJ:1,ENTJ:4,ENFJ:5,ISTJ:1},
+  ESFP: {ENTP:4,ISFP:4,ISTP:3,ENFP:3,ESFJ:4,INTJ:1,INFJ:3,ESTJ:3,INTP:4,ESFP:3,ESTP:3,INFP:3,ISFJ:4,ENTJ:1,ENFJ:3,ISTJ:5},
+  ESTP: {ENTP:3,ISFP:3,ISTP:4,ENFP:1,ESFJ:3,INTJ:3,INFJ:1,ESTJ:4,INTP:3,ESFP:3,ESTP:3,INFP:1,ISFJ:5,ENTJ:4,ENFJ:1,ISTJ:4},
+  INFP: {ENTP:3,ISFP:4,ISTP:1,ENFP:4,ESFJ:3,INTJ:4,INFJ:4,ESTJ:1,INTP:3,ESFP:3,ESTP:1,INFP:3,ISFJ:3,ENTJ:5,ENFJ:4,ISTJ:1},
+  ISFJ: {ENTP:1,ISFP:4,ISTP:3,ENFP:3,ESFJ:4,INTJ:3,INFJ:3,ESTJ:3,INTP:1,ESFP:4,ESTP:5,INFP:3,ISFJ:3,ENTJ:3,ENFJ:4,ISTJ:4},
+  ENTJ: {ENTP:4,ISFP:1,ISTP:4,ENFP:4,ESFJ:3,INTJ:4,INFJ:3,ESTJ:3,INTP:4,ESFP:1,ESTP:4,INFP:5,ISFJ:3,ENTJ:3,ENFJ:3,ISTJ:3},
+  ENFJ: {ENTP:4,ISFP:3,ISTP:1,ENFP:4,ESFJ:4,INTJ:3,INFJ:4,ESTJ:3,INTP:5,ESFP:3,ESTP:1,INFP:4,ISFJ:4,ENTJ:3,ENFJ:3,ISTJ:3},
+  ISTJ: {ENTP:1,ISFP:4,ISTP:4,ENFP:1,ESFJ:3,INTJ:3,INFJ:3,ESTJ:4,INTP:1,ESFP:5,ESTP:4,INFP:1,ISFJ:4,ENTJ:3,ENFJ:3,ISTJ:3},
+};
+
 const SCORE_META: Record<number, { label: string; color: string; bg: string }> = {
   5: { label: "\u2605 \u30B4\u30FC\u30EB\u30C7\u30F3\u30DA\u30A2", color: "#FF2255", bg: "#FFF0F3" },
   4: { label: "\u25C6 \u76F8\u6027\u629C\u7FA4", color: "#FF69B4", bg: "#FFF5F9" },
@@ -153,31 +174,7 @@ const SCORE_META: Record<number, { label: string; color: string; bg: string }> =
 
 function getCompatScore(a: string, b: string): number {
   if (a === b) return 3;
-  if (isGoldenPair(a, b)) return 5;
-
-  const fa = STACKS[a];
-  const fb = STACKS[b];
-
-  // 共有する認知機能の数（同じ態度含む: Ne=Ne, Ne!=Ni）
-  const sharedFuncs = fa.filter((f) => fb.includes(f)).length;
-
-  // 4つ全て共有 = ソシオニクスのデュアル/アクティビティ/ミラー
-  if (sharedFuncs === 4) return 4;
-
-  // 0個共有 = 全て逆態度（コンフリクト/スーパーエゴ）
-  if (sharedFuncs === 0) return 1;
-
-  // 2個共有の場合: 主機能/補助機能の関係で判定
-  const [domA, auxA] = fa;
-  const [domB, auxB] = fb;
-
-  // 主機能↔補助機能のクロスマッチ（強い補完関係）
-  if (domA === auxB || auxA === domB) return 4;
-
-  // 同じ主機能（ミラー的）または同じ補助機能
-  if (domA === domB || auxA === auxB) return 3;
-
-  return 2;
+  return COMPAT_MATRIX[a]?.[b] ?? 3;
 }
 
 // === コンポーネント ===

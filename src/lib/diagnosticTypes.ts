@@ -65,6 +65,66 @@ export interface TorisetsuFields {
   bestMatch: string;
 }
 
+// --- 取扱説明書パターンマッチング用の型 ---
+
+/** スコアの高低を判定するルール（dim: 次元インデックス0-7, level: high>65/mid:35-65/low<35） */
+export interface TorisetsuPatternRule {
+  dim: number;
+  level: 'high' | 'mid' | 'low';
+}
+
+/** 各取説項目に対するパターン定義 */
+export interface TorisetsuPattern {
+  rules: TorisetsuPatternRule[];
+  text: string;
+}
+
+/**
+ * スコアレベルを判定するユーティリティ
+ * high: >65, mid: 35-65, low: <35
+ */
+export function getScoreLevel(score: number): 'high' | 'mid' | 'low' {
+  if (score > 65) return 'high';
+  if (score < 35) return 'low';
+  return 'mid';
+}
+
+/**
+ * パターンのルールがスコアにマッチするか判定し、マッチ度を返す
+ * 全ルールがマッチすればルール数をスコアとして返し、マッチしなければ-1を返す
+ */
+export function matchPatternScore(pattern: TorisetsuPattern, normalizedScores: number[]): number {
+  for (const rule of pattern.rules) {
+    const actual = getScoreLevel(normalizedScores[rule.dim]);
+    if (actual !== rule.level) return -1;
+  }
+  // ルール数が多いほど具体的なマッチ = 優先度が高い
+  return pattern.rules.length;
+}
+
+/**
+ * パターン配列から最もマッチするテキストを選択する
+ * マッチするものがなければデフォルトテキストを返す
+ */
+export function selectTorisetsuText(
+  patterns: TorisetsuPattern[],
+  normalizedScores: number[],
+  defaultText: string = ''
+): string {
+  let bestScore = -1;
+  let bestText = defaultText;
+
+  for (const pattern of patterns) {
+    const score = matchPatternScore(pattern, normalizedScores);
+    if (score > bestScore) {
+      bestScore = score;
+      bestText = pattern.text;
+    }
+  }
+
+  return bestText;
+}
+
 export interface DiagResultType {
   id: string;
   emoji: string;

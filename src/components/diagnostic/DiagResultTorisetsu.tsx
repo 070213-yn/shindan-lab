@@ -10,7 +10,8 @@
 
 import { useMemo, useEffect, useRef, useState, useCallback } from "react";
 import type { DiagnosisConfig, TorisetsuFields } from "@/lib/diagnosticTypes";
-import { normalizeScoresGeneric, findBestTypeGeneric, applyProfileModifiersGeneric } from "@/lib/diagnosticTypes";
+import { normalizeScoresGeneric, findBestTypeGeneric, applyProfileModifiersGeneric, selectTorisetsuText } from "@/lib/diagnosticTypes";
+import { TORISETSU_PATTERNS } from "@/lib/diagnoses/torisetsu";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 import type { DiagnosticTheme } from "@/lib/diagnosticThemes";
 import { usePersonaStore } from "@/store/personaStore";
@@ -104,16 +105,32 @@ export default function DiagResultTorisetsu({ config, store, theme }: Props) {
   // タイプ発表演出の状態
   const [revealed, setRevealed] = useState(false);
 
-  // スコア正規化 -> タイプ判定
+  // スコア正規化 -> タイプ判定 -> 取説テキスト動的選択
   const result = useMemo(() => {
     const rawNorm = normalizeScoresGeneric(scores, config.questions);
     const norm = applyProfileModifiersGeneric(rawNorm, profileData, config.dimensions);
     const bestType = findBestTypeGeneric(norm, config.resultTypes);
-    return { norm, bestType };
+
+    // 各取説項目をスコアの組み合わせで動的に選択する
+    // フォールバックとしてresultTypeに定義されたテキストを使う
+    const fallback = bestType.torisetsuFields;
+    const dynamicTorisetsu: TorisetsuFields = {
+      whenDown: selectTorisetsuText(TORISETSU_PATTERNS.whenDown || [], norm, fallback?.whenDown || ''),
+      whenDecline: selectTorisetsuText(TORISETSU_PATTERNS.whenDecline || [], norm, fallback?.whenDecline || ''),
+      howToPlease: selectTorisetsuText(TORISETSU_PATTERNS.howToPlease || [], norm, fallback?.howToPlease || ''),
+      ngWord: selectTorisetsuText(TORISETSU_PATTERNS.ngWord || [], norm, fallback?.ngWord || ''),
+      loveMode: selectTorisetsuText(TORISETSU_PATTERNS.loveMode || [], norm, fallback?.loveMode || ''),
+      rechargeMethod: selectTorisetsuText(TORISETSU_PATTERNS.rechargeMethod || [], norm, fallback?.rechargeMethod || ''),
+      cautionNote: selectTorisetsuText(TORISETSU_PATTERNS.cautionNote || [], norm, fallback?.cautionNote || ''),
+      bestMatch: selectTorisetsuText(TORISETSU_PATTERNS.bestMatch || [], norm, fallback?.bestMatch || ''),
+    };
+
+    return { norm, bestType, dynamicTorisetsu };
   }, [scores, profileData, config]);
 
-  const { norm, bestType } = result;
-  const torisetsu = bestType.torisetsuFields;
+  const { norm, bestType, dynamicTorisetsu } = result;
+  // 動的に選択されたテキストを使う
+  const torisetsu = dynamicTorisetsu;
 
   // タイプ発表演出: 少し遅れてから表示
   useEffect(() => {

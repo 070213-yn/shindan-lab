@@ -1464,6 +1464,7 @@ export default function PortalPage() {
                 { label: "プライバシーポリシー", href: "/privacy" },
                 { label: "利用規約", href: "/terms" },
                 { label: "特定商取引法", href: "/tokushoho" },
+                { label: "参考文献", href: "/references" },
                 { label: "お問い合わせ", href: "/contact" },
               ].map((link, i) => (
                 <span key={link.href} style={{ display: "inline-flex", alignItems: "center" }}>

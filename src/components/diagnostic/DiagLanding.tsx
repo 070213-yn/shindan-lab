@@ -83,6 +83,9 @@ export default function DiagLanding({ config, store }: Props) {
   // --- IntersectionObserver: タイプカードのstaggered fadeUpアニメーション ---
   const typesGridRef = useRef<HTMLDivElement>(null);
   const [typesVisible, setTypesVisible] = useState(false);
+  // タイプが多い場合の「もっと見る」制御（30個以上で折りたたみ）
+  const [showAllTypes, setShowAllTypes] = useState(false);
+  const TYPE_INITIAL_COUNT = 30;
 
   useEffect(() => {
     if (!typesGridRef.current) return;
@@ -873,82 +876,107 @@ export default function DiagLanding({ config, store }: Props) {
           />
         </div>
 
-        {/* タイプカードグリッド */}
+        {/* タイプチップ一覧（コンパクト表示） */}
         <div
           ref={typesGridRef}
-          className="diag-types-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 12,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 6,
           }}
         >
-          {config.resultTypes.map((type, index) => (
-            <div
-              key={type.id}
-              style={{
-                background: theme.cardBg,
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                borderRadius: 14,
-                padding: "18px 14px",
-                border: `1.5px solid ${type.color}30`,
-                transition: "transform 0.3s, border-color 0.3s, box-shadow 0.3s",
-                opacity: typesVisible ? 1 : 0,
-                transform: typesVisible ? "translateY(0) scale(1)" : "translateY(20px) scale(0.96)",
-                transitionProperty: "opacity, transform, border-color, box-shadow",
-                transitionDuration: "0.5s, 0.5s, 0.3s, 0.3s",
-                transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
-                transitionDelay: typesVisible ? `${index * 0.05}s` : "0s",
-                boxShadow: `0 2px 8px ${config.themeColor}08`,
-                cursor: "default",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.transform = "translateY(-3px) scale(1.02)";
-                el.style.borderColor = type.color;
-                el.style.boxShadow = `0 0 16px ${type.color}25, 0 6px 20px ${config.themeColor}10`;
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.transform = "none";
-                el.style.borderColor = `${type.color}30`;
-                el.style.boxShadow = `0 2px 8px ${config.themeColor}08`;
-              }}
-            >
-              {/* 絵文字 */}
-              <div style={{ fontSize: 28, marginBottom: 6, lineHeight: 1 }}>
-                {type.emoji}
-              </div>
-              {/* タイプ名 */}
-              <h3
-                className="font-zen"
-                style={{
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: type.color,
-                  marginBottom: 3,
-                  margin: 0,
-                  lineHeight: 1.3,
-                }}
-              >
-                {type.name}
-              </h3>
-              {/* タグ */}
-              <p
-                style={{
-                  fontSize: 10,
-                  color: theme.textSecondary,
-                  margin: 0,
-                  letterSpacing: "0.02em",
-                  lineHeight: 1.4,
-                  opacity: 0.7,
-                }}
-              >
-                {type.tag}
-              </p>
-            </div>
-          ))}
+          {(() => {
+            const totalTypes = config.resultTypes.length;
+            const needsCollapse = totalTypes > TYPE_INITIAL_COUNT;
+            const visibleTypes = needsCollapse && !showAllTypes
+              ? config.resultTypes.slice(0, TYPE_INITIAL_COUNT)
+              : config.resultTypes;
+
+            return (
+              <>
+                {visibleTypes.map((type, index) => (
+                  <div
+                    key={type.id}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      padding: "6px 10px",
+                      background: theme.cardBg,
+                      borderRadius: 50,
+                      border: `1px solid ${type.color}30`,
+                      fontSize: 12,
+                      lineHeight: 1,
+                      cursor: "default",
+                      whiteSpace: "nowrap",
+                      // staggered fadeUp（delay上限0.8sで30個以降は一括表示）
+                      opacity: typesVisible ? 1 : 0,
+                      transform: typesVisible ? "translateY(0)" : "translateY(12px)",
+                      transitionProperty: "opacity, transform, border-color, box-shadow",
+                      transitionDuration: "0.4s, 0.4s, 0.2s, 0.2s",
+                      transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
+                      transitionDelay: typesVisible
+                        ? `${Math.min(index * 0.025, 0.8)}s`
+                        : "0s",
+                    }}
+                    onMouseEnter={(e) => {
+                      const el = e.currentTarget as HTMLDivElement;
+                      el.style.borderColor = type.color;
+                      el.style.boxShadow = `0 0 8px ${type.color}30`;
+                    }}
+                    onMouseLeave={(e) => {
+                      const el = e.currentTarget as HTMLDivElement;
+                      el.style.borderColor = `${type.color}30`;
+                      el.style.boxShadow = "none";
+                    }}
+                  >
+                    {/* 絵文字 */}
+                    <span style={{ fontSize: 13, lineHeight: 1 }}>{type.emoji}</span>
+                    {/* タイプ名のみ（tagは省略） */}
+                    <span
+                      className="font-zen"
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: type.color,
+                      }}
+                    >
+                      {type.name}
+                    </span>
+                  </div>
+                ))}
+
+                {/* 「もっと見る」ボタン（30タイプ以上の場合のみ表示） */}
+                {needsCollapse && !showAllTypes && (
+                  <button
+                    onClick={() => setShowAllTypes(true)}
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 4,
+                      padding: "6px 14px",
+                      background: `linear-gradient(135deg, ${config.gradientFrom}15, ${config.gradientTo}15)`,
+                      border: `1px dashed ${config.themeColor}40`,
+                      borderRadius: 50,
+                      fontSize: 11,
+                      fontWeight: 600,
+                      color: config.themeColor,
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                      fontFamily: "'Zen Maru Gothic', sans-serif",
+                      opacity: typesVisible ? 1 : 0,
+                      transform: typesVisible ? "translateY(0)" : "translateY(12px)",
+                      transitionProperty: "opacity, transform, background",
+                      transitionDuration: "0.4s",
+                      transitionDelay: typesVisible ? "0.85s" : "0s",
+                    }}
+                  >
+                    +{totalTypes - TYPE_INITIAL_COUNT}タイプをもっと見る
+                  </button>
+                )}
+              </>
+            );
+          })()}
         </div>
 
         {/* ====== タイプ一覧下の開始ボタン ====== */}
@@ -1021,19 +1049,7 @@ export default function DiagLanding({ config, store }: Props) {
         </div>
       </section>
 
-      {/* レスポンシブグリッド用スタイル */}
-      <style jsx>{`
-        @media (max-width: 900px) {
-          .diag-types-grid {
-            grid-template-columns: repeat(3, 1fr) !important;
-          }
-        }
-        @media (max-width: 580px) {
-          .diag-types-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-          }
-        }
-      `}</style>
+      {/* チップ表示のためgrid用レスポンシブは不要（flexbox wrapで自動折り返し） */}
     </div>
   );
 }

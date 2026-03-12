@@ -103,13 +103,11 @@ const LOVE_DIAGNOSIS = {
 };
 
 // カテゴリ定義
-type CategoryKey = "all" | "personality" | "mind" | "ability" | "career" | "social" | "mystery";
+type CategoryKey = "all" | "personality" | "mind" | "social" | "mystery";
 const CATEGORIES: { key: CategoryKey; label: string; emoji: string }[] = [
   { key: "all", label: "すべて", emoji: "\u2726" },
   { key: "personality", label: "性格・タイプ", emoji: "\u{1F9EC}" },
   { key: "mind", label: "メンタル・心理", emoji: "\u{1F9E0}" },
-  { key: "ability", label: "能力・才能", emoji: "\u2B50" },
-  { key: "career", label: "仕事・将来", emoji: "\u{1F680}" },
   { key: "social", label: "恋愛・対人", emoji: "\u{1F4AC}" },
   { key: "mystery", label: "スピ・エンタメ", emoji: "\u{1F52E}" },
 ];
@@ -161,9 +159,7 @@ const POPULAR_EXPERIMENTS = [
 
 // 研究所からのお知らせ
 const LAB_NEWS = [
-  { date: "2026.03", text: "診断ラインナップをリニューアルしました!", isNew: true },
-  { date: "2026.02", text: "ペルソナカード機能がパワーアップ!", isNew: false },
-  { date: "2026.01", text: "MBTI-128 超精密診断をリリース!", isNew: false },
+  { date: "2026.03", text: "診断研究所がオープンしました!", isNew: true },
 ];
 
 // タイプライター用テキスト
@@ -1413,7 +1409,7 @@ export default function PortalPage() {
             {/* TikTokボタン */}
             <div style={{ marginBottom: 20 }}>
               <a
-                href="https://www.tiktok.com/@tokimeki_lab"
+                href="https://www.tiktok.com/@shindan_lab?lang=ja-JP"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

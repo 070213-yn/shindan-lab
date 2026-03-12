@@ -545,7 +545,7 @@ export default function PersonalFriends() {
           }}
         >
           <a
-            href="https://www.tiktok.com/"
+            href="https://www.tiktok.com/@shindan_lab?lang=ja-JP"
             target="_blank"
             rel="noopener noreferrer"
             style={{

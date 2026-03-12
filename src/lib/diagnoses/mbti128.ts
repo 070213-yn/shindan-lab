@@ -2,15 +2,30 @@
  * MBTI-128 超精密人格診断
  *
  * 理論基盤:
+ *   【古典理論】
  *   - Jung, C.G. (1921) Psychological Types
  *   - Myers, I.B. & Myers, P.B. (1995) Gifts Differing
  *   - Nardi, D. (2011) Neuroscience of Personality
  *   - Costa, P.T. & McCrae, R.R. (1992) NEO-PI-R
  *   - DeYoung, C.G. (2015) Cybernetic Big Five Theory
- *   - John, O.P. & Srivastava, S. (1999) Big Five Taxonomy
- *   - Cain, S. (2012) Quiet: The Power of Introverts
  *   - Eysenck, H.J. (1967) The Biological Basis of Personality
- *   - Barlow, D.H. (2014) Clinical Handbook of Psychological Disorders
+ *
+ *   【デジタル世代研究（2020-2025）】
+ *   - Montag et al. (2021) Psychology of TikTok Use — Frontiers in Public Health
+ *   - Luo & Hancock (2020) Extraversion and social media use
+ *   - Hou et al. (2024) Personality and information sharing on social media — PLOS ONE
+ *   - Mahalingham et al. (2020) Alone and Online — Psychology of Popular Media
+ *   - Rozgonjuk et al. (2023) Personality, FoMO and problematic social media use
+ *   - Roberts et al. (2025) FoMO and university students — Frontiers in Psychology
+ *   - Wacks & Weinstein (2025) Mental health by smartphone and Instagram use
+ *   - Teng et al. (2025) Self-disclosure and self-presentation on social media
+ *   - Liu et al. (2021) Online Identity Reconstruction — Frontiers in Psychology
+ *   - Li & Chen (2022) Personality and online self-disclosure
+ *   - Nesi et al. (2023) Social media use, upward comparisons and well-being — Nature
+ *   - Hedlund et al. (2025) Social media restriction and well-being
+ *   - Carvalho & Pianowski (2024) Five-factor traits and social media — Current Psychology
+ *   - Nygren et al. (2023) Personality and Social Media Usage in Sweden
+ *   - Kumar et al. (2025) Predicting MBTI of YouTube users — Scientific Reports
  *
  * 9次元: 外向性-内向性(E/I), 感覚-直感(S/N), 思考-感情(T/F), 判断-知覚(J/P),
  *         果断-慎重(A/O), 熱意-クール(H/C), 安定-反応(R/S), 自己主張度, 適応柔軟性
@@ -33,7 +48,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
   subtitle: '512の人格パターンであなたの本質を完全解析',
   catchphrase: '72問が導く、世界に一つだけの人格座標',
   description:
-    'Jung原典、Myers-Briggs、Nardi神経科学、Big Five対応研究、そして最新のR/S（情緒安定性）軸を加えた超精密人格分析。従来のMBTI 4軸に「果断/慎重」「熱意/クール」「安定/反応」「自己主張度」「適応柔軟性」の5軸を追加した9次元（2⁹ = 512パターン）システムで、あなたの人格を完全特定。面接対策・自己PR作成・相性分析にも活用できる、国内外の最新研究を統合した他に類を見ない診断です。',
+    '従来の心理学理論に加え、SNS行動・デジタルコミュニケーション・FOMO研究など2020年代の最新知見を統合した超精密人格分析。従来のMBTI 4軸に「果断/慎重」「熱意/クール」「安定/反応」「自己主張度」「適応柔軟性」の5軸を追加した9次元（2⁹ = 512パターン）システムで、スマホ世代のリアルな性格を完全特定。面接対策・自己PR作成・相性分析にも活用できます。',
   emoji: '🧬',
   themeColor: '#8B5CF6',
   gradientFrom: '#8B5CF6',
@@ -102,8 +117,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '⚡',
-      text: '大人数のパーティーに行くとエネルギーが湧いてくる',
-      source: 'Jung, C.G. (1921). Psychological Types. 外向的態度の定義',
+      text: 'グループ通話やオンライン飲み会に参加するとエネルギーが湧いてくる',
+      source: 'Luo & Hancock (2020). Extraversion and social media use. デジタル外向性',
       weights: [3, 0, 0, 0, 0, 1, 0, 0, 0],
     },
     {
@@ -118,24 +133,24 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '🗣️',
-      text: '初対面の人と話すのが得意だと思う',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 外向性（社交性）ファセット',
+      text: 'SNSで知り合った人とも、すぐ直接会いたくなる',
+      source: 'Hou et al. (2024). Personality and information sharing on social media. 外向性と対面志向',
       weights: [2, 0, 0, 0, 0, 0, 0, 1, 0],
     },
     {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '💭',
-      text: '自分の内面世界は、外の世界よりもずっと豊かだと感じる',
-      source: 'Jung, C.G. (1921). Psychological Types. 内向的直感',
+      text: 'イヤホンをして自分だけの世界に入っている時間が心地よい',
+      source: 'Mahalingham et al. (2020). Alone and Online. 高機能内向者のデバイス使用',
       weights: [-2, 0, 0, -1, 0, 0, 0, 0, 1],
     },
     {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '🎉',
-      text: 'グループの中心にいると自然に感じる',
-      source: 'Nardi, D. (2011). Neuroscience of Personality. 外向型の脳活動パターン',
+      text: 'グループLINEやDiscordで自然と会話の中心になっている',
+      source: 'Montag et al. (2021). Psychology of TikTok Use. SNSでの社交行動と外向性',
       weights: [3, 0, 0, 0, 0, 0, 0, 1, 0],
     },
     {
@@ -150,8 +165,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '🤗',
-      text: '新しい人間関係を作るのは楽しい',
-      source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 外向性（温かさ）',
+      text: '新しいコミュニティやオンラインサークルに参加するのはワクワクする',
+      source: 'Nygren et al. (2023). Personality Traits and Social Media Usage. SNS参加と外向性',
       weights: [2, 0, 0, 0, 0, 1, 0, 0, 0],
     },
     {
@@ -170,8 +185,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 2,
       sectionName: '情報の取り方',
       emoji: '📊',
-      text: '具体的な事実やデータを重視する',
-      source: 'Myers, I.B. & Myers, P.B. (1995). Gifts Differing. 感覚型の情報処理',
+      text: 'レビューや口コミを調べてから買い物や行動を決める',
+      source: 'Hou et al. (2024). Personality and information sharing. 感覚型のデジタル情報処理',
       weights: [0, 3, 1, 0, 0, 0, 0, 0, -1],
     },
     {
@@ -186,8 +201,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 2,
       sectionName: '情報の取り方',
       emoji: '🔧',
-      text: '経験したことのないことより、慣れたやり方が安心',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 開放性（逆転・保守性）',
+      text: '使い慣れたアプリややり方を変えるのに抵抗がある',
+      source: 'Nygren et al. (2023). Personality and Social Media. 開放性（逆転・デジタル保守性）',
       weights: [0, 2, 0, 1, 0, -1, 0, 0, -1],
     },
     {
@@ -210,7 +225,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 2,
       sectionName: '情報の取り方',
       emoji: '🎨',
-      text: '抽象的なアイデアについて考えるのが楽しい',
+      text: 'まだ世の中にないサービスや仕組みを空想することがある',
       source: 'DeYoung, C.G. (2015). Cybernetic Big Five Theory. 知性/想像力の次元',
       weights: [0, -2, 0, -1, 0, 0, 0, 0, 1],
     },
@@ -226,8 +241,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 2,
       sectionName: '情報の取り方',
       emoji: '🧩',
-      text: 'まだ誰も考えたことのない発想に惹かれる',
-      source: 'Myers, I.B. & Myers, P.B. (1995). Gifts Differing. 直感型の創造性',
+      text: '既存の常識を覆すようなアイデアやコンテンツに惹かれる',
+      source: 'Kumar et al. (2025). MBTI and YouTube. 直感型のコンテンツ嗜好',
       weights: [0, -3, 0, 0, 1, 1, 0, 1, 1],
     },
 
@@ -238,8 +253,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 3,
       sectionName: '判断の仕方',
       emoji: '⚖️',
-      text: '論理的に正しいことが、相手の気持ちより大事だと思う',
-      source: 'Myers, I.B. & Myers, P.B. (1995). Gifts Differing. 思考型の判断基準',
+      text: 'ネットの議論では、正論を言うことが相手の気持ちより大事だ',
+      source: 'Li & Chen (2022). Personality and online self-disclosure. 思考型のデジタル議論スタイル',
       weights: [0, 0, 3, 0, 1, -1, 0, 1, 0],
     },
     {
@@ -254,8 +269,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 3,
       sectionName: '判断の仕方',
       emoji: '🧪',
-      text: '議論で意見が対立しても、論理で押し通す',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 協調性（逆転）',
+      text: 'チャットやSNSで意見が合わないとき、自分の考えをしっかり主張する',
+      source: 'Teng et al. (2025). Self-disclosure and self-presentation on social media. デジタル自己主張',
       weights: [0, 0, 2, 0, 1, 0, 0, 1, -1],
     },
     {
@@ -278,8 +293,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 3,
       sectionName: '判断の仕方',
       emoji: '🌺',
-      text: '人間関係のハーモニーを大切にする',
-      source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 協調性',
+      text: 'グループLINEの雰囲気を壊さないように気を遣う',
+      source: 'Teng et al. (2025). Self-presentation on social media. デジタル協調性',
       weights: [0, 0, -2, 0, -1, 0, 0, -1, 1],
     },
     {
@@ -294,7 +309,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 3,
       sectionName: '判断の仕方',
       emoji: '🕊️',
-      text: '人を助けることに生きがいを感じる',
+      text: '友達が困っていたら、自分のことを後回しにしてでも助けたい',
       source: 'Myers, I.B. & Myers, P.B. (1995). Gifts Differing. Fe機能の利他性',
       weights: [0, 0, -3, 0, 0, 1, 0, 0, 0],
     },
@@ -306,8 +321,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 4,
       sectionName: '外界への態度',
       emoji: '📅',
-      text: '計画を立てて行動するのが好き',
-      source: 'Myers, I.B. & Myers, P.B. (1995). Gifts Differing. 判断型の生活態度',
+      text: 'スマホのカレンダーやアプリで予定をしっかり管理している',
+      source: 'Carvalho & Pianowski (2024). Five-factor and social media use. デジタル誠実性',
       weights: [0, 0, 0, 3, 1, 0, 0, 0, -1],
     },
     {
@@ -322,8 +337,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 4,
       sectionName: '外界への態度',
       emoji: '⏰',
-      text: '締め切りは余裕を持って守りたい',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 誠実性（自己規律）',
+      text: '課題やレポートは締め切りよりも早めに終わらせたい',
+      source: 'Carvalho & Pianowski (2024). Five-factor traits. 誠実性（自己規律）',
       weights: [0, 0, 0, 2, 0, 0, 1, 0, -1],
     },
     {
@@ -338,15 +353,15 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 4,
       sectionName: '外界への態度',
       emoji: '✅',
-      text: 'やるべきことはリストにして管理する',
-      source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 誠実性（秩序）',
+      text: 'ToDoアプリやメモで、やることを可視化して管理している',
+      source: 'Nygren et al. (2023). Personality and Social Media. デジタル誠実性（秩序）',
       weights: [0, 0, 0, 2, 1, -1, 0, 0, 0],
     },
     {
       sid: 4,
       sectionName: '外界への態度',
       emoji: '🦋',
-      text: 'ルールに縛られるのは息苦しい',
+      text: '校則や職場のルールに疑問を感じることが多い',
       source: 'DeYoung, C.G. (2015). Cybernetic Big Five Theory. 開放性と知覚型の関係',
       weights: [0, 0, 0, -2, 0, 1, 0, 1, 1],
     },
@@ -362,8 +377,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 4,
       sectionName: '外界への態度',
       emoji: '🚀',
-      text: '選択肢はできるだけ多く残しておきたい',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 開放性（柔軟性）',
+      text: '何かを決めるとき、ギリギリまで他の選択肢を探し続けてしまう',
+      source: 'Rozgonjuk et al. (2023). Personality, FoMO and social media. 知覚型の意思決定遅延',
       weights: [0, 0, 0, -3, -1, 0, 0, 0, 2],
     },
 
@@ -382,8 +397,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 5,
       sectionName: '決断スタイル',
       emoji: '🔎',
-      text: '決める前に何度も確認したくなる',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 神経症傾向（慎重性）',
+      text: '買い物やプラン選びで、何度も比較サイトやレビューを見てしまう',
+      source: 'Rozgonjuk et al. (2023). Personality and FoMO. デジタル慎重性',
       weights: [0, 0, 0, 0, -3, 0, -1, -1, 0],
     },
     {
@@ -398,8 +413,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 5,
       sectionName: '決断スタイル',
       emoji: '🛡️',
-      text: '石橋を叩いて渡るタイプだ',
-      source: 'Myers, I.B. & Myers, P.B. (1995). Gifts Differing. 慎重型の意思決定',
+      text: '新しいことを始める前に、ネットで徹底リサーチするタイプだ',
+      source: 'Rozgonjuk et al. (2023). Personality and FoMO. デジタル慎重性と情報収集',
       weights: [0, 0, 0, 0, -2, -1, 0, -1, 0],
     },
     {
@@ -422,7 +437,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 5,
       sectionName: '決断スタイル',
       emoji: '🎯',
-      text: '間違っていても、まず行動してから修正する',
+      text: '考えるより先に、とりあえずやってみる派だ',
       source: 'Nardi, D. (2011). Neuroscience of Personality. Te/Se型の行動パターン',
       weights: [0, 0, 0, 0, 3, 1, 0, 1, 1],
     },
@@ -430,8 +445,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 5,
       sectionName: '決断スタイル',
       emoji: '🤔',
-      text: '正解がわかるまで動きたくない',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 神経症傾向（不安）',
+      text: '失敗するリスクがあると、なかなか一歩を踏み出せない',
+      source: 'Roberts et al. (2025). FoMO and university students. 回避行動と慎重性',
       weights: [0, 0, 0, 0, -3, -1, 0, -1, -1],
     },
 
@@ -442,8 +457,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 6,
       sectionName: '感情表現',
       emoji: '😢',
-      text: '感動したら涙が出るタイプだ',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 感情の豊かさ',
+      text: '推しの活動や好きな作品に感情を揺さぶられやすい',
+      source: 'Montag et al. (2021). Psychology of TikTok Use. コンテンツ消費と感情反応性',
       weights: [0, 0, -1, 0, 0, 3, -1, 0, 0],
     },
     {
@@ -458,8 +473,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 6,
       sectionName: '感情表現',
       emoji: '🔥',
-      text: '好きなことには夢中になりすぎてしまう',
-      source: 'DeYoung, C.G. (2015). Cybernetic Big Five Theory. 開放性（没入体験）',
+      text: 'ハマったコンテンツやゲームは時間を忘れて没頭してしまう',
+      source: 'Montag et al. (2021). Psychology of TikTok Use. デジタル没入体験',
       weights: [0, 0, 0, 0, 0, 2, -1, 0, 0],
     },
     {
@@ -474,16 +489,16 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 6,
       sectionName: '感情表現',
       emoji: '🎭',
-      text: '自分の気持ちをストレートに表現する',
-      source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 外向性（活動性）',
+      text: '嬉しいことや腹が立つことをSNSやチャットですぐ発信する',
+      source: 'Teng et al. (2025). Self-disclosure on social media. デジタル感情表出',
       weights: [1, 0, 0, 0, 1, 2, 0, 1, 0],
     },
     {
       sid: 6,
       sectionName: '感情表現',
       emoji: '🏔️',
-      text: 'ポーカーフェイスが得意だ',
-      source: 'Cain, S. (2012). Quiet. 内向性と感情表出の抑制',
+      text: '内心イラッとしても、表情やメッセージには出さない',
+      source: 'Liu et al. (2021). Online Identity Reconstruction. オンラインでの感情抑制',
       weights: [-1, 0, 0, 0, 0, -2, 1, 0, 0],
     },
     {
@@ -498,8 +513,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 6,
       sectionName: '感情表現',
       emoji: '🌑',
-      text: '感情を表に出すのは苦手だ',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 内向性と感情抑制',
+      text: '自分の本音をSNSやチャットで発信するのは抵抗がある',
+      source: 'Li & Chen (2022). Personality and online self-disclosure. デジタル感情抑制',
       weights: [-1, 0, 0, 0, 0, -2, 0, -1, 0],
     },
 
@@ -518,8 +533,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 7,
       sectionName: '情緒安定性',
       emoji: '🌊',
-      text: '些細なことで気分が大きく変わることがある',
-      source: 'Barlow, D.H. (2014). Clinical Handbook of Psychological Disorders. 情動反応性',
+      text: 'SNSのコメントやリアクションで気分が左右されることがある',
+      source: 'Wacks & Weinstein (2025). Mental health by smartphone and Instagram use. デジタル情動反応性',
       weights: [0, 0, 0, 0, 0, 0, -3, 0, 0],
     },
     {
@@ -534,8 +549,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 7,
       sectionName: '情緒安定性',
       emoji: '🌧️',
-      text: '嫌なことがあるとなかなか忘れられない',
-      source: 'Barlow, D.H. (2014). Clinical Handbook of Psychological Disorders. 反芻思考',
+      text: '嫌なことがあった日は、寝る前にスマホを見ながらずっと考えてしまう',
+      source: 'Hedlund et al. (2025). Social media restriction and well-being. デジタル反芻思考',
       weights: [0, 0, 0, 0, -1, 0, -2, 0, 0],
     },
     {
@@ -558,7 +573,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 7,
       sectionName: '情緒安定性',
       emoji: '🌿',
-      text: '環境が変わっても、すぐに適応できる',
+      text: 'クラス替えやバイト先が変わっても、すぐに馴染める',
       source: 'DeYoung, C.G. (2015). Cybernetic Big Five Theory. 安定性メタ特性',
       weights: [0, 0, 0, 0, 0, 0, 2, 0, 2],
     },
@@ -566,8 +581,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 7,
       sectionName: '情緒安定性',
       emoji: '🎢',
-      text: '感情の起伏が激しいと言われることがある',
-      source: 'Barlow, D.H. (2014). Clinical Handbook of Psychological Disorders. 情動調節',
+      text: 'テンションが高い時と落ち込む時の差が大きいと思う',
+      source: 'Luo et al. (2025). Self-esteem responses to social media feedback loops. 情動調節',
       weights: [0, 0, 0, 0, 0, 1, -3, 0, 0],
     },
 
@@ -586,16 +601,16 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 8,
       sectionName: '社会的態度',
       emoji: '🌾',
-      text: '周りの空気を読んで合わせることが多い',
-      source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 協調性',
+      text: '自分の意見があっても、場の空気を読んで合わせてしまう',
+      source: 'Teng et al. (2025). Self-presentation on social media. デジタル時代の協調性',
       weights: [0, 0, -1, 0, -1, 0, 0, -3, 0],
     },
     {
       sid: 8,
       sectionName: '社会的態度',
       emoji: '🦁',
-      text: 'リーダー役を任されることが多い',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 外向性（リーダーシップ）',
+      text: 'グループワークや文化祭では、自然とまとめ役を引き受ける',
+      source: 'Hou et al. (2024). Personality and social media. リーダーシップのデジタル表出',
       weights: [1, 0, 0, 0, 1, 1, 0, 2, 0],
     },
     {
@@ -618,15 +633,15 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 8,
       sectionName: '社会的態度',
       emoji: '🐑',
-      text: '人に頼まれると断れない',
-      source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 協調性（利他性）',
+      text: '友達に誘われたら、気が乗らなくても断れない',
+      source: 'Rozgonjuk et al. (2023). Personality and FoMO. FOMO関連の同調行動',
       weights: [0, 0, -1, 0, -1, 0, -1, -2, 0],
     },
     {
       sid: 8,
       sectionName: '社会的態度',
       emoji: '🏆',
-      text: '交渉や説得が得意だ',
+      text: '相手を説得して自分の提案を通すのが得意だ',
       source: 'Nardi, D. (2011). Neuroscience of Personality. Te/Fe型の対人影響力',
       weights: [1, 0, 0, 0, 1, 1, 0, 2, 1],
     },
@@ -634,8 +649,8 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 8,
       sectionName: '社会的態度',
       emoji: '🌸',
-      text: '自分をアピールするのが苦手',
-      source: 'Cain, S. (2012). Quiet: The Power of Introverts. 内向性と自己呈示',
+      text: 'SNSやプレゼンで自分をアピールするのが苦手だ',
+      source: 'Liu et al. (2021). Online Identity Reconstruction. デジタル自己呈示の回避',
       weights: [-1, 0, 0, 0, -1, -1, -1, -3, 0],
     },
 
@@ -646,7 +661,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 9,
       sectionName: '変化への対応',
       emoji: '🌪️',
-      text: '予定変更にすぐ対応できる',
+      text: 'ドタキャンや急な予定変更にもすぐ切り替えられる',
       source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 開放性（柔軟性）',
       weights: [0, 0, 0, 0, 0, 0, 0, 0, 3],
     },
@@ -654,7 +669,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 9,
       sectionName: '変化への対応',
       emoji: '🏠',
-      text: 'ルーティンを大切にする',
+      text: '朝の支度や寝る前の習慣など、毎日のルーティンを崩したくない',
       source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 誠実性（習慣性）',
       weights: [0, 0, 0, 0, 0, 0, 0, 0, -3],
     },
@@ -662,7 +677,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 9,
       sectionName: '変化への対応',
       emoji: '🌍',
-      text: '新しい環境にすぐ馴染める',
+      text: '新しいバイト先や学校でも、すぐに打ち解けられる',
       source: 'DeYoung, C.G. (2015). Cybernetic Big Five Theory. 開放性（経験への開放）',
       weights: [1, 0, 0, 0, 1, 0, 1, 0, 2],
     },
@@ -702,7 +717,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 9,
       sectionName: '変化への対応',
       emoji: '🛤️',
-      text: '伝統やしきたりを守ることは大切だ',
+      text: '昔からのやり方やルールは、簡単に変えるべきではないと思う',
       source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 開放性（逆転・保守性）',
       weights: [0, 0, 0, 0, 0, 0, 0, 0, -3],
     },

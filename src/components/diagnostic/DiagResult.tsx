@@ -18,6 +18,7 @@ import { normalizeScoresGeneric, findBestTypeGeneric, applyProfileModifiersGener
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 import { usePersonaStore } from "@/store/personaStore";
 import AdPlacement from "@/components/AdPlacement";
+import CompatibilityChecker from "@/components/diagnostic/CompatibilityChecker";
 
 interface Props {
   config: DiagnosisConfig;
@@ -640,6 +641,18 @@ export default function DiagResult({ config, store }: Props) {
           やり直す
         </button>
       </div>
+
+      {/* 9次元相性ケミストリー（MBTI診断のみ） */}
+      {config.id === "mbti128" && (
+        <div style={{ marginTop: 40 }}>
+          <CompatibilityChecker
+            myWeights={bestType.scoreWeights}
+            myTypeName={bestType.name}
+            myColor={bestType.color}
+            themeColor={config.themeColor}
+          />
+        </div>
+      )}
 
       {/* フッター広告 */}
       <div style={{ marginTop: 32 }}>

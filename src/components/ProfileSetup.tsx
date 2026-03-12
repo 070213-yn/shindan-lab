@@ -10,7 +10,7 @@
  * 演出: glowBreath, popBounce, staggered fadeUp, スライダーglow等
  */
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuizStore } from "@/store/quizStore";
 
 // ---------- 定数 ----------
@@ -105,10 +105,6 @@ export default function ProfileSetup() {
   // 選択時のpopBounceアニメーション用（選択されたカードのキー）
   const [bouncingCard, setBouncingCard] = useState<string | null>(null);
 
-  // 年齢変更時のスケールアニメーション用
-  const [ageAnimating, setAgeAnimating] = useState(false);
-  const ageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   // staggeredアニメーション用のステップ到達フラグ
   const [step2Entered, setStep2Entered] = useState(false);
   useEffect(() => {
@@ -122,14 +118,6 @@ export default function ProfileSetup() {
     setBouncingCard(key);
     setTimeout(() => setBouncingCard(null), 350);
   }, []);
-
-  // 年齢変更時のスケールトランジション
-  const handleAgeChange = useCallback((val: number) => {
-    setRealAge(val);
-    setAgeAnimating(true);
-    if (ageTimeoutRef.current) clearTimeout(ageTimeoutRef.current);
-    ageTimeoutRef.current = setTimeout(() => setAgeAnimating(false), 120);
-  }, [setRealAge]);
 
   // --- ステップドット（アクティブドットにglowBreathアニメーション追加） ---
   const renderDots = () => (
@@ -346,8 +334,6 @@ export default function ProfileSetup() {
               fontSize: 64,
               color: "#FF6BE8",
               lineHeight: 1,
-              // 値変化時に微妙なスケールでフィードバック
-              transform: ageAnimating ? "scale(1.08)" : "scale(1)",
             }}
           >
             {profile.realAge}
@@ -362,7 +348,7 @@ export default function ProfileSetup() {
             min={8}
             max={100}
             value={profile.realAge}
-            onChange={(e) => handleAgeChange(Number(e.target.value))}
+            onChange={(e) => setRealAge(Number(e.target.value))}
             className="profile-slider"
             style={{ width: "100%", margin: "8px 0", position: "relative", zIndex: 2 }}
           />

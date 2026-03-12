@@ -26,11 +26,11 @@ interface Props {
 
 /** 回答選択肢の定義 */
 const SCALE_OPTIONS = [
-  { value: 1, label: "全然違う", short: "1" },
-  { value: 2, label: "あまり", short: "2" },
-  { value: 3, label: "どちらとも", short: "3" },
-  { value: 4, label: "まあまあ", short: "4" },
-  { value: 5, label: "めっちゃ当てはまる", short: "5" },
+  { value: 1, label: "全く当てはまらない", short: "1" },
+  { value: 2, label: "あまり当てはまらない", short: "2" },
+  { value: 3, label: "どちらともいえない", short: "3" },
+  { value: 4, label: "やや当てはまる", short: "4" },
+  { value: 5, label: "とても当てはまる", short: "5" },
 ];
 
 export default function DiagQuizFeed({ config, store, theme }: Props) {

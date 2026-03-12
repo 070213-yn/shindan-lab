@@ -102,15 +102,15 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '⚡',
-      text: '大人数のパーティーに行くと、むしろ元気になる',
+      text: '大人数のパーティーに行くとエネルギーが湧いてくる',
       source: 'Jung, C.G. (1921). Psychological Types. 外向的態度の定義',
-      weights: [3, 0, 0, 0, 1, 1, 0, 1, 0],
+      weights: [3, 0, 0, 0, 0, 1, 0, 0, 0],
     },
     {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '🌙',
-      text: '一人の時間がないと本当に疲れてしまう',
+      text: '一人の時間がないと疲れを感じる',
       source: 'Cain, S. (2012). Quiet: The Power of Introverts. 内向性と回復',
       weights: [-3, 0, 0, 0, 0, 0, 0, -1, 0],
     },
@@ -120,7 +120,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🗣️',
       text: '初対面の人と話すのが得意だと思う',
       source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 外向性（社交性）ファセット',
-      weights: [2, 0, 0, 0, 1, 1, 0, 1, 0],
+      weights: [2, 0, 0, 0, 0, 0, 0, 1, 0],
     },
     {
       sid: 1,
@@ -136,7 +136,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🎉',
       text: 'グループの中心にいると自然に感じる',
       source: 'Nardi, D. (2011). Neuroscience of Personality. 外向型の脳活動パターン',
-      weights: [3, 0, 0, 0, 1, 0, 0, 1, 0],
+      weights: [3, 0, 0, 0, 0, 0, 0, 1, 0],
     },
     {
       sid: 1,
@@ -152,7 +152,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🤗',
       text: '新しい人間関係を作るのは楽しい',
       source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 外向性（温かさ）',
-      weights: [2, 0, 0, 0, 0, 1, 0, 1, 1],
+      weights: [2, 0, 0, 0, 0, 1, 0, 0, 0],
     },
     {
       sid: 1,
@@ -648,7 +648,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🌪️',
       text: '予定変更にすぐ対応できる',
       source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 開放性（柔軟性）',
-      weights: [0, 0, 0, -1, 0, 0, 1, 0, 3],
+      weights: [0, 0, 0, 0, 0, 0, 0, 0, 3],
     },
     {
       sid: 9,
@@ -656,7 +656,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🏠',
       text: 'ルーティンを大切にする',
       source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 誠実性（習慣性）',
-      weights: [0, 1, 0, 1, 0, 0, 0, 0, -3],
+      weights: [0, 0, 0, 0, 0, 0, 0, 0, -3],
     },
     {
       sid: 9,
@@ -672,7 +672,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🔁',
       text: '変化が多いと疲れる',
       source: 'Eysenck, H.J. (1967). The Biological Basis of Personality. 覚醒水準と刺激耐性',
-      weights: [0, 0, 0, 1, 0, 0, -1, 0, -2],
+      weights: [0, 0, 0, 0, 0, 0, 0, 0, -2],
     },
     {
       sid: 9,
@@ -688,7 +688,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🔬',
       text: '一つのことに集中して取り組みたい',
       source: 'Nardi, D. (2011). Neuroscience of Personality. Ni型の集中パターン',
-      weights: [-1, 0, 0, 1, 0, 0, 0, 0, -2],
+      weights: [0, 0, 0, 0, 0, 0, 0, 0, -2],
     },
     {
       sid: 9,
@@ -696,7 +696,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🌈',
       text: '異なる価値観を受け入れられる',
       source: 'John, O.P. & Srivastava, S. (1999). Big Five Taxonomy. 開放性（価値観）',
-      weights: [0, -1, -1, -1, 0, 0, 1, 0, 3],
+      weights: [0, 0, 0, 0, 0, 0, 0, 0, 3],
     },
     {
       sid: 9,
@@ -704,7 +704,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       emoji: '🛤️',
       text: '伝統やしきたりを守ることは大切だ',
       source: 'Costa, P.T. & McCrae, R.R. (1992). NEO-PI-R. 開放性（逆転・保守性）',
-      weights: [0, 1, 0, 1, 0, -1, 0, 0, -3],
+      weights: [0, 0, 0, 0, 0, 0, 0, 0, -3],
     },
   ],
 

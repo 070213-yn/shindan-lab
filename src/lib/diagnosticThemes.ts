@@ -594,6 +594,44 @@ const FULL_THEMES: Record<string, DiagnosticTheme> = {
     buttonStyle: 'skull',
     labDirector: '死因予測研究室 室長: モルテ博士',
   },
+
+  // ── godtype: 雷と神殿モチーフ、ゴールドの神々しさ ──
+  godtype: {
+    bgColor: '#FFF8E0',
+    bgGradient: 'linear-gradient(135deg, #FFF8E0 0%, #FFF5D6 50%, #FFFAE8 100%)',
+    bgPattern: 'divine',
+    bgStyle: {
+      backgroundImage:
+        'radial-gradient(circle at 30% 20%, rgba(212,175,55,0.08) 0%, transparent 40%), radial-gradient(circle at 70% 80%, rgba(139,105,20,0.06) 0%, transparent 40%)',
+    },
+    particleColors: ['rgba(212,175,55,0.35)', 'rgba(255,215,0,0.3)', 'rgba(218,165,32,0.25)'],
+    particleCount: 22,
+    particleType: 'sparkles',
+    blob1Color: 'rgba(212,175,55,0.12)',
+    blob2Color: 'rgba(139,105,20,0.1)',
+    cardBg: 'rgba(255,255,255,0.7)',
+    cardBorder: 'rgba(212,175,55,0.25)',
+    textPrimary: '#0f1f2b',
+    textSecondary: '#2d4a57',
+    accentEmoji: '⚡',
+    svgMotifs: [
+      // 雷（稲妻）
+      '<path d="M10 0 L7 8 L12 8 L6 20 L9 12 L4 12 L10 0 Z" fill="currentColor" opacity="0.2"/>',
+      // 神殿の柱
+      '<rect x="3" y="5" width="3" height="13" fill="none" stroke="currentColor" stroke-width="1" opacity="0.2"/><rect x="14" y="5" width="3" height="13" fill="none" stroke="currentColor" stroke-width="1" opacity="0.2"/><path d="M1 5 L19 5 L18 3 L2 3 Z" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.15"/><line x1="1" y1="18" x2="19" y2="18" stroke="currentColor" stroke-width="1" opacity="0.15"/>',
+      // 太陽（光輪）
+      '<circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.25"/><line x1="10" y1="2" x2="10" y2="5" stroke="currentColor" stroke-width="1" opacity="0.2"/><line x1="10" y1="15" x2="10" y2="18" stroke="currentColor" stroke-width="1" opacity="0.2"/><line x1="2" y1="10" x2="5" y2="10" stroke="currentColor" stroke-width="1" opacity="0.2"/><line x1="15" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1" opacity="0.2"/>',
+      // 翼（片翼）
+      '<path d="M10 15 Q5 10 2 12 Q0 8 4 8 Q2 4 6 6 Q6 2 10 4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.2"/>',
+      // 三叉の鉾（トライデント）
+      '<line x1="10" y1="4" x2="10" y2="18" stroke="currentColor" stroke-width="1.2" opacity="0.2"/><path d="M6 4 Q6 7 10 7 Q14 7 14 4" fill="none" stroke="currentColor" stroke-width="1" opacity="0.2"/><line x1="6" y1="4" x2="6" y2="2" stroke="currentColor" stroke-width="1" opacity="0.2"/><line x1="10" y1="7" x2="10" y2="2" stroke="currentColor" stroke-width="1" opacity="0.2"/><line x1="14" y1="4" x2="14" y2="2" stroke="currentColor" stroke-width="1" opacity="0.2"/>',
+    ],
+    uniqueAnimation: 'divinePulse',
+    sectionTransitionStyle: 'zoom',
+    landingSvg: '<svg viewBox="0 0 120 120" fill="none"><path d="M60 10 L50 40 L62 40 L45 80 L52 55 L40 55 L60 10 Z" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.5" stroke-opacity="0.2"/><circle cx="60" cy="60" r="45" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.1"/><circle cx="60" cy="60" r="35" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/><rect x="25" y="85" width="5" height="25" rx="1" fill="none" stroke="currentColor" stroke-width="1" opacity="0.1"/><rect x="90" y="85" width="5" height="25" rx="1" fill="none" stroke="currentColor" stroke-width="1" opacity="0.1"/><path d="M20 85 L100 85 L97 82 L23 82 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.1"/></svg>',
+    buttonStyle: 'gem',
+    labDirector: '神格鑑定研究室 室長: オラクル博士',
+  },
 };
 
 /** デフォルトのテーマ（マッチしなかった場合用、淡いティール） */
@@ -696,6 +734,13 @@ export function getLoadingSteps(id: string): { label: string; delay: number }[] 
       { label: '資産運用パターンを解析中...', delay: 1800 },
       { label: 'マネータイプを判定中...', delay: 2800 },
       { label: '結果をまとめています...', delay: 3800 },
+    ],
+    godtype: [
+      { label: '神話データベースに接続中...', delay: 0 },
+      { label: '8つの神性次元を測定中...', delay: 800 },
+      { label: '世界中の神々と照合中...', delay: 1800 },
+      { label: 'あなたの神格を判定中...', delay: 2800 },
+      { label: '神託を降ろしています...', delay: 3800 },
     ],
   };
 

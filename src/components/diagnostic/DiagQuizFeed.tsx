@@ -258,7 +258,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                 {q.text}
               </p>
 
-              {/* 5段階選択肢（改善版） */}
+              {/* 5段階選択肢 + 両端ラベル（同じ行） */}
               <div
                 style={{
                   display: "flex",
@@ -267,6 +267,9 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                   alignItems: "center",
                 }}
               >
+                <span style={{ fontSize: 11, color: "rgba(74,101,114,.55)", whiteSpace: "nowrap", marginRight: 4 }}>
+                  全然違う
+                </span>
                 {SCALE_OPTIONS.map((opt) => {
                   const isSelected = answers[i] === opt.value;
                   const size = 42;
@@ -274,17 +277,17 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                     <button
                       key={opt.value}
                       onClick={() => handleSelect(i, opt.value)}
-                      className={`scale-btn-hover ${isSelected ? "scale-btn-selected animate-popBounce" : ""}`}
+                      className={`liquid-glass-btn ${isSelected ? "liquid-glass-active" : ""}`}
                       style={{
                         width: size,
                         height: size,
                         borderRadius: 14,
-                        border: `2px solid ${
-                          isSelected ? config.themeColor : "rgba(45,212,191,.2)"
-                        }`,
+                        border: isSelected
+                          ? `1.5px solid rgba(255,255,255,0.6)`
+                          : `1.5px solid rgba(45,212,191,.18)`,
                         background: isSelected
-                          ? `linear-gradient(135deg, ${config.gradientFrom}30, ${config.gradientTo}30)`
-                          : "rgba(255,255,255,0.5)",
+                          ? "none"
+                          : "rgba(255,255,255,0.45)",
                         color: isSelected ? "#fff" : "#4a6572",
                         fontSize: 15,
                         fontWeight: 700,
@@ -292,32 +295,19 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        boxShadow: isSelected
-                          ? `0 0 16px ${config.themeColor}35`
-                          : "none",
-                        transition: "all 0.25s cubic-bezier(0.25, 1, 0.5, 1)",
+                        position: "relative",
+                        overflow: "hidden",
+                        zIndex: 1,
                       }}
                       title={opt.label}
                     >
-                      {opt.value}
+                      <span style={{ position: "relative", zIndex: 3 }}>{opt.value}</span>
                     </button>
                   );
                 })}
-              </div>
-
-              {/* 選択肢ラベル（両端のみ） */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginTop: 6,
-                  fontSize: 9,
-                  color: "rgba(74,101,114,.7)",
-                  padding: "0 4px",
-                }}
-              >
-                <span>全然違う</span>
-                <span>当てはまる</span>
+                <span style={{ fontSize: 11, color: "rgba(74,101,114,.55)", whiteSpace: "nowrap", marginLeft: 4 }}>
+                  当てはまる
+                </span>
               </div>
             </div>
           </div>

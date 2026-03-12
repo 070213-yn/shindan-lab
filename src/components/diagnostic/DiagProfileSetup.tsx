@@ -12,14 +12,16 @@
 import { useCallback, useEffect, useRef } from "react";
 import type { ProfileFieldConfig, DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
+import type { DiagnosticTheme } from "@/lib/diagnosticThemes";
 import { usePersonaStore } from "@/store/personaStore";
 
 interface Props {
   config: DiagnosisConfig;
   store: GenericDiagState;
+  theme: DiagnosticTheme;
 }
 
-export default function DiagProfileSetup({ config, store }: Props) {
+export default function DiagProfileSetup({ config, store, theme }: Props) {
   const { profileData, setProfileField, profileStep, setProfileStep, setCurrentStep } = store;
   const { globalProfile } = usePersonaStore();
   const fields = config.profileFields;
@@ -147,7 +149,7 @@ export default function DiagProfileSetup({ config, store }: Props) {
                     ? config.themeColor
                     : i < profileStep
                     ? `${config.themeColor}80`
-                    : "rgba(255,255,255,.15)",
+                    : `${config.themeColor}25`,
                 transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
               }}
             />
@@ -181,7 +183,8 @@ export default function DiagProfileSetup({ config, store }: Props) {
         <p
           style={{
             fontSize: 13,
-            color: "rgba(255,255,255,.5)",
+            color: theme.textSecondary,
+            opacity: 0.6,
             marginBottom: 28,
           }}
         >
@@ -209,13 +212,13 @@ export default function DiagProfileSetup({ config, store }: Props) {
                   style={{
                     padding: "16px 12px",
                     background: isSelected
-                      ? `${config.themeColor}20`
-                      : "rgba(255,255,255,.04)",
+                      ? `${config.themeColor}18`
+                      : "rgba(255,255,255,0.6)",
                     border: `2px solid ${
-                      isSelected ? config.themeColor : "rgba(255,255,255,.1)"
+                      isSelected ? config.themeColor : `${config.themeColor}30`
                     }`,
                     borderRadius: 14,
-                    color: isSelected ? "#fff" : "rgba(255,255,255,.7)",
+                    color: isSelected ? config.themeColor : theme.textPrimary,
                     fontSize: 14,
                     fontWeight: 700,
                     cursor: "pointer",
@@ -255,7 +258,7 @@ export default function DiagProfileSetup({ config, store }: Props) {
             >
               {profileData[currentField.id] ?? currentField.defaultValue ?? currentField.min ?? 10}
               {currentField.unit && (
-                <span style={{ fontSize: 18, color: "rgba(255,255,255,.5)", marginLeft: 4 }}>
+                <span style={{ fontSize: 18, color: theme.textSecondary, opacity: 0.6, marginLeft: 4 }}>
                   {currentField.unit}
                 </span>
               )}
@@ -287,7 +290,8 @@ export default function DiagProfileSetup({ config, store }: Props) {
                 justifyContent: "space-between",
                 marginTop: 8,
                 fontSize: 11,
-                color: "rgba(255,255,255,.35)",
+                color: theme.textSecondary,
+                opacity: 0.5,
               }}
             >
               <span>{currentField.min ?? 0}{currentField.unit || ""}</span>
@@ -306,8 +310,8 @@ export default function DiagProfileSetup({ config, store }: Props) {
             padding: "16px 0",
             background: isCurrentValid
               ? `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`
-              : "rgba(255,255,255,.08)",
-            color: isCurrentValid ? "#fff" : "rgba(255,255,255,.3)",
+              : `${config.themeColor}15`,
+            color: isCurrentValid ? "#fff" : `${config.themeColor}50`,
             border: "none",
             borderRadius: 50,
             fontSize: 16,

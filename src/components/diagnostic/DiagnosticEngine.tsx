@@ -495,10 +495,10 @@ export default function DiagnosticEngine({ config }: Props) {
           <DiagLanding config={config} store={store} />
         )}
         {store.currentStep === "profile" && (
-          <DiagProfileSetup config={config} store={store} />
+          <DiagProfileSetup config={config} store={store} theme={theme} />
         )}
         {store.currentStep === "quiz" && (
-          <DiagQuizFeed config={config} store={store} />
+          <DiagQuizFeed config={config} store={store} theme={theme} />
         )}
         {store.currentStep === "loading" && (
           <DiagLoading config={config} store={store} />

@@ -17,10 +17,12 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
+import type { DiagnosticTheme } from "@/lib/diagnosticThemes";
 
 interface Props {
   config: DiagnosisConfig;
   store: GenericDiagState;
+  theme?: DiagnosticTheme;
 }
 
 /** 回答選択肢の定義 */
@@ -32,7 +34,7 @@ const SCALE_OPTIONS = [
   { value: 5, label: "めっちゃ当てはまる", short: "5" },
 ];
 
-export default function DiagQuizFeed({ config, store }: Props) {
+export default function DiagQuizFeed({ config, store, theme }: Props) {
   const { answers, setAnswer, setCurrentStep } = store;
   const questions = config.questions;
   const containerRef = useRef<HTMLDivElement>(null);

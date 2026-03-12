@@ -255,8 +255,8 @@ export default function DiagResult({ config, store }: Props) {
       <div
         style={{
           textAlign: "center",
-          background: `linear-gradient(135deg, rgba(255,255,255,.06), ${config.themeColor}08)`,
-          border: `1px solid ${config.themeColor}20`,
+          background: `linear-gradient(135deg, rgba(255,255,255,0.6), ${config.themeColor}10)`,
+          border: `1px solid ${config.themeColor}25`,
           borderRadius: 20,
           padding: "32px 24px",
           marginBottom: 16,
@@ -334,7 +334,7 @@ export default function DiagResult({ config, store }: Props) {
         {/* 説明文 */}
         <p
           style={{
-            color: "rgba(255,255,255,.75)",
+            color: "#2d4a57",
             fontSize: 14,
             lineHeight: 1.8,
             position: "relative",
@@ -401,12 +401,12 @@ export default function DiagResult({ config, store }: Props) {
                 }}
               >
                 <span style={{ fontSize: 9.5, color: dim.color }}>{dim.label}</span>
-                <span style={{ fontSize: 9.5, color: "rgba(255,255,255,.55)" }}>{val}</span>
+                <span style={{ fontSize: 9.5, color: "#4a6572" }}>{val}</span>
               </div>
               <div
                 style={{
                   height: 5,
-                  background: "rgba(255,255,255,.06)",
+                  background: "rgba(0,0,0,.06)",
                   borderRadius: 3,
                   overflow: "hidden",
                 }}
@@ -438,7 +438,7 @@ export default function DiagResult({ config, store }: Props) {
       {/* アドバイスカード */}
       <div
         style={{
-          background: `linear-gradient(135deg, rgba(255,255,255,.04), ${config.themeColor}06)`,
+          background: `linear-gradient(135deg, rgba(255,255,255,0.5), ${config.themeColor}08)`,
           border: `1px solid ${config.themeColor}15`,
           borderRadius: 16,
           padding: "20px 18px",
@@ -460,7 +460,7 @@ export default function DiagResult({ config, store }: Props) {
         <p
           style={{
             fontSize: 13,
-            color: "rgba(255,255,255,.8)",
+            color: "#2d4a57",
             lineHeight: 1.8,
           }}
         >
@@ -480,7 +480,7 @@ export default function DiagResult({ config, store }: Props) {
           animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.45s both",
         }}
       >
-        <p className="font-zen" style={{ fontSize: 14, fontWeight: 700, color: "#fff", marginBottom: 8 }}>
+        <p className="font-zen" style={{ fontSize: 14, fontWeight: 700, color: "#0f1f2b", marginBottom: 8 }}>
           他の診断もやってみよう！
         </p>
         <a
@@ -537,7 +537,7 @@ export default function DiagResult({ config, store }: Props) {
         style={{
           textAlign: "center",
           fontSize: 11,
-          color: "rgba(255,255,255,.35)",
+          color: "#4a657280",
           marginBottom: 16,
         }}
       >
@@ -631,7 +631,7 @@ export default function DiagResult({ config, store }: Props) {
             background: "transparent",
             border: `1px solid ${config.themeColor}30`,
             borderRadius: 12,
-            color: "rgba(255,255,255,.7)",
+            color: config.themeColor,
             fontSize: 13,
             fontWeight: 700,
             cursor: "pointer",

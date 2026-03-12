@@ -19,6 +19,7 @@ import type { GenericDiagState } from "@/store/createDiagnosticStore";
 import { usePersonaStore } from "@/store/personaStore";
 import AdPlacement from "@/components/AdPlacement";
 import CompatibilityChecker from "@/components/diagnostic/CompatibilityChecker";
+import Mbti512Sections from "@/components/diagnostic/Mbti512Sections";
 
 interface Props {
   config: DiagnosisConfig;
@@ -641,6 +642,17 @@ export default function DiagResult({ config, store }: Props) {
           やり直す
         </button>
       </div>
+
+      {/* MBTI-512 実用セクション（面接対策・キャリア・人間関係） */}
+      {config.id === "mbti128" && (
+        <div style={{ marginTop: 40 }}>
+          <Mbti512Sections
+            bestType={bestType}
+            normalizedScores={norm}
+            themeColor={config.themeColor}
+          />
+        </div>
+      )}
 
       {/* 9次元相性ケミストリー（MBTI診断のみ） */}
       {config.id === "mbti128" && (

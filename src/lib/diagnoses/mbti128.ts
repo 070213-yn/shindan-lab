@@ -29,11 +29,11 @@ const allTypes = [...MBTI128_TYPES_1, ...MBTI128_TYPES_2, ...MBTI128_TYPES_3, ..
 
 export const mbti128Diagnosis: DiagnosisConfig = {
   id: 'mbti128',
-  title: 'MBTI-128 超精密人格診断',
-  subtitle: '128の人格ティアであなたの本質を完全解析',
+  title: 'MBTI-512 超精密人格診断',
+  subtitle: '512の人格パターンであなたの本質を完全解析',
   catchphrase: '72問が導く、世界に一つだけの人格座標',
   description:
-    'Jung原典、Myers-Briggs、Nardi神経科学、Big Five対応研究、そして最新のR/S（情緒安定性）軸を加えた超精密人格分析。従来の16タイプに「果断/慎重」「熱意/クール」「安定/反応」の3軸を追加し、128の精密タイプであなたの人格を完全特定します。これは国内外の最新研究を統合した、他に類を見ない診断です。',
+    'Jung原典、Myers-Briggs、Nardi神経科学、Big Five対応研究、そして最新のR/S（情緒安定性）軸を加えた超精密人格分析。従来のMBTI 4軸に「果断/慎重」「熱意/クール」「安定/反応」「自己主張度」「適応柔軟性」の5軸を追加した9次元（2⁹ = 512パターン）システムで、あなたの人格を完全特定。面接対策・自己PR作成・相性分析にも活用できる、国内外の最新研究を統合した他に類を見ない診断です。',
   emoji: '🧬',
   themeColor: '#8B5CF6',
   gradientFrom: '#8B5CF6',
@@ -714,7 +714,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
   // --- メタ情報 ---
   questionCount: 72,
   estimatedMinutes: 18,
-  hashtags: ['#MBTI128', '#超精密人格診断', '#128タイプ', '#診断研究所', '#性格診断', '#人格進化'],
+  hashtags: ['#MBTI512', '#超精密人格診断', '#512タイプ', '#診断研究所', '#性格診断', '#人格進化'],
   references: [
     'Jung, C.G. (1921). Psychological Types. Princeton University Press.',
     'Myers, I.B. & Myers, P.B. (1995). Gifts Differing: Understanding Personality Type. Davies-Black Publishing.',

@@ -5,15 +5,12 @@
  *
  * スクロール型で質問を表示し、選択するとリアルタイムでスコア加算。
  * IntersectionObserverでフェードアップアニメーション。
- *
- * 改修内容:
- * - テーマカラーでボーダーアクセントの質問カードデザイン
- * - 回答ボタンの見た目改善（間隔、サイズ、アニメーション）
- * - プログレスバーのテーマカラーグラデーション
+ * Liquid Glass エフェクトで Apple 風 UI を実現。
  */
 
 import { useEffect, useRef, useCallback, useState } from "react";
 import Link from "next/link";
+import LiquidGlass from "@/components/LiquidGlass";
 import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 import type { DiagnosticTheme } from "@/lib/diagnosticThemes";
@@ -96,16 +93,26 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
 
   return (
     <div style={{ minHeight: "100vh", paddingBottom: 100 }}>
-      {/* プログレスバー（固定） */}
-      <div
+      {/* プログレスバー（固定ヘッダー） — Liquid Glass */}
+      <LiquidGlass
+        config={{
+          borderRadius: 0,
+          glassThickness: 20,
+          bezelWidth: 0,
+          blur: 0.8,
+          tintColor: "255,255,255",
+          tintOpacity: 0.72,
+          innerShadowBlur: 0,
+          innerShadowSpread: 0,
+          outerShadowBlur: 12,
+          specularOpacity: 0.15,
+        }}
         style={{
           position: "fixed",
           top: 0,
           left: 0,
           right: 0,
           zIndex: 100,
-          background: "rgba(255,255,255,0.95)",
-          backdropFilter: "blur(12px)",
           padding: "12px 16px 10px",
         }}
       >
@@ -121,19 +128,17 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <Link
               href="/"
+              className="liquid-glass-pill"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
                 gap: 6,
                 padding: "8px 14px",
                 borderRadius: 20,
-                background: "rgba(255,255,255,0.7)",
-                border: "1px solid rgba(45,212,191,0.2)",
                 color: "#2dd4bf",
                 fontSize: 12,
                 fontWeight: 600,
                 textDecoration: "none",
-                backdropFilter: "blur(8px)",
               }}
             >
               <span style={{ fontSize: 14 }}>&#8592;</span>
@@ -146,7 +151,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
               {config.emoji} {config.title}
             </span>
           </div>
-          <span style={{ fontSize: 12, color: "rgba(74,101,114,.6)" }}>
+          <span style={{ fontSize: 12, color: "rgba(74,101,114,.5)", fontWeight: 500 }}>
             {answeredCount} / {questions.length}
           </span>
         </div>
@@ -154,8 +159,8 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
         {/* プログレスバー */}
         <div
           style={{
-            height: 4,
-            background: "rgba(45,212,191,.1)",
+            height: 3,
+            background: "rgba(45,212,191,.08)",
             borderRadius: 2,
             overflow: "hidden",
             position: "relative",
@@ -174,7 +179,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
             <span className="progress-shimmer" />
           </div>
         </div>
-      </div>
+      </LiquidGlass>
 
       {/* 質問カード */}
       <div
@@ -205,110 +210,126 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
               </div>
             )}
 
-            {/* 質問カード */}
+            {/* 質問カード — Liquid Glass */}
             <div
               ref={(el) => { cardRefs.current[i] = el; }}
               data-idx={i}
               className={visibleCards.has(i) ? "quiz-card-visible" : "quiz-card-hidden"}
               style={{
-                background: "rgba(255,255,255,0.7)",
-                border: `1px solid ${
-                  answers[i] !== null ? `${config.themeColor}30` : "rgba(45,212,191,.15)"
-                }`,
-                borderLeft: answers[i] !== null
-                  ? `3px solid ${config.themeColor}60`
-                  : `1px solid rgba(45,212,191,.15)`,
-                borderRadius: 16,
-                padding: "20px 18px",
                 marginBottom: 14,
-                position: "relative",
-                transition: "border-color 0.3s, border-left 0.3s, opacity 0.55s var(--ease-smooth), transform 0.55s var(--ease-smooth)",
+                transition: "opacity 0.55s var(--ease-smooth), transform 0.55s var(--ease-smooth)",
               }}
             >
-              {/* 質問番号 + 回答済みチェック */}
-              <div
+              <LiquidGlass
+                config={{
+                  borderRadius: 20,
+                  glassThickness: 30,
+                  bezelWidth: 20,
+                  ior: 1.8,
+                  blur: 0.3,
+                  tintColor: answers[i] !== null ? "45,212,191" : "255,255,255",
+                  tintOpacity: answers[i] !== null ? 0.04 : 0.06,
+                  specularOpacity: 0.25,
+                  saturation: 2,
+                  innerShadowBlur: 12,
+                  innerShadowSpread: -3,
+                  outerShadowBlur: answers[i] !== null ? 16 : 10,
+                }}
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginBottom: 10,
+                  padding: "20px 20px",
+                  border: answers[i] !== null
+                    ? `1px solid rgba(45,212,191,0.20)`
+                    : `1px solid rgba(255,255,255,0.35)`,
+                  transition: "border-color 0.3s ease",
                 }}
               >
-                <span style={{ fontSize: 11, color: "rgba(74,101,114,.7)" }}>
-                  Q{i + 1}
-                </span>
-                {answers[i] !== null && (
-                  <span className="answered-check" style={{ fontSize: 14, color: config.themeColor }}>
-                    ✓
+                {/* 質問番号 + 回答済みチェック */}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
+                >
+                  <span style={{ fontSize: 11, color: "rgba(74,101,114,.5)", fontWeight: 500 }}>
+                    Q{i + 1}
                   </span>
-                )}
-              </div>
+                  {answers[i] !== null && (
+                    <span className="answered-check" style={{ fontSize: 14, color: config.themeColor }}>
+                      ✓
+                    </span>
+                  )}
+                </div>
 
-              {/* 質問文 */}
-              <p
-                className="font-zen"
-                style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  lineHeight: 1.7,
-                  color: "#0f1f2b",
-                  marginBottom: 16,
-                }}
-              >
-                {q.text}
-              </p>
+                {/* 質問文 */}
+                <p
+                  className="font-zen"
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 700,
+                    lineHeight: 1.7,
+                    color: "#1a1a1a",
+                    marginBottom: 18,
+                    letterSpacing: "0.01em",
+                  }}
+                >
+                  {q.text}
+                </p>
 
-              {/* 5段階選択肢 + 両端ラベル（同じ行） */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: 8,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ fontSize: 11, color: "rgba(74,101,114,.55)", whiteSpace: "nowrap", marginRight: 4 }}>
-                  全然違う
-                </span>
-                {SCALE_OPTIONS.map((opt) => {
-                  const isSelected = answers[i] === opt.value;
-                  const size = 42;
-                  return (
-                    <button
-                      key={opt.value}
-                      onClick={() => handleSelect(i, opt.value)}
-                      className={`liquid-glass-btn ${isSelected ? "liquid-glass-active" : ""}`}
-                      style={{
-                        width: size,
-                        height: size,
-                        borderRadius: 14,
-                        border: isSelected
-                          ? `1.5px solid rgba(255,255,255,0.6)`
-                          : `1.5px solid rgba(45,212,191,.18)`,
-                        background: isSelected
-                          ? "none"
-                          : "rgba(255,255,255,0.45)",
-                        color: isSelected ? "#fff" : "#4a6572",
-                        fontSize: 15,
-                        fontWeight: 700,
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        position: "relative",
-                        overflow: "hidden",
-                        zIndex: 1,
-                      }}
-                      title={opt.label}
-                    >
-                      <span style={{ position: "relative", zIndex: 3 }}>{opt.value}</span>
-                    </button>
-                  );
-                })}
-                <span style={{ fontSize: 11, color: "rgba(74,101,114,.55)", whiteSpace: "nowrap", marginLeft: 4 }}>
-                  当てはまる
-                </span>
-              </div>
+                {/* 5段階選択肢 + 両端ラベル（同じ行） */}
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 8,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <span style={{ fontSize: 11, color: "rgba(74,101,114,.45)", whiteSpace: "nowrap", marginRight: 4, fontWeight: 500 }}>
+                    全然違う
+                  </span>
+                  {SCALE_OPTIONS.map((opt) => {
+                    const isSelected = answers[i] === opt.value;
+                    const size = 42;
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => handleSelect(i, opt.value)}
+                        className={`liquid-glass-btn ${isSelected ? "liquid-glass-active" : ""}`}
+                        style={{
+                          width: size,
+                          height: size,
+                          borderRadius: 13,
+                          border: isSelected
+                            ? "1.5px solid rgba(255,255,255,0.65)"
+                            : "1.5px solid rgba(200,210,215,0.35)",
+                          background: isSelected
+                            ? "none"
+                            : "rgba(255,255,255,0.5)",
+                          color: isSelected ? "#fff" : "#5a6d78",
+                          fontSize: 15,
+                          fontWeight: 600,
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          position: "relative",
+                          overflow: "hidden",
+                          zIndex: 1,
+                          letterSpacing: "-0.02em",
+                        }}
+                        title={opt.label}
+                      >
+                        <span style={{ position: "relative", zIndex: 3 }}>{opt.value}</span>
+                      </button>
+                    );
+                  })}
+                  <span style={{ fontSize: 11, color: "rgba(74,101,114,.45)", whiteSpace: "nowrap", marginLeft: 4, fontWeight: 500 }}>
+                    当てはまる
+                  </span>
+                </div>
+              </LiquidGlass>
             </div>
           </div>
         ))}
@@ -323,14 +344,14 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
           <button
             onClick={() => setCurrentStep("loading")}
             disabled={!allAnswered}
-            className={allAnswered ? "btn-glow-active" : ""}
+            className={allAnswered ? "btn-glow-active liquid-glass-cta" : ""}
             style={{
               padding: "18px 48px",
               background: allAnswered
                 ? `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`
-                : "rgba(45,212,191,.1)",
-              color: allAnswered ? "#fff" : "rgba(74,101,114,.6)",
-              border: "none",
+                : "rgba(45,212,191,.08)",
+              color: allAnswered ? "#fff" : "rgba(74,101,114,.5)",
+              border: allAnswered ? "1px solid rgba(255,255,255,0.3)" : "1px solid rgba(45,212,191,0.1)",
               borderRadius: 50,
               fontSize: 16,
               fontWeight: 700,
@@ -338,8 +359,9 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
               cursor: allAnswered ? "pointer" : "default",
               transition: "all 0.4s cubic-bezier(0.25, 1, 0.5, 1)",
               boxShadow: allAnswered
-                ? `0 4px 24px ${config.themeColor}40`
+                ? `0 4px 24px ${config.themeColor}35, inset 0 1px 0 rgba(255,255,255,0.3)`
                 : "none",
+              letterSpacing: "0.02em",
             }}
           >
             <span className={allAnswered ? "cta-text-enter" : ""}>

@@ -620,6 +620,41 @@ body {
   }
 }
 
+/* ヘッダー内のピル型ボタン（Liquid Glass風） */
+.liquid-glass-pill {
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.5);
+  box-shadow:
+    0 1px 4px rgba(0,0,0,0.04),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+  transition: all 0.25s ease;
+}
+.liquid-glass-pill:hover {
+  background: rgba(255,255,255,0.6);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.7);
+}
+
+/* CTAボタン（Liquid Glass光沢） */
+.liquid-glass-cta {
+  position: relative;
+  overflow: hidden;
+}
+.liquid-glass-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.30) 0%, transparent 100%);
+  border-radius: 50px 50px 50% 50%;
+  pointer-events: none;
+}
+
 /* 選択済みボタンのキラキラ擬似要素パーティクル（旧互換） */
 .scale-btn-selected {
   position: relative;

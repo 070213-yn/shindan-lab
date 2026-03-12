@@ -49,7 +49,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-a-h-s',
     emoji: '🏰',
-    name: '鉄の司令塔',
+    name: 'ESTJ 幹部 - 鉄の司令塔',
     tag: '揺るがぬ統率の三位一体',
     color: '#1B4332',
     description:
@@ -62,7 +62,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-a-h-r',
     emoji: '🌋',
-    name: '灼熱の管理者',
+    name: 'ESTJ 幹部 - 灼熱の管理者',
     tag: '情熱が噴き出す指揮官',
     color: '#9D174D',
     description:
@@ -75,7 +75,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-a-c-s',
     emoji: '⚖️',
-    name: '鋼の裁定者',
+    name: 'ESTJ 幹部 - 鋼の裁定者',
     tag: '冷静で公平な究極の管理者',
     color: '#374151',
     description:
@@ -88,7 +88,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-a-c-r',
     emoji: '🔬',
-    name: '完璧主義の監督',
+    name: 'ESTJ 幹部 - 完璧主義の監督',
     tag: '冷静の仮面の下の苦悩',
     color: '#4A5568',
     description:
@@ -101,7 +101,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-o-h-s',
     emoji: '🕊️',
-    name: '堅実なる導き手',
+    name: 'ESTJ 幹部 - 堅実なる導き手',
     tag: '慎重で温かい安心のリーダー',
     color: '#065F46',
     description:
@@ -114,7 +114,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-o-h-r',
     emoji: '🎭',
-    name: '誠実の苦労人',
+    name: 'ESTJ 幹部 - 誠実の苦労人',
     tag: '責任感と感受性の葛藤',
     color: '#7C3AED',
     description:
@@ -127,7 +127,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-o-c-s',
     emoji: '🏔️',
-    name: '沈着の管理人',
+    name: 'ESTJ 幹部 - 沈着の管理人',
     tag: '穏やかに支える縁の下の力持ち',
     color: '#44403C',
     description:
@@ -140,7 +140,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estj-o-c-r',
     emoji: '🌑',
-    name: '影の完璧主義者',
+    name: 'ESTJ 幹部 - 影の完璧主義者',
     tag: '慎重で繊細な隠れた管理者',
     color: '#1F2937',
     description:
@@ -158,7 +158,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-a-h-s',
     emoji: '🦅',
-    name: '疾風の起業家',
+    name: 'ESTP 起業家 - 疾風の起業家',
     tag: '止まらない行動力の化身',
     color: '#DC2626',
     description:
@@ -171,7 +171,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-a-h-r',
     emoji: '🎆',
-    name: '爆発的パフォーマー',
+    name: 'ESTP 起業家 - 爆発的パフォーマー',
     tag: '瞬発力と感情の花火師',
     color: '#EA580C',
     description:
@@ -184,7 +184,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-a-c-s',
     emoji: '🎯',
-    name: '冷徹なる勝負師',
+    name: 'ESTP 起業家 - 冷徹なる勝負師',
     tag: '冷静と大胆の完璧な融合',
     color: '#1E40AF',
     description:
@@ -197,7 +197,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-a-c-r',
     emoji: '🗡️',
-    name: '孤高の切り込み隊長',
+    name: 'ESTP 起業家 - 孤高の切り込み隊長',
     tag: '冷静だが内に嵐を秘める',
     color: '#475569',
     description:
@@ -210,7 +210,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-o-h-s',
     emoji: '🌊',
-    name: '慎重なる冒険者',
+    name: 'ESTP 起業家 - 慎重なる冒険者',
     tag: '計算されたリスクテイカー',
     color: '#0E7490',
     description:
@@ -223,7 +223,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-o-h-r',
     emoji: '🎪',
-    name: '波乗りの挑戦者',
+    name: 'ESTP 起業家 - 波乗りの挑戦者',
     tag: '感情の波を力に変える冒険家',
     color: '#B45309',
     description:
@@ -236,7 +236,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-o-c-s',
     emoji: '🦎',
-    name: '静かなる観察者',
+    name: 'ESTP 起業家 - 静かなる観察者',
     tag: '慎重で冷静な現実主義者',
     color: '#4D7C0F',
     description:
@@ -249,7 +249,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'estp-o-c-r',
     emoji: '🌫️',
-    name: '霧中の策略家',
+    name: 'ESTP 起業家 - 霧中の策略家',
     tag: '内なる葛藤を抱える戦術家',
     color: '#6B7280',
     description:
@@ -267,7 +267,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-a-h-s',
     emoji: '☀️',
-    name: '太陽の世話役',
+    name: 'ESFJ 領事官 - 太陽の世話役',
     tag: '誰をも照らす温かきリーダー',
     color: '#F59E0B',
     description:
@@ -280,7 +280,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-a-h-r',
     emoji: '🌸',
-    name: '情愛の嵐',
+    name: 'ESFJ 領事官 - 情愛の嵐',
     tag: '深い愛と激しい感情の持ち主',
     color: '#EC4899',
     description:
@@ -293,7 +293,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-a-c-s',
     emoji: '🏥',
-    name: '冷静なるケアマスター',
+    name: 'ESFJ 領事官 - 冷静なるケアマスター',
     tag: 'プロフェッショナルな支援者',
     color: '#0891B2',
     description:
@@ -306,7 +306,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-a-c-r',
     emoji: '🎻',
-    name: '優雅なる調律師',
+    name: 'ESFJ 領事官 - 優雅なる調律師',
     tag: '冷静に場を整える繊細な心',
     color: '#7E22CE',
     description:
@@ -319,7 +319,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-o-h-s',
     emoji: '🌿',
-    name: '癒しの守護者',
+    name: 'ESFJ 領事官 - 癒しの守護者',
     tag: '慎重に見守る温かき番人',
     color: '#15803D',
     description:
@@ -332,7 +332,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-o-h-r',
     emoji: '🕯️',
-    name: '献身の灯火',
+    name: 'ESFJ 領事官 - 献身の灯火',
     tag: '燃え尽きを恐れぬ献身者',
     color: '#BE123C',
     description:
@@ -345,7 +345,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-o-c-s',
     emoji: '🧸',
-    name: '静かなる世話役',
+    name: 'ESFJ 領事官 - 静かなる世話役',
     tag: '控えめに支える縁の下の番人',
     color: '#78716C',
     description:
@@ -358,7 +358,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfj-o-c-r',
     emoji: '🪞',
-    name: '映し鏡の番人',
+    name: 'ESFJ 領事官 - 映し鏡の番人',
     tag: '他者を映し出す繊細な心',
     color: '#A1A1AA',
     description:
@@ -376,7 +376,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-a-h-s',
     emoji: '🎉',
-    name: '永遠のショーマン',
+    name: 'ESFP エンターテイナー - 永遠のショーマン',
     tag: '舞台の上が人生の全て',
     color: '#E11D48',
     description:
@@ -389,7 +389,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-a-h-r',
     emoji: '🔥',
-    name: '感情の錬金術師',
+    name: 'ESFP エンターテイナー - 感情の錬金術師',
     tag: '喜怒哀楽の全てが芸術',
     color: '#DB2777',
     description:
@@ -402,7 +402,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-a-c-s',
     emoji: '💎',
-    name: '洗練のパフォーマー',
+    name: 'ESFP エンターテイナー - 洗練のパフォーマー',
     tag: 'クールな魅力で場を支配',
     color: '#0D9488',
     description:
@@ -415,7 +415,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-a-c-r',
     emoji: '🦋',
-    name: '美しき矛盾',
+    name: 'ESFP エンターテイナー - 美しき矛盾',
     tag: 'クールな外見に隠れた繊細さ',
     color: '#8B5CF6',
     description:
@@ -428,7 +428,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-o-h-s',
     emoji: '🌻',
-    name: '慎ましき太陽花',
+    name: 'ESFP エンターテイナー - 慎ましき太陽花',
     tag: '控えめに咲く温かい存在',
     color: '#CA8A04',
     description:
@@ -441,7 +441,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-o-h-r',
     emoji: '🎐',
-    name: '風鈴の歌い手',
+    name: 'ESFP エンターテイナー - 風鈴の歌い手',
     tag: '繊細に揺れる感性の持ち主',
     color: '#D946EF',
     description:
@@ -454,7 +454,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-o-c-s',
     emoji: '🍃',
-    name: '静寂のアーティスト',
+    name: 'ESFP エンターテイナー - 静寂のアーティスト',
     tag: '静かに美を追求する職人',
     color: '#4B5563',
     description:
@@ -467,7 +467,7 @@ export const MBTI128_TYPES_4: DiagResultType[] = [
   {
     id: 'esfp-o-c-r',
     emoji: '🌙',
-    name: '月明かりの夢想家',
+    name: 'ESFP エンターテイナー - 月明かりの夢想家',
     tag: '内なる世界を彷徨う感性',
     color: '#6366F1',
     description:

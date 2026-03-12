@@ -46,7 +46,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-a-h-s',
     emoji: '🏛️',
-    name: '不動の戦略王',
+    name: 'INTJ 建築家 - 不動の戦略王',
     tag: '揺るがぬ情熱と完璧な設計図',
     color: '#4C1D95',
     description:
@@ -61,7 +61,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-a-h-r',
     emoji: '⚡',
-    name: '嵐の建築家',
+    name: 'INTJ 建築家 - 嵐の建築家',
     tag: '感情の稲妻が走る戦略家',
     color: '#5B21B6',
     description:
@@ -76,7 +76,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-a-c-s',
     emoji: '🧊',
-    name: '絶対零度の設計者',
+    name: 'INTJ 建築家 - 絶対零度の設計者',
     tag: '完全なる冷静と微動だにしない知性',
     color: '#1E3A5F',
     description:
@@ -91,7 +91,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-a-c-r',
     emoji: '🌊',
-    name: '氷の下の激流',
+    name: 'INTJ 建築家 - 氷の下の激流',
     tag: '冷静な外見の下に渦巻く深層',
     color: '#1E40AF',
     description:
@@ -106,7 +106,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-o-h-s',
     emoji: '🕯️',
-    name: '穏やかなる賢王',
+    name: 'INTJ 建築家 - 穏やかなる賢王',
     tag: '静かに燃える芯の強さ',
     color: '#7C2D12',
     description:
@@ -121,7 +121,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-o-h-r',
     emoji: '🎭',
-    name: '内なる炎の苦悩者',
+    name: 'INTJ 建築家 - 内なる炎の苦悩者',
     tag: '深い思索と感情の嵐の共存',
     color: '#831843',
     description:
@@ -136,7 +136,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-o-c-s',
     emoji: '🌙',
-    name: '沈黙の叡智',
+    name: 'INTJ 建築家 - 沈黙の叡智',
     tag: '最も穏やかで静謐なる知性',
     color: '#374151',
     description:
@@ -151,7 +151,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intj-o-c-r',
     emoji: '🌑',
-    name: '影の思索者',
+    name: 'INTJ 建築家 - 影の思索者',
     tag: '冷静な外面に隠された内なる嵐',
     color: '#1F2937',
     description:
@@ -171,7 +171,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-a-h-s',
     emoji: '🚀',
-    name: '理論武装の開拓者',
+    name: 'INTP 論理学者 - 理論武装の開拓者',
     tag: '知的情熱で未知を切り拓く',
     color: '#0E7490',
     description:
@@ -186,7 +186,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-a-h-r',
     emoji: '💫',
-    name: '閃光の理論家',
+    name: 'INTP 論理学者 - 閃光の理論家',
     tag: '天才的ひらめきと感情の奔流',
     color: '#0891B2',
     description:
@@ -201,7 +201,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-a-c-s',
     emoji: '🔬',
-    name: '純粋理性の探究者',
+    name: 'INTP 論理学者 - 純粋理性の探究者',
     tag: '冷静と好奇心の完全調和',
     color: '#155E75',
     description:
@@ -216,7 +216,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-a-c-r',
     emoji: '🔮',
-    name: '静かなる矛盾の知性',
+    name: 'INTP 論理学者 - 静かなる矛盾の知性',
     tag: '冷静な論理の裏に潜む敏感さ',
     color: '#164E63',
     description:
@@ -231,7 +231,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-o-h-s',
     emoji: '🔭',
-    name: '静かなる知の冒険者',
+    name: 'INTP 論理学者 - 静かなる知の冒険者',
     tag: '穏やかに燃える探究の炎',
     color: '#065F46',
     description:
@@ -246,7 +246,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-o-h-r',
     emoji: '🎨',
-    name: '理論の芸術家',
+    name: 'INTP 論理学者 - 理論の芸術家',
     tag: '繊細な感性が紡ぐ知の美学',
     color: '#047857',
     description:
@@ -261,7 +261,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-o-c-s',
     emoji: '🏔️',
-    name: '不動の観察者',
+    name: 'INTP 論理学者 - 不動の観察者',
     tag: '最も穏やかで動じない知の山',
     color: '#115E59',
     description:
@@ -276,7 +276,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'intp-o-c-r',
     emoji: '🕳️',
-    name: '深淵を覗く者',
+    name: 'INTP 論理学者 - 深淵を覗く者',
     tag: '静かな表面の下の果てなき深み',
     color: '#134E4A',
     description:
@@ -296,7 +296,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-a-h-s',
     emoji: '👑',
-    name: '覚醒の導き手',
+    name: 'INFJ 提唱者 - 覚醒の導き手',
     tag: '揺るがぬ信念で人々を照らす',
     color: '#7E22CE',
     description:
@@ -311,7 +311,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-a-h-r',
     emoji: '🌋',
-    name: '魂の預言者',
+    name: 'INFJ 提唱者 - 魂の預言者',
     tag: '燃え上がる共感と揺れる魂',
     color: '#9333EA',
     description:
@@ -326,7 +326,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-a-c-s',
     emoji: '💎',
-    name: '透徹の賢者',
+    name: 'INFJ 提唱者 - 透徹の賢者',
     tag: '冷静な洞察と揺るがぬ慈悲',
     color: '#6D28D9',
     description:
@@ -341,7 +341,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-a-c-r',
     emoji: '🪞',
-    name: '鏡面の共感者',
+    name: 'INFJ 提唱者 - 鏡面の共感者',
     tag: '他者を映し出す静かなる深淵',
     color: '#7C3AED',
     description:
@@ -356,7 +356,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-o-h-s',
     emoji: '🌿',
-    name: '静かなる癒し手',
+    name: 'INFJ 提唱者 - 静かなる癒し手',
     tag: '穏やかな光で人々を温める',
     color: '#581C87',
     description:
@@ -371,7 +371,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-o-h-r',
     emoji: '🦋',
-    name: '傷つく翼の天使',
+    name: 'INFJ 提唱者 - 傷つく翼の天使',
     tag: '繊細すぎる共感と消えぬ情熱',
     color: '#A21CAF',
     description:
@@ -386,7 +386,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-o-c-s',
     emoji: '🏯',
-    name: '静寂の守護者',
+    name: 'INFJ 提唱者 - 静寂の守護者',
     tag: '最も穏やかで揺るがぬ見守り',
     color: '#4A044E',
     description:
@@ -401,7 +401,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infj-o-c-r',
     emoji: '🌌',
-    name: '深淵の共鳴者',
+    name: 'INFJ 提唱者 - 深淵の共鳴者',
     tag: '静かな外面に隠された魂の震え',
     color: '#3B0764',
     description:
@@ -421,7 +421,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-a-h-s',
     emoji: '🌟',
-    name: '輝ける理想主義者',
+    name: 'INFP 仲介者 - 輝ける理想主義者',
     tag: '揺るがぬ光で世界を照らす',
     color: '#DB2777',
     description:
@@ -436,7 +436,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-a-h-r',
     emoji: '🔥',
-    name: '情熱の詩人',
+    name: 'INFP 仲介者 - 情熱の詩人',
     tag: '魂を焦がす創造の炎',
     color: '#E11D48',
     description:
@@ -451,7 +451,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-a-c-s',
     emoji: '🗡️',
-    name: '静かなる正義の剣',
+    name: 'INFP 仲介者 - 静かなる正義の剣',
     tag: '冷静に理想を貫く不動の意志',
     color: '#BE185D',
     description:
@@ -466,7 +466,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-a-c-r',
     emoji: '🃏',
-    name: '仮面の理想家',
+    name: 'INFP 仲介者 - 仮面の理想家',
     tag: '冷静を装う繊細な魂',
     color: '#9F1239',
     description:
@@ -481,7 +481,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-o-h-s',
     emoji: '🌸',
-    name: '穏やかなる夢の紡ぎ手',
+    name: 'INFP 仲介者 - 穏やかなる夢の紡ぎ手',
     tag: '静かに花開く理想の庭',
     color: '#F472B6',
     description:
@@ -496,7 +496,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-o-h-r',
     emoji: '🌹',
-    name: '茨の中の薔薇',
+    name: 'INFP 仲介者 - 茨の中の薔薇',
     tag: '傷つきながら咲く最も美しい魂',
     color: '#EC4899',
     description:
@@ -511,7 +511,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-o-c-s',
     emoji: '📖',
-    name: '静謐の物語紡ぎ',
+    name: 'INFP 仲介者 - 静謐の物語紡ぎ',
     tag: '最も穏やかで平穏な内なる世界',
     color: '#F9A8D4',
     description:
@@ -526,7 +526,7 @@ export const MBTI128_TYPES_1: DiagResultType[] = [
   {
     id: 'infp-o-c-r',
     emoji: '🕊️',
-    name: '月影の夢見人',
+    name: 'INFP 仲介者 - 月影の夢見人',
     tag: '静寂の中で嵐を抱える孤独な魂',
     color: '#881337',
     description:

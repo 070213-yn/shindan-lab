@@ -33,7 +33,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-a-h-s',
     emoji: '🏰',
-    name: '鉄壁の要塞',
+    name: 'ISTJ 管理者 - 鉄壁の要塞',
     tag: '揺るがぬ守護の象徴',
     color: '#2E4057',
     description:
@@ -46,7 +46,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-a-h-r',
     emoji: '🔥',
-    name: '炎の守護者',
+    name: 'ISTJ 管理者 - 炎の守護者',
     tag: '熱き使命を背負う番人',
     color: '#B71C1C',
     description:
@@ -59,7 +59,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-a-c-s',
     emoji: '🗻',
-    name: '不動の山嶺',
+    name: 'ISTJ 管理者 - 不動の山嶺',
     tag: '静寂に聳える鉄の意志',
     color: '#455A64',
     description:
@@ -72,7 +72,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-a-c-r',
     emoji: '🦅',
-    name: '孤高の監察官',
+    name: 'ISTJ 管理者 - 孤高の監察官',
     tag: '冷眼で真実を射抜く者',
     color: '#37474F',
     description:
@@ -85,7 +85,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-o-h-s',
     emoji: '🛡️',
-    name: '慈愛の盾',
+    name: 'ISTJ 管理者 - 慈愛の盾',
     tag: '温かき守護の防壁',
     color: '#5D4037',
     description:
@@ -98,7 +98,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-o-h-r',
     emoji: '🌋',
-    name: '沈黙の火山',
+    name: 'ISTJ 管理者 - 沈黙の火山',
     tag: '静かに燃ゆる内なる炎',
     color: '#BF360C',
     description:
@@ -111,7 +111,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-o-c-s',
     emoji: '🧊',
-    name: '永久凍土の賢者',
+    name: 'ISTJ 管理者 - 永久凍土の賢者',
     tag: '揺るがぬ知の氷河',
     color: '#546E7A',
     description:
@@ -124,7 +124,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istj-o-c-r',
     emoji: '🔮',
-    name: '深淵の記録者',
+    name: 'ISTJ 管理者 - 深淵の記録者',
     tag: '全てを見通す静かな目',
     color: '#263238',
     description:
@@ -141,7 +141,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-a-h-s',
     emoji: '⚒️',
-    name: '鋼鉄の巨匠',
+    name: 'ISTP 巨匠 - 鋼鉄の巨匠',
     tag: '技と情熱で鍛え上げる匠',
     color: '#4E342E',
     description:
@@ -154,7 +154,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-a-h-r',
     emoji: '⚡',
-    name: '雷鳴の技師',
+    name: 'ISTP 巨匠 - 雷鳴の技師',
     tag: '瞬発力で切り拓く技の閃光',
     color: '#E65100',
     description:
@@ -167,7 +167,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-a-c-s',
     emoji: '🔧',
-    name: '精密機械の心臓',
+    name: 'ISTP 巨匠 - 精密機械の心臓',
     tag: '冷静無比の技術の結晶',
     color: '#616161',
     description:
@@ -180,7 +180,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-a-c-r',
     emoji: '🗡️',
-    name: '氷刃の解析者',
+    name: 'ISTP 巨匠 - 氷刃の解析者',
     tag: '冷徹な刃で真実を暴く',
     color: '#78909C',
     description:
@@ -193,7 +193,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-o-h-s',
     emoji: '🎨',
-    name: '沈思の工芸師',
+    name: 'ISTP 巨匠 - 沈思の工芸師',
     tag: '静かな情熱が宿る手仕事',
     color: '#795548',
     description:
@@ -206,7 +206,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-o-h-r',
     emoji: '🌊',
-    name: '深海の探究者',
+    name: 'ISTP 巨匠 - 深海の探究者',
     tag: '未知を求めて潜る技術の深淵',
     color: '#006064',
     description:
@@ -219,7 +219,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-o-c-s',
     emoji: '⚖️',
-    name: '均衡の技術者',
+    name: 'ISTP 巨匠 - 均衡の技術者',
     tag: '完璧なバランスを紡ぐ者',
     color: '#607D8B',
     description:
@@ -232,7 +232,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'istp-o-c-r',
     emoji: '🌑',
-    name: '暗黙知の守人',
+    name: 'ISTP 巨匠 - 暗黙知の守人',
     tag: '言葉にならない知を宿す者',
     color: '#424242',
     description:
@@ -249,7 +249,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-a-h-s',
     emoji: '🌸',
-    name: '常春の守り手',
+    name: 'ISFJ 擁護者 - 常春の守り手',
     tag: '永遠に咲き続ける愛の花',
     color: '#AD1457',
     description:
@@ -262,7 +262,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-a-h-r',
     emoji: '💎',
-    name: '涙の宝石',
+    name: 'ISFJ 擁護者 - 涙の宝石',
     tag: '感動を結晶化する守護天使',
     color: '#C2185B',
     description:
@@ -275,7 +275,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-a-c-s',
     emoji: '🏥',
-    name: '鉄壁のケアテイカー',
+    name: 'ISFJ 擁護者 - 鉄壁のケアテイカー',
     tag: '揺るがぬプロの守護者',
     color: '#00695C',
     description:
@@ -288,7 +288,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-a-c-r',
     emoji: '🦉',
-    name: '夜目の守り人',
+    name: 'ISFJ 擁護者 - 夜目の守り人',
     tag: '暗闇を見通す静かな番人',
     color: '#4A148C',
     description:
@@ -301,7 +301,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-o-h-s',
     emoji: '🕊️',
-    name: '慈雨の聖母',
+    name: 'ISFJ 擁護者 - 慈雨の聖母',
     tag: '全てを潤す無償の愛',
     color: '#880E4F',
     description:
@@ -314,7 +314,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-o-h-r',
     emoji: '🌙',
-    name: '月光の癒し手',
+    name: 'ISFJ 擁護者 - 月光の癒し手',
     tag: '夜を照らす静かな慈悲',
     color: '#6A1B9A',
     description:
@@ -327,7 +327,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-o-c-s',
     emoji: '📚',
-    name: '静寂の図書館長',
+    name: 'ISFJ 擁護者 - 静寂の図書館長',
     tag: '秩序で守る知の聖域',
     color: '#33691E',
     description:
@@ -340,7 +340,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfj-o-c-r',
     emoji: '🕯️',
-    name: '灯台守の孤独',
+    name: 'ISFJ 擁護者 - 灯台守の孤独',
     tag: '暗闇に灯す小さな光',
     color: '#1B5E20',
     description:
@@ -357,7 +357,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-a-h-s',
     emoji: '🌺',
-    name: '情熱の花園',
+    name: 'ISFP 冒険家 - 情熱の花園',
     tag: '感性と行動力が咲き誇る',
     color: '#D81B60',
     description:
@@ -370,7 +370,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-a-h-r',
     emoji: '🦋',
-    name: '感受性の蝶',
+    name: 'ISFP 冒険家 - 感受性の蝶',
     tag: '美と感動に舞い降りる魂',
     color: '#E91E63',
     description:
@@ -383,7 +383,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-a-c-s',
     emoji: '🎭',
-    name: '仮面の芸術家',
+    name: 'ISFP 冒険家 - 仮面の芸術家',
     tag: 'クールな外面に秘めた感性',
     color: '#5E35B1',
     description:
@@ -396,7 +396,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-a-c-r',
     emoji: '🐺',
-    name: '月下の一匹狼',
+    name: 'ISFP 冒険家 - 月下の一匹狼',
     tag: '孤独を愛する冷静な感性',
     color: '#311B92',
     description:
@@ -409,7 +409,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-o-h-s',
     emoji: '🌿',
-    name: '静寂の庭師',
+    name: 'ISFP 冒険家 - 静寂の庭師',
     tag: '命を慈しむ穏やかな手',
     color: '#2E7D32',
     description:
@@ -422,7 +422,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-o-h-r',
     emoji: '🎻',
-    name: '哀愁のソナタ',
+    name: 'ISFP 冒険家 - 哀愁のソナタ',
     tag: '涙で奏でる魂の旋律',
     color: '#7B1FA2',
     description:
@@ -435,7 +435,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-o-c-s',
     emoji: '🍃',
-    name: '木漏れ日の哲学者',
+    name: 'ISFP 冒険家 - 木漏れ日の哲学者',
     tag: 'ありのままを愛する静けさ',
     color: '#558B2F',
     description:
@@ -448,7 +448,7 @@ export const MBTI128_TYPES_2: DiagResultType[] = [
   {
     id: 'isfp-o-c-r',
     emoji: '🌌',
-    name: '星屑の夢想家',
+    name: 'ISFP 冒険家 - 星屑の夢想家',
     tag: '無限の内宇宙を旅する者',
     color: '#1A237E',
     description:

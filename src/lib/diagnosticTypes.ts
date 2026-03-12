@@ -45,6 +45,26 @@ export interface DiagQuestion {
 
 // --- 結果タイプ ---
 
+/** 取扱説明書診断用の追加フィールド */
+export interface TorisetsuFields {
+  /** 落ち込んでいるとき */
+  whenDown: string;
+  /** 遊びを断るとき */
+  whenDecline: string;
+  /** 喜ばせる方法 */
+  howToPlease: string;
+  /** 怒らせるNGワード */
+  ngWord: string;
+  /** 恋愛モード */
+  loveMode: string;
+  /** 充電方法 */
+  rechargeMethod: string;
+  /** 取扱注意事項 */
+  cautionNote: string;
+  /** 相性のいい人 */
+  bestMatch: string;
+}
+
 export interface DiagResultType {
   id: string;
   emoji: string;
@@ -56,6 +76,8 @@ export interface DiagResultType {
   traits: string[];
   /** 各次元に対する重みベクトル（タイプスコア計算用） */
   scoreWeights: number[];
+  /** 取扱説明書診断専用の追加項目（他の診断では省略可） */
+  torisetsuFields?: TorisetsuFields;
 }
 
 // --- 診断設定（1つの診断全体の定義） ---

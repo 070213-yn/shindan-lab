@@ -23,6 +23,7 @@ import DiagProfileSetup from "./DiagProfileSetup";
 import DiagQuizFeed from "./DiagQuizFeed";
 import DiagLoading from "./DiagLoading";
 import DiagResult from "./DiagResult";
+import DiagResultTorisetsu from "./DiagResultTorisetsu";
 
 interface Props {
   config: DiagnosisConfig;
@@ -504,7 +505,9 @@ export default function DiagnosticEngine({ config }: Props) {
           <DiagLoading config={config} store={store} />
         )}
         {store.currentStep === "result" && (
-          <DiagResult config={config} store={store} />
+          config.id === 'torisetsu'
+            ? <DiagResultTorisetsu config={config} store={store} theme={theme} />
+            : <DiagResult config={config} store={store} />
         )}
       </div>
 

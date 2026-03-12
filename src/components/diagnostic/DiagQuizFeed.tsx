@@ -269,9 +269,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
               >
                 {SCALE_OPTIONS.map((opt) => {
                   const isSelected = answers[i] === opt.value;
-                  // サイズを端ほど小さく、中央を大きくする配列
-                  const sizes = [40, 44, 48, 44, 40];
-                  const size = sizes[opt.value - 1];
+                  const size = 42;
                   return (
                     <button
                       key={opt.value}
@@ -319,7 +317,7 @@ export default function DiagQuizFeed({ config, store, theme }: Props) {
                 }}
               >
                 <span>全然違う</span>
-                <span>めっちゃ当てはまる</span>
+                <span>当てはまる</span>
               </div>
             </div>
           </div>

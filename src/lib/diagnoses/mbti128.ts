@@ -117,7 +117,7 @@ export const mbti128Diagnosis: DiagnosisConfig = {
       sid: 1,
       sectionName: 'エネルギーの方向',
       emoji: '⚡',
-      text: 'グループ通話やオンライン飲み会に参加するとエネルギーが湧いてくる',
+      text: '大勢でワイワイ過ごすと元気が出る',
       source: 'Luo & Hancock (2020). Extraversion and social media use. デジタル外向性',
       weights: [3, 0, 0, 0, 0, 1, 0, 0, 0],
     },

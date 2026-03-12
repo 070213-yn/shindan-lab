@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { TYPES } from "@/lib/types";
 import PixelSparkle from "@/components/PixelSparkle";
 
 // ============================================================
@@ -12,24 +11,6 @@ import PixelSparkle from "@/components/PixelSparkle";
 // ============================================================
 
 export default function LandingPage() {
-  // --- IntersectionObserver: タイプカードのstaggered fadeUp ---
-  const typesGridRef = useRef<HTMLDivElement>(null);
-  const [typesVisible, setTypesVisible] = useState(false);
-
-  useEffect(() => {
-    if (!typesGridRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTypesVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(typesGridRef.current);
-    return () => observer.disconnect();
-  }, []);
 
   // --- IntersectionObserver: 診断セクション ---
   const quizRef = useRef<HTMLDivElement>(null);
@@ -57,10 +38,6 @@ export default function LandingPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // --- ページ内スクロール ---
-  const scrollToTypes = () => {
-    document.getElementById("types")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   // --- ティッカーの内容 ---
   const tickerItems = [
@@ -515,143 +492,6 @@ export default function LandingPage() {
             </svg>
           </Link>
 
-          <button
-            onClick={scrollToTypes}
-            className="love-types-link"
-            style={{
-              background: "transparent",
-              border: "none",
-              padding: "8px 0",
-              color: "#B07CC6",
-              fontSize: "0.85rem",
-              cursor: "pointer",
-              textDecoration: "underline",
-              textUnderlineOffset: 3,
-              transition: "color 0.3s",
-              fontFamily: "'Zen Maru Gothic', sans-serif",
-            }}
-          >
-            24タイプを見る
-          </button>
-        </div>
-      </section>
-
-      {/* ========== 24タイプ一覧（チップスタイル） ========== */}
-      <section
-        id="types"
-        style={{
-          padding: "80px 20px",
-          maxWidth: 800,
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        {/* セクションタイトル */}
-        <div style={{ textAlign: "left", marginBottom: 32, padding: "0 4px" }}>
-          <span
-            style={{
-              fontSize: 11,
-              letterSpacing: "0.15em",
-              color: "#D946A8",
-              display: "block",
-              marginBottom: 6,
-              fontWeight: 700,
-            }}
-          >
-            LOVE TYPES
-          </span>
-          <h2
-            className="font-stick"
-            style={{
-              fontSize: "clamp(1.4rem, 5vw, 2rem)",
-              background: "linear-gradient(135deg, #FF6BE8, #C45AFF)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              margin: 0,
-            }}
-          >
-            24の恋愛性格タイプ
-          </h2>
-          {/* アクセントライン */}
-          <div
-            style={{
-              width: 48,
-              height: 3,
-              borderRadius: 3,
-              background: "linear-gradient(90deg, #FF6BE8, #C45AFF)",
-              marginTop: 10,
-            }}
-          />
-        </div>
-
-        {/* タイプチップ一覧（コンパクト ピル型） */}
-        <div
-          ref={typesGridRef}
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 8,
-          }}
-        >
-          {TYPES.map((type, index) => (
-            <div
-              key={type.id}
-              className="love-type-chip"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 5,
-                padding: "8px 14px",
-                background: "rgba(255,255,255,0.5)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-                borderRadius: 50,
-                border: `1px solid ${type.color}30`,
-                fontSize: 12,
-                lineHeight: 1,
-                cursor: "default",
-                whiteSpace: "nowrap",
-                opacity: typesVisible ? 1 : 0,
-                transform: typesVisible ? "translateY(0)" : "translateY(12px)",
-                transitionProperty: "opacity, transform, border-color, box-shadow, background",
-                transitionDuration: "0.4s, 0.4s, 0.2s, 0.2s, 0.2s",
-                transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
-                transitionDelay: typesVisible
-                  ? `${Math.min(index * 0.03, 0.8)}s`
-                  : "0s",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = type.color;
-                el.style.boxShadow = `0 0 12px ${type.color}30`;
-                el.style.background = "rgba(255,255,255,0.7)";
-                el.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.borderColor = `${type.color}30`;
-                el.style.boxShadow = "none";
-                el.style.background = "rgba(255,255,255,0.5)";
-                el.style.transform = "none";
-              }}
-            >
-              {/* 絵文字 */}
-              <span style={{ fontSize: 14, lineHeight: 1 }}>{type.emoji}</span>
-              {/* タイプ名のみ */}
-              <span
-                className="font-zen"
-                style={{
-                  fontSize: 11.5,
-                  fontWeight: 600,
-                  color: type.color,
-                }}
-              >
-                {type.name}
-              </span>
-            </div>
-          ))}
         </div>
       </section>
 

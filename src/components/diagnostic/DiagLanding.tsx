@@ -81,15 +81,39 @@ export default function DiagLanding({ config, store }: Props) {
   // テーマから色情報を取得
   const theme = useMemo(() => getDiagnosticTheme(config.id), [config.id]);
 
-  // --- IntersectionObserver: タイプカードのstaggered fadeUpアニメーション ---
+  // --- MBTI専用: アコーディオン形式のタイプ一覧 ---
+  const isMbti = config.id === "mbti128";
   const typesGridRef = useRef<HTMLDivElement>(null);
   const [typesVisible, setTypesVisible] = useState(false);
-  // タイプが多い場合の「もっと見る」制御（30個以上で折りたたみ）
-  const [showAllTypes, setShowAllTypes] = useState(false);
-  const TYPE_INITIAL_COUNT = 30;
+  // アコーディオン: 展開中のグループ名
+  const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+
+  // MBTIの4グループ分類
+  const mbtiGroups = useMemo(() => {
+    if (!isMbti) return [];
+    const groupMap: Record<string, { label: string; emoji: string; types: string[] }> = {
+      "分析家": { label: "分析家 (Analysts)", emoji: "🧠", types: ["INTJ", "INTP", "ENTJ", "ENTP"] },
+      "外交官": { label: "外交官 (Diplomats)", emoji: "💚", types: ["INFJ", "INFP", "ENFJ", "ENFP"] },
+      "番人": { label: "番人 (Sentinels)", emoji: "🛡", types: ["ISTJ", "ISFJ", "ESTJ", "ESFJ"] },
+      "探検家": { label: "探検家 (Explorers)", emoji: "🔧", types: ["ISTP", "ISFP", "ESTP", "ESFP"] },
+    };
+    return Object.entries(groupMap).map(([key, group]) => ({
+      key,
+      ...group,
+      items: config.resultTypes.filter(t => group.types.some(code => t.name.startsWith(code))),
+    }));
+  }, [isMbti, config.resultTypes]);
+
+  const toggleGroup = (key: string) => {
+    setOpenGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key); else next.add(key);
+      return next;
+    });
+  };
 
   useEffect(() => {
-    if (!typesGridRef.current) return;
+    if (!isMbti || !typesGridRef.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -101,7 +125,7 @@ export default function DiagLanding({ config, store }: Props) {
     );
     observer.observe(typesGridRef.current);
     return () => observer.disconnect();
-  }, []);
+  }, [isMbti]);
 
   // タイプ一覧セクションへスムーズスクロール
   const scrollToTypes = () => {
@@ -705,34 +729,36 @@ export default function DiagLanding({ config, store }: Props) {
           />
         </button>
 
-        {/* ====== タイプ一覧を見るボタン ====== */}
-        <button
-          onClick={scrollToTypes}
-          style={{
-            background: "transparent",
-            border: "none",
-            padding: "12px 0",
-            color: theme.textSecondary,
-            fontSize: 13,
-            cursor: "pointer",
-            textDecoration: "underline",
-            textUnderlineOffset: 3,
-            transition: "color 0.3s",
-            animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.45s both",
-            opacity: 0.8,
-            width: "100%",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.color = config.themeColor;
-            (e.currentTarget as HTMLButtonElement).style.opacity = "1";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.color = theme.textSecondary;
-            (e.currentTarget as HTMLButtonElement).style.opacity = "0.8";
-          }}
-        >
-          {config.resultTypes.length}タイプ一覧を見る ↓
-        </button>
+        {/* ====== タイプ一覧を見るボタン（MBTIのみ表示） ====== */}
+        {isMbti && (
+          <button
+            onClick={scrollToTypes}
+            style={{
+              background: "transparent",
+              border: "none",
+              padding: "12px 0",
+              color: theme.textSecondary,
+              fontSize: 13,
+              cursor: "pointer",
+              textDecoration: "underline",
+              textUnderlineOffset: 3,
+              transition: "color 0.3s",
+              animation: "staggeredFadeUp 0.6s cubic-bezier(0.25,1,0.5,1) 0.45s both",
+              opacity: 0.8,
+              width: "100%",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.color = config.themeColor;
+              (e.currentTarget as HTMLButtonElement).style.opacity = "1";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.color = theme.textSecondary;
+              (e.currentTarget as HTMLButtonElement).style.opacity = "0.8";
+            }}
+          >
+            {config.resultTypes.length}タイプ一覧を見る ↓
+          </button>
+        )}
 
         {/* ====== 下部情報エリア ====== */}
         <div
@@ -832,228 +858,231 @@ export default function DiagLanding({ config, store }: Props) {
       </div>
       </div>
 
-      {/* ====== タイプ一覧セクション ====== */}
-      <section
-        id="result-types"
-        style={{
-          padding: "60px 0 40px",
-          maxWidth: 680,
-          width: "100%",
-          margin: "0 auto",
-          position: "relative",
-          zIndex: 2,
-        }}
-      >
-        {/* セクションタイトル */}
-        <div style={{ textAlign: "left", marginBottom: 32, padding: "0 4px" }}>
-          <span
-            style={{
-              fontSize: 11,
-              letterSpacing: "0.15em",
-              color: config.themeColor,
-              display: "block",
-              marginBottom: 6,
-              fontWeight: 700,
-            }}
-          >
-            RESULT TYPES
-          </span>
-          <h2
-            className="font-stick"
-            style={{
-              fontSize: 22,
-              color: theme.textPrimary,
-              margin: 0,
-            }}
-          >
-            診断結果タイプ一覧
-          </h2>
-          {/* アクセントライン */}
-          <div
-            style={{
-              width: 48,
-              height: 3,
-              borderRadius: 3,
-              background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo})`,
-              marginTop: 10,
-            }}
-          />
-        </div>
-
-        {/* タイプチップ一覧（コンパクト表示） */}
-        <div
+      {/* ====== タイプ一覧セクション（MBTIのみ表示） ====== */}
+      {isMbti && (
+        <section
+          id="result-types"
           ref={typesGridRef}
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 6,
+            padding: "60px 0 40px",
+            maxWidth: 680,
+            width: "100%",
+            margin: "0 auto",
+            position: "relative",
+            zIndex: 2,
           }}
         >
-          {(() => {
-            const totalTypes = config.resultTypes.length;
-            const needsCollapse = totalTypes > TYPE_INITIAL_COUNT;
-            const visibleTypes = needsCollapse && !showAllTypes
-              ? config.resultTypes.slice(0, TYPE_INITIAL_COUNT)
-              : config.resultTypes;
-
-            return (
-              <>
-                {visibleTypes.map((type, index) => (
-                  <div
-                    key={type.id}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      padding: "6px 10px",
-                      background: theme.cardBg,
-                      borderRadius: 50,
-                      border: `1px solid ${type.color}30`,
-                      fontSize: 12,
-                      lineHeight: 1,
-                      cursor: "default",
-                      whiteSpace: "nowrap",
-                      // staggered fadeUp（delay上限0.8sで30個以降は一括表示）
-                      opacity: typesVisible ? 1 : 0,
-                      transform: typesVisible ? "translateY(0)" : "translateY(12px)",
-                      transitionProperty: "opacity, transform, border-color, box-shadow",
-                      transitionDuration: "0.4s, 0.4s, 0.2s, 0.2s",
-                      transitionTimingFunction: "cubic-bezier(0.25, 1, 0.5, 1)",
-                      transitionDelay: typesVisible
-                        ? `${Math.min(index * 0.025, 0.8)}s`
-                        : "0s",
-                    }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.borderColor = type.color;
-                      el.style.boxShadow = `0 0 8px ${type.color}30`;
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLDivElement;
-                      el.style.borderColor = `${type.color}30`;
-                      el.style.boxShadow = "none";
-                    }}
-                  >
-                    {/* 絵文字 */}
-                    <span style={{ fontSize: 13, lineHeight: 1 }}>{type.emoji}</span>
-                    {/* タイプ名のみ（tagは省略） */}
-                    <span
-                      className="font-zen"
-                      style={{
-                        fontSize: 11,
-                        fontWeight: 600,
-                        color: type.color,
-                      }}
-                    >
-                      {type.name}
-                    </span>
-                  </div>
-                ))}
-
-                {/* 「もっと見る」ボタン（30タイプ以上の場合のみ表示） */}
-                {needsCollapse && !showAllTypes && (
-                  <button
-                    onClick={() => setShowAllTypes(true)}
-                    style={{
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: 4,
-                      padding: "6px 14px",
-                      background: `linear-gradient(135deg, ${config.gradientFrom}15, ${config.gradientTo}15)`,
-                      border: `1px dashed ${config.themeColor}40`,
-                      borderRadius: 50,
-                      fontSize: 11,
-                      fontWeight: 600,
-                      color: config.themeColor,
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                      fontFamily: "'Zen Maru Gothic', sans-serif",
-                      opacity: typesVisible ? 1 : 0,
-                      transform: typesVisible ? "translateY(0)" : "translateY(12px)",
-                      transitionProperty: "opacity, transform, background",
-                      transitionDuration: "0.4s",
-                      transitionDelay: typesVisible ? "0.85s" : "0s",
-                    }}
-                  >
-                    +{totalTypes - TYPE_INITIAL_COUNT}タイプをもっと見る
-                  </button>
-                )}
-              </>
-            );
-          })()}
-        </div>
-
-        {/* ====== タイプ一覧下の開始ボタン ====== */}
-        <div
-          style={{
-            marginTop: 40,
-            textAlign: "center",
-          }}
-        >
-          <button
-            onClick={() => setCurrentStep("profile")}
-            className="diag-landing-btn"
-            style={{
-              position: "relative",
-              width: "100%",
-              maxWidth: 400,
-              padding: "18px 0",
-              background: `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`,
-              color: "#fff",
-              border: "none",
-              borderRadius: 50,
-              fontSize: 17,
-              fontWeight: 700,
-              fontFamily: "'Zen Maru Gothic', sans-serif",
-              cursor: "pointer",
-              boxShadow: `0 4px 24px ${config.themeColor}40`,
-              transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              overflow: "hidden",
-              letterSpacing: "0.04em",
-            }}
-          >
-            {/* シマーアニメーション */}
+          {/* セクションタイトル */}
+          <div style={{ textAlign: "left", marginBottom: 32, padding: "0 4px" }}>
+            <span
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.15em",
+                color: config.themeColor,
+                display: "block",
+                marginBottom: 6,
+                fontWeight: 700,
+              }}
+            >
+              RESULT TYPES
+            </span>
+            <h2
+              className="font-stick"
+              style={{
+                fontSize: 22,
+                color: theme.textPrimary,
+                margin: 0,
+              }}
+            >
+              {config.resultTypes.length}タイプ一覧
+            </h2>
             <div
               style={{
-                position: "absolute",
-                top: 0,
-                left: "-100%",
-                width: "60%",
-                height: "100%",
-                background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 60%, transparent 100%)",
-                animation: "diagLandingShimmer 3s ease-in-out 1.5s infinite",
-                pointerEvents: "none",
+                width: 48,
+                height: 3,
+                borderRadius: 3,
+                background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo})`,
+                marginTop: 10,
               }}
             />
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                opacity: 0.9,
-                position: "relative",
-              }}
-              dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
-            />
-            <span style={{ position: "relative" }}>{buttonLabel}</span>
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                opacity: 0.9,
-                transform: "scaleX(-1)",
-                position: "relative",
-              }}
-              dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
-            />
-          </button>
-        </div>
-      </section>
+          </div>
 
-      {/* チップ表示のためgrid用レスポンシブは不要（flexbox wrapで自動折り返し） */}
+          {/* MBTIグループ別アコーディオン */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {mbtiGroups.map((group, gi) => {
+              const isOpen = openGroups.has(group.key);
+              return (
+                <div
+                  key={group.key}
+                  style={{
+                    background: theme.cardBg,
+                    backdropFilter: "blur(8px)",
+                    border: `1px solid ${isOpen ? `${config.themeColor}40` : `${config.themeColor}18`}`,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    transition: "border-color 0.3s",
+                    opacity: typesVisible ? 1 : 0,
+                    transform: typesVisible ? "translateY(0)" : "translateY(12px)",
+                    transitionProperty: "opacity, transform, border-color",
+                    transitionDuration: "0.4s",
+                    transitionDelay: typesVisible ? `${gi * 0.1}s` : "0s",
+                  }}
+                >
+                  {/* アコーディオンヘッダー */}
+                  <button
+                    onClick={() => toggleGroup(group.key)}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      padding: "14px 18px",
+                      background: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      textAlign: "left",
+                      transition: "background 0.2s",
+                    }}
+                  >
+                    <span style={{ fontSize: 20 }}>{group.emoji}</span>
+                    <div style={{ flex: 1 }}>
+                      <div
+                        className="font-zen"
+                        style={{ fontSize: 14, fontWeight: 700, color: theme.textPrimary }}
+                      >
+                        {group.label}
+                      </div>
+                      <div style={{ fontSize: 11, color: theme.textSecondary, opacity: 0.8, marginTop: 2 }}>
+                        {group.items.length}タイプ
+                      </div>
+                    </div>
+                    {/* 開閉アイコン */}
+                    <span
+                      style={{
+                        fontSize: 14,
+                        color: config.themeColor,
+                        transition: "transform 0.3s cubic-bezier(0.25,1,0.5,1)",
+                        transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        opacity: 0.7,
+                      }}
+                    >
+                      ▼
+                    </span>
+                  </button>
+
+                  {/* アコーディオン中身 */}
+                  <div
+                    style={{
+                      maxHeight: isOpen ? `${group.items.length * 36 + 20}px` : "0px",
+                      overflow: "hidden",
+                      transition: "max-height 0.4s cubic-bezier(0.25,1,0.5,1)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        gap: 5,
+                        padding: "0 14px 14px",
+                      }}
+                    >
+                      {group.items.map((type) => (
+                        <div
+                          key={type.id}
+                          style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: 4,
+                            padding: "5px 9px",
+                            background: `${type.color}08`,
+                            borderRadius: 50,
+                            border: `1px solid ${type.color}25`,
+                            fontSize: 11,
+                            lineHeight: 1,
+                            cursor: "default",
+                            whiteSpace: "nowrap",
+                            transition: "border-color 0.2s, box-shadow 0.2s",
+                          }}
+                          onMouseEnter={(e) => {
+                            const el = e.currentTarget as HTMLDivElement;
+                            el.style.borderColor = type.color;
+                            el.style.boxShadow = `0 0 8px ${type.color}25`;
+                          }}
+                          onMouseLeave={(e) => {
+                            const el = e.currentTarget as HTMLDivElement;
+                            el.style.borderColor = `${type.color}25`;
+                            el.style.boxShadow = "none";
+                          }}
+                        >
+                          <span style={{ fontSize: 12, lineHeight: 1 }}>{type.emoji}</span>
+                          <span
+                            className="font-zen"
+                            style={{ fontSize: 10, fontWeight: 600, color: type.color }}
+                          >
+                            {type.name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* ====== タイプ一覧下の開始ボタン ====== */}
+          <div style={{ marginTop: 40, textAlign: "center" }}>
+            <button
+              onClick={() => setCurrentStep("profile")}
+              className="diag-landing-btn"
+              style={{
+                position: "relative",
+                width: "100%",
+                maxWidth: 400,
+                padding: "18px 0",
+                background: `linear-gradient(135deg, ${config.gradientFrom}, ${config.gradientTo})`,
+                color: "#fff",
+                border: "none",
+                borderRadius: 50,
+                fontSize: 17,
+                fontWeight: 700,
+                fontFamily: "'Zen Maru Gothic', sans-serif",
+                cursor: "pointer",
+                boxShadow: `0 4px 24px ${config.themeColor}40`,
+                transition: "all 0.3s cubic-bezier(0.25, 1, 0.5, 1)",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
+                overflow: "hidden",
+                letterSpacing: "0.04em",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: "-100%",
+                  width: "60%",
+                  height: "100%",
+                  background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 40%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.15) 60%, transparent 100%)",
+                  animation: "diagLandingShimmer 3s ease-in-out 1.5s infinite",
+                  pointerEvents: "none",
+                }}
+              />
+              <span
+                style={{ display: "inline-flex", alignItems: "center", opacity: 0.9, position: "relative" }}
+                dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
+              />
+              <span style={{ position: "relative" }}>{buttonLabel}</span>
+              <span
+                style={{ display: "inline-flex", alignItems: "center", opacity: 0.9, transform: "scaleX(-1)", position: "relative" }}
+                dangerouslySetInnerHTML={{ __html: buttonIconHtml }}
+              />
+            </button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

@@ -14,6 +14,7 @@ import type { DiagnosisConfig } from "@/lib/diagnosticTypes";
 import type { GenericDiagState } from "@/store/createDiagnosticStore";
 import { getDiagnosticTheme } from "@/lib/diagnosticThemes";
 import PixelSparkle from "@/components/PixelSparkle";
+import MbtiCompatChart from "@/components/diagnostic/MbtiCompatChart";
 
 interface Props {
   config: DiagnosisConfig;
@@ -857,6 +858,51 @@ export default function DiagLanding({ config, store }: Props) {
         </div>
       </div>
       </div>
+
+      {/* ====== 相性相関図（MBTIのみ） ====== */}
+      {isMbti && (
+        <section
+          style={{
+            padding: "60px 0 20px",
+            maxWidth: 700,
+            width: "100%",
+            margin: "0 auto",
+            position: "relative",
+            zIndex: 2,
+          }}
+        >
+          <div style={{ textAlign: "left", marginBottom: 24, padding: "0 4px" }}>
+            <span
+              style={{
+                fontSize: 11,
+                letterSpacing: "0.15em",
+                color: config.themeColor,
+                display: "block",
+                marginBottom: 6,
+                fontWeight: 700,
+              }}
+            >
+              COMPATIBILITY CHART
+            </span>
+            <h2
+              className="font-stick"
+              style={{ fontSize: 22, color: theme.textPrimary, margin: 0 }}
+            >
+              16タイプ相性相関図
+            </h2>
+            <div
+              style={{
+                width: 48,
+                height: 3,
+                borderRadius: 3,
+                background: `linear-gradient(90deg, ${config.gradientFrom}, ${config.gradientTo})`,
+                marginTop: 10,
+              }}
+            />
+          </div>
+          <MbtiCompatChart />
+        </section>
+      )}
 
       {/* ====== タイプ一覧セクション（MBTIのみ表示） ====== */}
       {isMbti && (
